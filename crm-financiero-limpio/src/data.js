@@ -1,6 +1,27 @@
+// src/data.js
+
+// Definimos los checklists primero para poder usarlos como plantilla
+export const sgrChecklists = {
+    fisica: ["DNI", "Constancia de Monotributo/Autónomo", "Última DDJJ de IIBB", "Manifestación de Bienes"],
+    juridica: ["Estatuto Social", "Último Acta de Directorio", "Últimos 3 Balances", "Ventas post-balance"]
+};
+
+// Ahora, creamos las SGRs iniciales con su propio checklist
 export const initialSGRs = [
-    { id: 'sgr-1', name: 'Garantizar SGR' },
-    { id: 'sgr-2', name: 'Acindar Pymes SGR' },
+    { 
+        id: 'sgr-1', 
+        name: 'Garantizar SGR', 
+        totalQuota: 5000000,
+        // Añadimos el checklist aquí, como una copia
+        checklist: JSON.parse(JSON.stringify(sgrChecklists))
+    },
+    { 
+        id: 'sgr-2', 
+        name: 'Acindar Pymes SGR', 
+        totalQuota: 8000000,
+        // Y aquí también
+        checklist: JSON.parse(JSON.stringify(sgrChecklists))
+    }
 ];
 
 export const FUNNEL_STAGES = {
@@ -21,11 +42,6 @@ export const initialProducts = [
 ];
 
 export const industries = ["Agropecuario", "Industria Manufacturera", "Comercio", "Servicios", "Construcción", "Tecnología", "Salud", "Transporte y Logística", "Otro"];
-
-export const sgrChecklists = {
-    fisica: ["DNI", "Constancia de Monotributo/Autónomo", "Última DDJJ de IIBB", "Manifestación de Bienes"],
-    juridica: ["Estatuto Social", "Último Acta de Directorio", "Últimos 3 Balances", "Ventas post-balance"]
-};
 
 export const initialClients = [
     {
@@ -93,7 +109,7 @@ export const initialClients = [
             { id: 'q-3', type: 'SGR', name: 'Acindar Pymes SGR', lineAmount: 500000, lineExpiryDate: '2025-09-02', destination: 'Facturas' }
         ],
         financing: [
-            { id: 'f3', instrument: 'Pagaré', details: 'A 90 días', amount: 150000, commission: 3000, sgr: { isQualified: false, qualificationId: null }, schedule: [{ date: '2024-11-10', amount: 150000, type: 'Vencimiento' }] } // Vencido para prueba
+            { id: 'f3', instrument: 'Pagaré', details: 'A 90 días', amount: 150000, commission: 3000, sgr: { isQualified: false, qualificationId: null }, schedule: [{ date: '2024-11-10', amount: 150000, type: 'Vencimiento' }] } 
         ],
         activities: [
             { id: 'a3', type: 'task', title: 'Analizar scoring crediticio', date: '2025-08-13T14:00:00', note: 'Revisar informe de Veraz y Nosis.', completed: true },

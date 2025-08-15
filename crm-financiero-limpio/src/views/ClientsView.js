@@ -1,3 +1,5 @@
+// src/views/ClientsView.js
+
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Search, PlusCircle, Briefcase } from 'lucide-react';
 import { FUNNEL_STAGES } from '../data';
@@ -6,14 +8,13 @@ import ClientDetail from '../components/clients/ClientDetail';
 import ClientForm from '../components/clients/ClientForm';
 import PreConsultationModal from '../components/modals/PreConsultationModal';
 
-export default function ClientsView({ clients, setClients, sgrs, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient }) {
+export default function ClientsView({ clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument }) {
     const [selectedClient, setSelectedClient] = useState(null);
-    const [viewMode, setViewMode] = useState('list'); // list, detail, form
+    const [viewMode, setViewMode] = useState('list');
     const [editingClient, setEditingClient] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [showPreConsultation, setShowPreConsultation] = useState(false);
     
-    // --- Lógica para paneles ajustables y persistentes ---
     const [leftPanelWidth, setLeftPanelWidth] = useState(() => {
         const savedWidth = localStorage.getItem('client-panel-width');
         return savedWidth ? parseFloat(savedWidth) : 33.33;
@@ -54,7 +55,6 @@ export default function ClientsView({ clients, setClients, sgrs, triggerNewClien
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [handleMouseMove, handleMouseUp]);
-    // --- Fin de la lógica ---
 
     useEffect(() => {
         if (triggerNewClient) {
@@ -68,9 +68,13 @@ export default function ClientsView({ clients, setClients, sgrs, triggerNewClien
             setSelectedClient(preSelectedClient);
             setViewMode('detail');
             clearPreSelectedClient();
-        } else if (!selectedClient && clients.length > 0 && viewMode !== 'form') {
-            setViewMode('detail');
+        } else if (!selectedClient && clients && clients.length > 0 && viewMode !== 'form') {
             setSelectedClient(clients[0]);
+            setViewMode('detail');
+        }
+        else if (selectedClient && !clients.find(c => c.id === selectedClient.id)) {
+            setSelectedClient(null);
+            setViewMode('list');
         }
     }, [preSelectedClient, clients, selectedClient, viewMode, clearPreSelectedClient]);
 
@@ -184,16 +188,6 @@ export default function ClientsView({ clients, setClients, sgrs, triggerNewClien
         setSelectedClient(updatedClient);
         setClients(clients.map(c => c.id === updatedClient.id ? updatedClient : c));
     };
-
-    const handleSaveDocument = (doc) => {
-        const updatedClient = {
-            ...selectedClient,
-            documents: [...(selectedClient.documents || []), doc],
-            lastUpdate: new Date().toISOString()
-        };
-        setSelectedClient(updatedClient);
-        setClients(clients.map(c => c.id === updatedClient.id ? updatedClient : c));
-    };
     
     const handleSaveQualification = (qualification) => {
         const qualifications = [...(selectedClient.qualifications || [])];
@@ -234,13 +228,28 @@ export default function ClientsView({ clients, setClients, sgrs, triggerNewClien
     };
 
     const filteredClients = useMemo(() =>
-        clients.filter(client =>
+        (clients || []).filter(client =>
             client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (client.cuit && client.cuit.includes(searchTerm)) ||
             (client.cuil && client.cuil.includes(searchTerm))
         ),
         [clients, searchTerm]
     );
+
+    if (!clients || clients.length === 0) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <div className="text-center text-gray-500">
+                    <Briefcase size={64} className="mx-auto mb-4" />
+                    <h2 className="text-2xl font-semibold">No hay clientes</h2>
+                    <p className="mb-4">Tu lista de clientes está vacía.</p>
+                    <button onClick={() => setShowPreConsultation(true)} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center mx-auto">
+                        <PlusCircle size={18} className="mr-2"/> Crear Primer Cliente
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex h-full" ref={containerRef}>
@@ -259,20 +268,31 @@ export default function ClientsView({ clients, setClients, sgrs, triggerNewClien
                 </div>
             </div>
             
-            <div 
-                className="w-2 cursor-col-resize bg-gray-300 hover:bg-blue-500 transition-colors rounded-full"
-                onMouseDown={handleMouseDown}
-            ></div>
+            <div className="w-2 cursor-col-resize bg-gray-300 hover:bg-blue-500 transition-colors rounded-full" onMouseDown={handleMouseDown}></div>
 
             <div className="flex-1 p-4 md:p-8 overflow-y-auto">
-                {viewMode === 'detail' && selectedClient && <ClientDetail client={selectedClient} onEdit={handleShowForm} onDelete={handleDeleteClient} onSaveActivity={handleSaveActivity} onToggleActivity={handleToggleActivity} onSaveFinancing={handleSaveFinancing} onSaveDocument={handleSaveDocument} onSaveQualification={handleSaveQualification} onUpdateDebtorStatus={(data) => handleUpdateDebtorStatus(selectedClient.id, data)} />}
+                {viewMode === 'detail' && selectedClient && 
+                    <ClientDetail 
+                        client={selectedClient} 
+                        onEdit={handleShowForm} 
+                        onDelete={handleDeleteClient} 
+                        onSaveActivity={handleSaveActivity} 
+                        onToggleActivity={handleToggleActivity} 
+                        onSaveFinancing={handleSaveFinancing} 
+                        onSaveQualification={handleSaveQualification} 
+                        onUpdateDebtorStatus={(data) => handleUpdateDebtorStatus(selectedClient.id, data)}
+                        documentRequirements={documentRequirements}
+                        onAddDocument={onAddDocument}
+                    />}
+
                 {viewMode === 'form' && <ClientForm onSave={handleSaveClient} onCancel={() => setViewMode(selectedClient ? 'detail' : 'list')} clientToEdit={editingClient} />}
-                {(viewMode === 'list' || !selectedClient) && (
+                
+                {(viewMode === 'list' || !selectedClient) && clients.length > 0 && (
                     <div className="flex items-center justify-center h-full">
                         <div className="text-center text-gray-500">
                             <Briefcase size={64} className="mx-auto mb-4" />
                             <h2 className="text-2xl font-semibold">Selecciona un cliente</h2>
-                            <p>O crea uno nuevo para empezar a gestionar.</p>
+                            <p>Haz clic en un cliente de la lista para ver sus detalles.</p>
                         </div>
                     </div>
                 )}

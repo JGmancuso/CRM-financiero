@@ -1,3 +1,5 @@
+// src/components/clients/ClientDetail.js
+
 import React, { useState, useEffect } from 'react';
 import { Building, User, Edit, Trash2, FileText, Shield, Paperclip, BarChart2, DollarSign, CheckSquare, Clock, Landmark } from 'lucide-react';
 import SummaryTab from '../tabs/SummaryTab';
@@ -10,17 +12,15 @@ import HistoryTab from '../tabs/HistoryTab';
 import DebtorStatusTab from '../tabs/DebtorStatusTab';
 import ActivityModal from '../modals/ActivityModal';
 import FinancingModal from '../modals/FinancingModal';
-import DocumentUploadModal from '../modals/DocumentUploadModal';
 import DocumentViewerModal from '../modals/DocumentViewerModal';
 import QualificationModal from '../modals/QualificationModal';
 import { initialSGRs } from '../../data';
 
-export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveDocument, onSaveQualification, onUpdateDebtorStatus }) {
+export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument }) {
     const [activeTab, setActiveTab] = useState('resumen');
     const [showActivityModal, setShowActivityModal] = useState(false);
     const [editingActivity, setEditingActivity] = useState(null);
     const [showFinancingModal, setShowFinancingModal] = useState(false);
-    const [showDocumentModal, setShowDocumentModal] = useState(false);
     const [showQualificationModal, setShowQualificationModal] = useState(false);
     const [editingQualification, setEditingQualification] = useState(null);
     const [viewingDoc, setViewingDoc] = useState(null);
@@ -84,7 +84,15 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                 {activeTab === 'resumen' && <SummaryTab client={client} />}
                 {activeTab === 'deudores' && <DebtorStatusTab client={client} onUpdateDebtorStatus={onUpdateDebtorStatus} />}
                 {activeTab === 'calificaciones' && <QualificationsTab client={client} onAddQualification={handleShowQualificationModal} />}
-                {activeTab === 'documentos' && <DocumentsTab client={client} onAddDocument={() => setShowDocumentModal(true)} onViewDocument={handleDocumentClick} />}
+                
+                {activeTab === 'documentos' && 
+                    <DocumentsTab 
+                        client={client} 
+                        onViewDocument={handleDocumentClick}
+                        documentRequirements={documentRequirements}
+                        onAddDocument={onAddDocument}
+                    />}
+
                 {activeTab === 'inversion' && <InvestmentTab client={client} />}
                 {activeTab === 'financiacion' && <FinancingTab client={client} onAddInstrument={() => setShowFinancingModal(true)} />}
                 {activeTab === 'actividades' && <ActivitiesTab client={client} onAddActivity={handleShowActivityModal} onToggleActivity={onToggleActivity} />}
@@ -92,10 +100,8 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
             </div>
             {showActivityModal && <ActivityModal onClose={() => setShowActivityModal(false)} onSave={(activity) => { onSaveActivity(activity); setShowActivityModal(false); }} activityToEdit={editingActivity} />}
             {showFinancingModal && <FinancingModal onClose={() => setShowFinancingModal(false)} onSave={(instrument) => { onSaveFinancing(instrument); setShowFinancingModal(false); }} clientQualifications={client.qualifications || []} clientFinancing={client.financing || []} />}
-            {showDocumentModal && <DocumentUploadModal onClose={() => setShowDocumentModal(false)} onSave={(doc) => { onSaveDocument(doc); }} />}
             {viewingDoc && <DocumentViewerModal doc={viewingDoc} onClose={() => setViewingDoc(null)} />}
             {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={initialSGRs} />}
         </div>
     );
 }
-

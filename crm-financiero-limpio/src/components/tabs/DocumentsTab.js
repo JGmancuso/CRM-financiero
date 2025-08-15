@@ -1,16 +1,25 @@
-import React from 'react';
-import { PlusCircle, Paperclip, Link as LinkIcon } from 'lucide-react';
+// src/components/tabs/DocumentsTab.js
 
-export default function DocumentsTab({ client, onAddDocument, onViewDocument }) {
+import React from 'react';
+import { Paperclip, Link as LinkIcon } from 'lucide-react';
+// 1. Importamos el nuevo componente que creamos
+import DocumentUploader from '../clients/DocumentUploader';
+
+// 2. Actualizamos las props que recibe el componente
+export default function DocumentsTab({ client, onViewDocument, documentRequirements, onAddDocument }) {
     const documents = client.documents || [];
+    
     return (
         <div>
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-700">Documentación Adjunta</h3>
-                <button onClick={onAddDocument} className="bg-blue-100 text-blue-700 font-semibold py-2 px-4 rounded-lg hover:bg-blue-200 transition text-sm flex items-center">
-                    <PlusCircle size={16} className="mr-2" /> Agregar Documento
-                </button>
-            </div>
+            {/* 3. Añadimos el nuevo componente de carga en la parte superior de la pestaña */}
+            <DocumentUploader 
+                documentRequirements={documentRequirements}
+                onSave={onAddDocument}
+                clientId={client.id}
+            />
+
+            {/* El resto del código muestra la lista de documentos existentes */}
+            <h3 className="text-lg font-semibold text-gray-700 mt-8 mb-4">Documentos Cargados</h3>
             <div className="space-y-3">
                 {documents.length > 0 ? documents.map(doc => (
                     <button key={doc.id} onClick={() => onViewDocument(doc)} className="w-full text-left bg-gray-50 p-3 rounded-lg flex items-center justify-between hover:bg-gray-100 transition">
