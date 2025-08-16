@@ -26,11 +26,61 @@
           "date": "2025-08-14T13:14:21.299Z",
           "note": "Relacionado al cambio de estado a \"En Calificación\". Motivo: Argenpyme",
           "completed": true
+        },
+        {
+          "id": "a1755271000295-0-event",
+          "type": "event",
+          "title": "Vencimiento: Cheque (7777)",
+          "date": "2025-08-15T03:00:00.000Z",
+          "note": "Monto: $50.000. Tipo: Vencimiento. (Ref. Instrumento: f1755271000294)",
+          "completed": true
+        },
+        {
+          "id": "a1755271000295-0-reminder",
+          "type": "task",
+          "title": "RECORDATORIO Vto: Cheque",
+          "date": "2025-08-01T03:00:00.000Z",
+          "note": "El instrumento \"7777\" vence el 15/8/2025 por un monto de $50.000. (Ref. Instrumento: f1755271000294)",
+          "completed": true
         }
       ],
-      "financing": [],
+      "financing": [
+        {
+          "instrument": "Cheque",
+          "details": "7777",
+          "amount": 50000,
+          "sgr": {
+            "isQualified": false,
+            "qualificationId": null
+          },
+          "schedule": [
+            {
+              "type": "Vencimiento",
+              "date": "2025-08-15",
+              "amount": 50000
+            }
+          ],
+          "id": "f1755271000294"
+        }
+      ],
       "partners": [],
-      "documents": [],
+      "documents": [
+        {
+          "id": "d1755281548668",
+          "category": "Deuda bancaria",
+          "uploadDate": "2025-08-15",
+          "type": "file",
+          "name": "crm_backup.json"
+        },
+        {
+          "id": "doc-1755283292760",
+          "type": "file",
+          "name": "crm_backup.json",
+          "category": "Últimos 2 Balances",
+          "file": {},
+          "uploadDate": "2025-08-15T18:41:32.760Z"
+        }
+      ],
       "qualifications": [],
       "status": "En Calificación",
       "history": [
@@ -291,7 +341,13 @@
         ],
         "rejectedChecks": []
       },
-      "lastUpdate": "2025-08-15T14:08:39.229Z"
+      "lastUpdate": "2025-08-15T18:41:32.760Z",
+      "contactPerson": {
+        "name": "Federico Perez",
+        "role": "Gerente de administracion",
+        "email": "federico@kennbal.com",
+        "phone": "02664618784"
+      }
     },
     {
       "name": "M y M SAS",
@@ -5463,12 +5519,79 @@
   ],
   "sgrs": [
     {
-      "id": "sgr-1",
-      "name": "Garantizar SGR"
+      "name": "ARGENPYME",
+      "totalQuota": 4534534,
+      "id": "sgr-1755281644845",
+      "checklist": {
+        "fisica": [
+          "DNI",
+          "Constancia de Monotributo/Autónomo",
+          "Manifestación de Bienes"
+        ],
+        "juridica": [
+          "Estatuto Social",
+          "Último Acta de Directorio",
+          "Últimos 2 Balances",
+          "Ventas post-balance"
+        ]
+      }
     },
     {
-      "id": "sgr-2",
-      "name": "Acindar Pymes SGR"
+      "name": "INNOVA ",
+      "totalQuota": 600000000000000000000,
+      "id": "sgr-1755282785590",
+      "checklist": {
+        "fisica": [
+          "DNI",
+          "Constancia de Monotributo/Autónomo",
+          "Última DDJJ de IIBB",
+          "Manifestación de Bienes"
+        ],
+        "juridica": [
+          "Estatuto Social",
+          "Último Acta de Directorio",
+          "Últimos 3 Balances",
+          "Ventas post-balance"
+        ]
+      }
+    },
+    {
+      "name": "FIDEM ",
+      "totalQuota": 6e+30,
+      "id": "sgr-1755282795310",
+      "checklist": {
+        "fisica": [
+          "DNI",
+          "Constancia de Monotributo/Autónomo",
+          "Última DDJJ de IIBB",
+          "Manifestación de Bienes"
+        ],
+        "juridica": [
+          "Estatuto Social",
+          "Último Acta de Directorio",
+          "Últimos 3 Balances",
+          "Ventas post-balance"
+        ]
+      }
+    },
+    {
+      "name": "ADC",
+      "totalQuota": 500000000000000000000,
+      "id": "sgr-1755282804926",
+      "checklist": {
+        "fisica": [
+          "DNI",
+          "Constancia de Monotributo/Autónomo",
+          "Última DDJJ de IIBB",
+          "Manifestación de Bienes"
+        ],
+        "juridica": [
+          "Estatuto Social",
+          "Último Acta de Directorio",
+          "Últimos 3 Balances",
+          "Ventas post-balance"
+        ]
+      }
     }
   ],
   "campaigns": [],

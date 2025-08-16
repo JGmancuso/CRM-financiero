@@ -1,25 +1,46 @@
 // src/data.js
 
-// Definimos los checklists primero para poder usarlos como plantilla
 export const sgrChecklists = {
-    fisica: ["DNI", "Constancia de Monotributo/Autónomo", "Última DDJJ de IIBB", "Manifestación de Bienes"],
-    juridica: ["Estatuto Social", "Último Acta de Directorio", "Últimos 3 Balances", "Ventas post-balance"]
+    fisica: [
+        "Reseña con la actividad de la empresa (*)",
+        "Certificado Pyme vigente",
+        "Constancia de Inscripción",
+        "Foto del DNI de socios y/o fiadores",
+        "última DDJJ y presentación de SUSS",
+        "última DDJJ y presentación de IVA",
+        "últimos 2 Est. de sit patrimonial",
+        "últimas 2 DDJJ de ganancias de los socios / fiadores",
+        "Papeles de trabajo o bien MMBB firmada por contador",
+        "Detalle de empresas para descuento de cheques"
+    ],
+    juridica: [
+        "Reseña con la actividad de la empresa (*)",
+        "Certificado Pyme vigente",
+        "Constancia de Inscripción",
+        "Acta designación de autoridades (asamblea/directorio)",
+        "SA última página del registro de accionistas",
+        "Estatuto",
+        "Foto del DNI de socios y/o fiadores",
+        "última DDJJ y presentación de SUSS",
+        "última DDJJ y presentación de IVA",
+        "últimos 2 EECC certificados",
+        "últimas 2 DDJJ de ganancias de los socios / fiadores",
+        "últimas 2 DDJJ de BBPP de socios/fiadores con Papeles de trabajo o bien MMBB firmada por contador",
+        "Detalle de empresas para descuento de cheques"
+    ]
 };
 
-// Ahora, creamos las SGRs iniciales con su propio checklist
 export const initialSGRs = [
     { 
         id: 'sgr-1', 
         name: 'Garantizar SGR', 
         totalQuota: 5000000,
-        // Añadimos el checklist aquí, como una copia
         checklist: JSON.parse(JSON.stringify(sgrChecklists))
     },
     { 
         id: 'sgr-2', 
         name: 'Acindar Pymes SGR', 
         totalQuota: 8000000,
-        // Y aquí también
         checklist: JSON.parse(JSON.stringify(sgrChecklists))
     }
 ];
@@ -55,7 +76,7 @@ export const initialClients = [
         review: 'Cliente estratégico con alto potencial de crecimiento en el sector tecnológico.',
         relevamiento: 'Contacto inicial realizado el 10/08. Mostraron interés en ONs.',
         industry: 'Tecnología',
-        status: FUNNEL_STAGES.qualified,
+        status: FUNNEL_STAGES.in_qualification,
         location: 'Buenos Aires, CABA',
         provincia: 'CABA',
         contactPerson: { name: 'Laura Martinez', role: 'Gerente Financiera', email: 'laura.martinez@solucionestech.com', phone: '+54 9 11 8765-4321' },
@@ -68,8 +89,8 @@ export const initialClients = [
             { id: 'p-2', type: 'juridica', name: 'Inversiones Futuro S.R.L.', cuit: '30-87654321-0', share: 40 }
         ],
         qualifications: [
-            { id: 'q-1', type: 'SGR', name: 'Garantizar SGR', lineAmount: 3000000, lineExpiryDate: '2026-12-31', destination: 'Capital de Trabajo' },
-            { id: 'q-2', type: 'Banco', name: 'Banco Galicia', lineAmount: 10000000, lineExpiryDate: '2025-10-20', destination: 'Compra de Maquinaria' }
+            { id: 'q-1', sgrName: 'Garantizar SGR', status: FUNNEL_STAGES.qualified, submissionDate: '2025-07-20T10:00:00.000Z', resolutionDate: '2025-08-10T11:30:00.000Z', lineAmount: 3000000, lineExpiryDate: '2026-12-31', destination: 'Capital de Trabajo', notes: [{date: new Date().toISOString(), note: 'Calificación aprobada exitosamente.'}] },
+            { id: 'q-2', sgrName: 'Acindar Pymes SGR', status: FUNNEL_STAGES.in_qualification, submissionDate: '2025-08-01T10:00:00.000Z', notes: [{date: new Date().toISOString(), note: 'Enviado a calificar. A la espera de respuesta.'}] }
         ],
         financing: [
             { id: 'f1', instrument: 'ON Simple', details: 'Clase II', amount: 1000000, commission: 20000, sgr: { isQualified: false, qualificationId: null }, schedule: [{ date: '2025-09-15', amount: 50000, type: 'Intereses' }, { date: '2026-03-15', amount: 50000, type: 'Intereses' }, { date: '2026-09-15', amount: 1050000, type: 'Amortización' }] },
@@ -89,6 +110,8 @@ export const initialClients = [
         id: 'client-2',
         type: 'fisica',
         name: 'Carlos Gómez',
+        status: FUNNEL_STAGES.prospect,
+        qualifications: [],
         cuil: '20-23456789-3',
         birthDate: '1985-05-20',
         email: 'carlos.gomez@email.com',
@@ -97,7 +120,6 @@ export const initialClients = [
         industry: 'Consultoría',
         review: 'Interesado en opciones de financiamiento para su consultora.',
         relevamiento: '',
-        status: FUNNEL_STAGES.in_qualification,
         location: 'Córdoba, Capital',
         provincia: 'Córdoba',
         contactPerson: { name: 'Carlos Gómez', role: 'Titular', email: 'carlos.gomez@email.com', phone: '+54 9 351 9876-5432' },
@@ -105,9 +127,6 @@ export const initialClients = [
         sellsToFinalConsumer: true,
         creationDate: '2025-03-20T15:00:00.000Z',
         lastUpdate: '2025-07-22T09:00:00.000Z',
-        qualifications: [
-            { id: 'q-3', type: 'SGR', name: 'Acindar Pymes SGR', lineAmount: 500000, lineExpiryDate: '2025-09-02', destination: 'Facturas' }
-        ],
         financing: [
             { id: 'f3', instrument: 'Pagaré', details: 'A 90 días', amount: 150000, commission: 3000, sgr: { isQualified: false, qualificationId: null }, schedule: [{ date: '2024-11-10', amount: 150000, type: 'Vencimiento' }] } 
         ],

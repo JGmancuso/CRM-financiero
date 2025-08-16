@@ -8,7 +8,7 @@ import ClientDetail from '../components/clients/ClientDetail';
 import ClientForm from '../components/clients/ClientForm';
 import PreConsultationModal from '../components/modals/PreConsultationModal';
 
-export default function ClientsView({ clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument }) {
+export default function ClientsView({ clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
     const [selectedClient, setSelectedClient] = useState(null);
     const [viewMode, setViewMode] = useState('list');
     const [editingClient, setEditingClient] = useState(null);
@@ -283,6 +283,8 @@ export default function ClientsView({ clients, setClients, sgrs, products, trigg
                         onUpdateDebtorStatus={(data) => handleUpdateDebtorStatus(selectedClient.id, data)}
                         documentRequirements={documentRequirements}
                         onAddDocument={onAddDocument}
+                        handleStartQualification={handleStartQualification}
+                        onUpdateQualificationStatus={handleUpdateQualificationStatus}
                     />}
 
                 {viewMode === 'form' && <ClientForm onSave={handleSaveClient} onCancel={() => setViewMode(selectedClient ? 'detail' : 'list')} clientToEdit={editingClient} />}

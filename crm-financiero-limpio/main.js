@@ -1,72 +1,70 @@
+// main.js
+
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-// Define la ruta donde se guardará la base de datos de forma segura
-const userDataPath = app.getPath('userData');
-const dbFolderPath = path.join(userDataPath, 'crm-data');
-const dbPath = path.join(dbFolderPath, 'database.json');
+let isQuitting = false; // La bandera para controlar el cierre
 
-// Asegurarse de que el directorio de la base de datos exista
-if (!fs.existsSync(dbFolderPath)) {
-    fs.mkdirSync(dbFolderPath);
-}
-
-function createWindow() {
-    const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false,
-        },
-    });
-
-    // --- CORRECCIÓN ---
-    // Carga la URL del servidor de desarrollo de React cuando no está empaquetado.
-    // Carga el archivo build/index.html cuando es una aplicación instalada.
-    if (!app.isPackaged) {
-        win.loadURL('http://localhost:3000');
-        // Abre las herramientas de desarrollador automáticamente en modo de desarrollo
-        win.webContents.openDevTools();
-    } else {
-        win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+function createWindow () {
+  const mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
     }
+  });
+
+  const startUrl = 'http://localhost:3000';
+  mainWindow.loadURL(startUrl);
+
+  mainWindow.on('close', (e) => {
+    // Si ya estamos en proceso de cierre, no hacemos nada más.
+    if (isQuitting) {
+      return;
+    }
+    
+    e.preventDefault();
+    
+    // IMPORTANTE: Activamos la bandera aquí, ANTES de hacer nada más.
+    isQuitting = true;
+    
+    mainWindow.webContents.send('request-data-for-quit');
+  });
 }
+
+ipcMain.on('quit-data', (event, data) => {
+  const documentsPath = app.getPath('documents');
+  const backupDir = path.join(documentsPath, 'CRM Backups');
+
+  if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir);
+  }
+
+  const date = new Date();
+  const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const filePath = path.join(backupDir, `crm_backup_${dateString}.json`);
+
+  try {
+    fs.writeFileSync(filePath, data, 'utf-8');
+    console.log('Backup guardado exitosamente en:', filePath);
+  } catch (err) {
+    console.error('Falló el guardado del backup:', err);
+  }
+  
+  // Ahora que el guardado terminó, podemos cerrar la app con seguridad.
+  app.quit();
+});
 
 app.whenReady().then(() => {
-    createWindow();
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
+  createWindow();
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
-});
-
-// --- API para interactuar con el sistema de archivos ---
-
-ipcMain.handle('load-data', async () => {
-    try {
-        if (fs.existsSync(dbPath)) {
-            const data = fs.readFileSync(dbPath, 'utf8');
-            return JSON.parse(data);
-        }
-        return null; // No hay archivo guardado
-    } catch (error) {
-        console.error('Failed to load data:', error);
-        return null;
-    }
-});
-
-ipcMain.handle('save-data', async (event, data) => {
-    try {
-        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-        return { success: true, path: dbPath };
-    } catch (error) {
-        console.error('Failed to save data:', error);
-        return { success: false, error: error.message };
-    }
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
 });
