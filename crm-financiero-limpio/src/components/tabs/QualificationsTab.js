@@ -36,7 +36,9 @@ export default function QualificationsTab({ client, onAddQualification }) {
                     const percentageUsed = line.lineAmount > 0 ? (usedAmount / line.lineAmount) * 100 : 0;
 
                     return (
-                        <div key={line.id} className={`p-4 rounded-lg border ${isExpired ? 'bg-red-50 border-red-200' : 'bg-white'}`}>
+
+			<div key={line.id ?? `${line.name ?? 'no-name'}-${line.lineAmount ?? '0'}-${Math.random()}`} className="...">
+
                             <div className="flex justify-between items-center">
                                 <h4 className="font-bold text-gray-800 flex items-center">
                                     {line.type === 'SGR' ? <Shield size={18} className="mr-2 text-green-600" /> : <Banknote size={18} className="mr-2 text-purple-600" />}
@@ -53,11 +55,14 @@ export default function QualificationsTab({ client, onAddQualification }) {
                             <div className="w-full bg-gray-200 rounded-full h-2.5 my-3">
                                 <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${percentageUsed}%` }}></div>
                             </div>
-                            <div className="text-sm grid grid-cols-3 gap-2">
-                                <span>Utilizado: <span className="font-semibold text-red-600">${usedAmount.toLocaleString('es-AR')}</span></span>
-                                <span>Disponible: <span className="font-semibold text-green-600">${availableAmount.toLocaleString('es-AR')}</span></span>
-                                <span>Asignado: <span className="font-semibold">${line.lineAmount.toLocaleString('es-AR')}</span></span>
-                            </div>
+
+			    <div className="text-sm grid grid-cols-3 gap-2">
+  				<span>Utilizado: <span className="font-semibold text-red-600">${(usedAmount ?? 0).toLocaleString('es-AR')}</span></span>
+  				<span>Disponible: <span className="font-semibold text-green-600">${(availableAmount ?? 0).toLocaleString('es-AR')}</span></span>
+  				<span>Asignado: <span className="font-semibold">${(line.lineAmount ?? 0).toLocaleString('es-AR')}</span></span>
+			    </div>
+
+
                         </div>
                     );
                 }) : (

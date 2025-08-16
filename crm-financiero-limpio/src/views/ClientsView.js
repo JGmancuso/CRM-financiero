@@ -2,13 +2,12 @@
 
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Search, PlusCircle, Briefcase } from 'lucide-react';
-import { FUNNEL_STAGES } from '../data';
 import ClientList from '../components/clients/ClientList';
 import ClientDetail from '../components/clients/ClientDetail';
 import ClientForm from '../components/clients/ClientForm';
 import PreConsultationModal from '../components/modals/PreConsultationModal';
 
-export default function ClientsView({ clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
+export default function ClientsView({ onAddClient, clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
     const [selectedClient, setSelectedClient] = useState(null);
     const [viewMode, setViewMode] = useState('list');
     const [editingClient, setEditingClient] = useState(null);
@@ -108,10 +107,7 @@ export default function ClientsView({ clients, setClients, sgrs, products, trigg
             setClients(updatedClients);
             setSelectedClient(client);
         } else {
-            const newClient = { ...client, id: `client-${Date.now()}`, activities: [], financing: [], partners: [], documents: [], qualifications: [], status: FUNNEL_STAGES.prospect, creationDate: new Date().toISOString(), lastUpdate: new Date().toISOString() };
-            const updatedClients = [...clients, newClient];
-            setClients(updatedClients);
-            setSelectedClient(newClient);
+            onAddClient(client);
         }
         setViewMode('detail');
         setEditingClient(null);
@@ -246,6 +242,7 @@ export default function ClientsView({ clients, setClients, sgrs, products, trigg
                     <button onClick={() => setShowPreConsultation(true)} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center mx-auto">
                         <PlusCircle size={18} className="mr-2"/> Crear Primer Cliente
                     </button>
+                    {showPreConsultation && <PreConsultationModal onClose={() => setShowPreConsultation(false)} onProceed={handleProceedToCreate} />}
                 </div>
             </div>
         );

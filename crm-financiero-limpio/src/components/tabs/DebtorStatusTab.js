@@ -133,6 +133,7 @@ export default function DebtorStatusTab({ client, onUpdateDebtorStatus }) {
                 fetch(`https://api.bcra.gob.ar/CentralDeDeudores/v1.0/Deudas/Historicas/${formattedId}`),
                 fetch(`https://api.bcra.gob.ar/CentralDeDeudores/v1.0/ChequesRechazados/${formattedId}`)
             ]);
+	   
 
             let debtApiData, checksApiData;
 

@@ -37,72 +37,66 @@ const Header = ({ onImportClick, onExportClick, lastSaved }) => {
     );
 };
 
-const APP_DATA_VERSION = '2.0';
+const addBusinessDays = (startDate, days) => {
+    let date = new Date(startDate);
+    let added = 0;
+    while (added < days) {
+        date.setDate(date.getDate() + 1);
+        const dayOfWeek = date.getDay();
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+            added++;
+        }
+    }
+    return date;
+};
+
+const APP_DATA_VERSION = '2.2'; // Nueva versión para forzar la actualización de datos
 
 export default function App() {
     const [clients, setClients] = useState(() => {
+        let finalClients = initialClients;
         try {
             const savedJSON = localStorage.getItem('crm-clients');
             if (savedJSON) {
                 const savedObject = JSON.parse(savedJSON);
                 if (savedObject.version === APP_DATA_VERSION && Array.isArray(savedObject.data)) {
-                    return savedObject.data;
+                    finalClients = savedObject.data;
                 }
             }
         } catch (error) {
             console.error("Error al cargar clientes:", error);
         }
-        console.warn("Versión de datos de clientes antigua o inválida. Cargando datos iniciales.");
-        return initialClients;
-    });
 
-    const [sgrs, setSgrs] = useState(() => {
-        try {
-            const savedJSON = localStorage.getItem('crm-sgrs');
-            if (savedJSON) {
-                const savedObject = JSON.parse(savedJSON);
-                if (savedObject.version === APP_DATA_VERSION && Array.isArray(savedObject.data)) {
-                    return savedObject.data;
-                }
+        return finalClients.map(client => {
+            if (client.management && client.management.id) {
+                return client;
             }
-        } catch (error) {
-            console.error("Error al cargar SGRs:", error);
-        }
-        console.warn("Versión de datos de SGRs antigua o inválida. Cargando datos iniciales.");
-        return initialSGRs;
+            return {
+                ...client,
+                management: {
+                    id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                    status: client.status || FUNNEL_STAGES.PROSPECTO,
+                    history: [{
+                        status: client.status || FUNNEL_STAGES.PROSPECTO,
+                        date: new Date().toISOString(),
+                        notes: "Gestión creada o actualizada automáticamente."
+                    }],
+                },
+                qualifications: client.qualifications || [],
+                activities: client.activities || [],
+            };
+        });
     });
 
-    const [campaigns, setCampaigns] = useState(() => {
-        try {
-            const savedData = localStorage.getItem('crm-campaigns');
-            return savedData ? JSON.parse(savedData) : initialCampaigns;
-        } catch (error) {
-            return initialCampaigns;
-        }
-    });
-
-    const [products, setProducts] = useState(() => {
-        try {
-            const savedData = localStorage.getItem('crm-products');
-            return savedData ? JSON.parse(savedData) : initialProducts;
-        } catch (error) {
-            return initialProducts;
-        }
-    });
+    const [sgrs, setSgrs] = useState(() => initialSGRs);
+    const [campaigns, setCampaigns] = useState(() => initialCampaigns);
+    const [products, setProducts] = useState(() => initialProducts);
     
-    const [view, setView] = useState('dashboard');
+    const [view, setView] = useState('funnel');
     const [lastSaved, setLastSaved] = useState(null);
     const [showImportOnStartup, setShowImportOnStartup] = useState(false);
     const [triggerNewClient, setTriggerNewClient] = useState(false);
     const [preSelectedClient, setPreSelectedClient] = useState(null);
-
-    useEffect(() => {
-        const savedClients = localStorage.getItem('crm-clients');
-        if (!savedClients) {
-            setShowImportOnStartup(true);
-        }
-        setLastSaved(new Date());
-    }, []);
 
     useEffect(() => {
         const dataToSave = { version: APP_DATA_VERSION, data: clients };
@@ -110,61 +104,103 @@ export default function App() {
         setLastSaved(new Date());
     }, [clients]);
 
-    useEffect(() => {
-        const dataToSave = { version: APP_DATA_VERSION, data: sgrs };
-        localStorage.setItem('crm-sgrs', JSON.stringify(dataToSave));
-        setLastSaved(new Date());
-    }, [sgrs]);
+    const handleUpdateManagementStatus = (clientId, newStatus, details) => {
+        setClients(prevClients =>
+            prevClients.map(client => {
+                if (client.id === clientId) {
+                    const updatedClient = { ...client };
+                    const now = new Date().toISOString();
+                    
+                    updatedClient.management.status = newStatus;
+                    updatedClient.management.history.push({
+                        status: newStatus,
+                        date: now,
+                        nextSteps: details.nextSteps,
+                        notes: details.notes,
+                    });
 
-    useEffect(() => {
-        localStorage.setItem('crm-campaigns', JSON.stringify(campaigns));
-        setLastSaved(new Date());
-    }, [campaigns]);
+                    const taskDate = addBusinessDays(new Date(), 3);
+                    const newActivity = {
+                        id: `act-${Date.now()}`,
+                        type: 'task',
+                        title: `Seguimiento: ${details.nextSteps}`,
+                        date: taskDate.toISOString(),
+                        note: `Observaciones: ${details.notes}`,
+                        completed: false,
+                    };
+                    updatedClient.activities = [...(updatedClient.activities || []), newActivity];
 
-    useEffect(() => {
-        localStorage.setItem('crm-products', JSON.stringify(products));
-        setLastSaved(new Date());
-    }, [products]);
+                    if (newStatus === FUNNEL_STAGES.EN_CALIFICACION && details.sgrsToQualify) {
+                        const newQualifications = details.sgrsToQualify.map(sgrName => ({
+                            qualificationId: `qual-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                            sgrName: sgrName,
+                            status: 'en_espera',
+                            submissionDate: now,
+                        }));
+                        updatedClient.qualifications = [...(updatedClient.qualifications || []), ...newQualifications];
+                    }
+                    
+                    return updatedClient;
+                }
+                return client;
+            })
+        );
+    };
     
-    useEffect(() => {
-        const checkAlerts = () => {
-            const now = new Date();
-            const fiveMinutesFromNow = new Date(now.getTime() + 5 * 60000);
-            
-            clients.forEach(client => {
-                (client.activities || []).forEach(activity => {
-                    const activityDate = new Date(activity.date);
-                    if (!activity.completed && activityDate > now && activityDate <= fiveMinutesFromNow) {
-                        if (!sessionStorage.getItem(`alert-${activity.id}`)) {
-                            alert(`Recordatorio: "${activity.title}" para ${client.name} en 5 minutos.`);
-                            sessionStorage.setItem(`alert-${activity.id}`, 'true');
+    const handleUpdateSgrQualification = (clientId, updatedQualification) => {
+        setClients(prevClients => 
+            prevClients.map(client => {
+                if (client.id === clientId) {
+                    const updatedQualifications = client.qualifications.map(q => 
+                        q.qualificationId === updatedQualification.qualificationId ? updatedQualification : q
+                    );
+
+                    const clientCopy = { ...client, qualifications: updatedQualifications };
+
+                    const totalQualifications = clientCopy.qualifications.length;
+                    const resolvedQualifications = clientCopy.qualifications.filter(q => q.status !== 'en_espera');
+
+                    if (totalQualifications > 0 && resolvedQualifications.length === totalQualifications) {
+                        const hasApproval = resolvedQualifications.some(q => q.status === 'aprobado');
+                        if (hasApproval) {
+                            clientCopy.management.status = FUNNEL_STAGES.GANADO;
+                        } else {
+                            clientCopy.management.status = FUNNEL_STAGES.PERDIDO;
                         }
                     }
-                });
-            });
+                    
+                    return clientCopy;
+                }
+                return client;
+            })
+        );
+    };
+
+    const handleAddClient = (newClientData) => {
+        const newClient = {
+            ...newClientData,
+            id: `client-${Date.now()}`,
+            management: {
+                id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                status: FUNNEL_STAGES.PROSPECTO,
+                history: [{ status: FUNNEL_STAGES.PROSPECTO, date: new Date().toISOString(), notes: "Cliente recién creado." }],
+            },
+            qualifications: [],
+            activities: [],
         };
-        const intervalId = setInterval(checkAlerts, 60000);
-        return () => clearInterval(intervalId);
-    }, [clients]);
+        setClients(prevClients => [...prevClients, newClient]);
+        alert(`Cliente "${newClient.name}" creado exitosamente.`);
+        setView('funnel');
+    };
 
-    useEffect(() => {
-        if (window.electronAPI) {
-            window.electronAPI.onRequestDataForQuit(() => {
-                const dataToExport = { clients, sgrs, campaigns, products, version: '1.0' };
-                const dataStr = JSON.stringify(dataToExport, null, 2);
-                window.electronAPI.sendQuitData(dataStr);
-            });
-        }
-    }, [clients, sgrs, campaigns, products]);
+    const handleUpdateClient = (updatedClient) => {
+        setClients(prevClients => prevClients.map(c => c.id === updatedClient.id ? updatedClient : c));
+    };
 
-    const uniqueDocumentRequirements = useMemo(() => {
-        const allRequirements = new Set();
-        sgrs.forEach(sgr => {
-            sgr.checklist?.fisica.forEach(item => allRequirements.add(item));
-            sgr.checklist?.juridica.forEach(item => allRequirements.add(item));
-        });
-        return Array.from(allRequirements).sort();
-    }, [sgrs]);
+    const navigateToClient = (client) => {
+        setView('clients');
+        setPreSelectedClient(client);
+    };
 
     const handleAddDocument = (clientId, newDocument) => {
         setClients(prevClients => 
@@ -179,18 +215,11 @@ export default function App() {
                         ...newDocument,
                         uploadDate: new Date().toISOString()
                     });
-                    updatedClient.lastUpdate = new Date().toISOString();
                     return updatedClient;
                 }
                 return client;
             })
         );
-        console.log(`Subiendo archivo para el cliente ${clientId}:`, newDocument.file);
-        alert('Documento cargado (simulado).');
-    };
-
-    const handleUpdateClient = (updatedClient) => {
-        setClients(prevClients => prevClients.map(c => c.id === updatedClient.id ? updatedClient : c));
     };
 
     const handleAddSgr = (newSgr) => {
@@ -209,267 +238,20 @@ export default function App() {
     const handleDeleteSgr = (sgrId) => {
         setSgrs(prevSgrs => prevSgrs.filter(s => s.id !== sgrId));
     };
-    
-    const handleAddItemToChecklist = (sgrId, personType, newItem) => {
-        setSgrs(prevSgrs => prevSgrs.map(sgr => {
-            if (sgr.id === sgrId) {
-                const updatedSgr = JSON.parse(JSON.stringify(sgr));
-                if (updatedSgr.checklist && updatedSgr.checklist[personType]) {
-                    updatedSgr.checklist[personType].push(newItem);
-                }
-                return updatedSgr;
-            }
-            return sgr;
-        }));
-    };
-
-    const handleUpdateChecklistItem = (sgrId, personType, itemIndex, newItemText) => {
-        setSgrs(prevSgrs => prevSgrs.map(sgr => {
-            if (sgr.id === sgrId) {
-                const updatedSgr = JSON.parse(JSON.stringify(sgr));
-                if (updatedSgr.checklist?.[personType]?.[itemIndex]) {
-                    updatedSgr.checklist[personType][itemIndex] = newItemText;
-                }
-                return updatedSgr;
-            }
-            return sgr;
-        }));
-    };
-    
-    const handleDeleteChecklistItem = (sgrId, personType, itemIndex) => {
-        setSgrs(prevSgrs => prevSgrs.map(sgr => {
-            if (sgr.id === sgrId) {
-                const updatedSgr = JSON.parse(JSON.stringify(sgr));
-                if (updatedSgr.checklist?.[personType]?.[itemIndex]) {
-                    updatedSgr.checklist[personType].splice(itemIndex, 1);
-                }
-                return updatedSgr;
-            }
-            return sgr;
-        }));
-    };
-    
-    const handleStartQualification = (clientId, sgrNames, notes) => {
-        setClients(prevClients => 
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    const newQualifications = sgrNames.map(sgrName => ({
-                        id: `q-${Date.now()}-${sgrName.replace(/\s+/g, '')}`,
-                        sgrName: sgrName,
-                        status: FUNNEL_STAGES.in_qualification,
-                        submissionDate: new Date().toISOString(),
-                        notes: [{ date: new Date().toISOString(), note: notes || 'Inicio de calificación.' }],
-                        lineAmount: 0,
-                        destination: '',
-                        lineExpiryDate: ''
-                    }));
-                    
-                    const nextBusinessDate = (date) => {
-                        let nextDay = new Date(date);
-                        let daysToAdd = 3;
-                        while (daysToAdd > 0) {
-                            nextDay.setDate(nextDay.getDate() + 1);
-                            if (nextDay.getDay() !== 0 && nextDay.getDay() !== 6) {
-                                daysToAdd--;
-                            }
-                        }
-                        return nextDay;
-                    };
-
-                    const followUpDate = nextBusinessDate(new Date());
-
-                    const newFollowUpActivity = {
-                        id: `act-${Date.now()}-followup`,
-                        type: 'task',
-                        title: `Seguimiento de calificación para: ${client.name}`,
-                        date: followUpDate.toISOString(),
-                        note: `Verificar el estado de la calificación de ${client.name} enviada a ${sgrNames.join(', ')}.`,
-                        completed: false
-                    };
-                    
-                    const updatedClient = {
-                         ...client,
-                         status: FUNNEL_STAGES.in_qualification,
-                         qualifications: [...(client.qualifications || []), ...newQualifications],
-                         history: [...(client.history || []), {
-                             date: new Date().toISOString(),
-                             type: 'Funnel Change',
-                             note: `Enviado a calificar a: ${sgrNames.join(', ')}. ${notes || ''}`
-                         }],
-                         activities: [...(client.activities || []), newFollowUpActivity],
-                         lastUpdate: new Date().toISOString()
-                    };
-                    return updatedClient;
-                }
-                return client;
-            })
-        );
-    };
-
-    const updateSgrOutcomes = (clientId, updatedQualifications) => {
-        setClients(prevClients => prevClients.map(client => {
-            if (client.id === clientId) {
-                const newFinancing = [];
-                const updatedQualificationsMap = new Map(updatedQualifications.map(q => [q.id, q]));
-                
-                const qualificationsToProcess = client.qualifications.filter(q => updatedQualificationsMap.has(q.id));
-                const otherQualifications = client.qualifications.filter(q => !updatedQualificationsMap.has(q.id));
-
-                const processedQualifications = qualificationsToProcess.map(q => {
-                    const newQ = updatedQualificationsMap.get(q.id);
-                    const updatedQ = {
-                        ...q,
-                        status: newQ.status,
-                        notes: newQ.notes,
-                        lineAmount: newQ.lineAmount,
-                        destination: newQ.destination,
-                        lineExpiryDate: newQ.lineExpiryDate,
-                        resolutionDate: new Date().toISOString()
-                    };
-                    
-                    if (newQ.status === FUNNEL_STAGES.qualified) {
-                        newFinancing.push({
-                            id: `fin-${Date.now()}-${updatedQ.id}`,
-                            instrument: 'Línea Calificada',
-                            sgr: updatedQ.sgrName,
-                            monto: updatedQ.lineAmount,
-                            destino: updatedQ.destination,
-                            vencimiento: updatedQ.lineExpiryDate,
-                            aprobacionDate: new Date().toISOString()
-                        });
-                    }
-                    return updatedQ;
-                });
-
-                const allQualifications = [...otherQualifications, ...processedQualifications];
-                const pendingQualifications = allQualifications.filter(q => q.status === FUNNEL_STAGES.in_qualification);
-                const completedQualifications = allQualifications.filter(q => 
-                    q.status === FUNNEL_STAGES.qualified || q.status === FUNNEL_STAGES.lost
-                );
-                
-                let newOverallStatus = client.status;
-                if (pendingQualifications.length === 0 && client.status === FUNNEL_STAGES.in_qualification) {
-                    const hasQualified = completedQualifications.some(q => q.status === FUNNEL_STAGES.qualified);
-                    newOverallStatus = hasQualified ? FUNNEL_STAGES.qualified : FUNNEL_STAGES.lost;
-                }
-
-                return {
-                    ...client,
-                    status: newOverallStatus,
-                    qualifications: pendingQualifications,
-                    history: [...(client.history || []), {
-                        date: new Date().toISOString(),
-                        type: 'Funnel Change',
-                        note: `Se actualizaron los resultados de calificación.`
-                    }],
-                    financing: [...(client.financing || []), ...newFinancing],
-                    lastUpdate: new Date().toISOString()
-                };
-            }
-            return client;
-        }));
-    };
-    
-    const handleUpdateClientStatusAndNotes = (clientId, newStatus, notes, nextStep) => {
-        setClients(prevClients => prevClients.map(client => {
-            if (client.id === clientId) {
-                const nextBusinessDate = (date) => {
-                    let nextDay = new Date(date);
-                    let daysToAdd = 3;
-                    while (daysToAdd > 0) {
-                        nextDay.setDate(nextDay.getDate() + 1);
-                        if (nextDay.getDay() !== 0 && nextDay.getDay() !== 6) {
-                            daysToAdd--;
-                        }
-                    }
-                    return nextDay;
-                };
-
-                const followUpDate = nextBusinessDate(new Date());
-                const newFollowUpActivity = {
-                    id: `act-${Date.now()}-followup`,
-                    type: 'task',
-                    title: nextStep || `Próximos pasos (${newStatus}) para: ${client.name}`,
-                    date: followUpDate.toISOString(),
-                    note: notes || 'Seguimiento de cambio de estado.',
-                    completed: false
-                };
-                
-                return {
-                    ...client, 
-                    status: newStatus, 
-                    lastUpdate: new Date().toISOString(),
-                    activities: [...(client.activities || []), newFollowUpActivity],
-                    history: [...(client.history || []), {
-                        date: new Date().toISOString(),
-                        type: 'Status Change',
-                        note: `Cambió de estado a ${newStatus}. ${notes || ''}`
-                    }]
-                };
-            }
-            return client;
-        }));
-    };
-    
-    const handleUpdateQualificationStatus = (clientId, qualificationId, newStatus, details) => {
-        setClients(prevClients => 
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    const updatedQualifications = client.qualifications.map(q => {
-                        if (q.id === qualificationId) {
-                            const updatedQ = { ...q, status: newStatus, resolutionDate: new Date().toISOString() };
-                            
-                            if (details.notes) {
-                                updatedQ.notes = [...(q.notes || []), { date: new Date().toISOString(), note: details.notes }];
-                            }
-                            if (newStatus === FUNNEL_STAGES.qualified && details.qualificationDetails) {
-                                updatedQ.lineAmount = details.qualificationDetails.lineAmount;
-                                updatedQ.destination = details.qualificationDetails.destination;
-                                updatedQ.lineExpiryDate = details.qualificationDetails.lineExpiryDate;
-                            }
-                            return updatedQ;
-                        }
-                        return q;
-                    });
-                    
-                    const newFinancing = (newStatus === FUNNEL_STAGES.qualified && details.qualificationDetails) ? {
-                        id: `fin-${Date.now()}-${qualificationId}`,
-                        instrument: 'Línea Calificada',
-                        sgr: client.qualifications.find(q => q.id === qualificationId)?.sgrName,
-                        monto: details.qualificationDetails.lineAmount,
-                        destino: details.qualificationDetails.destination,
-                        vencimiento: details.qualificationDetails.lineExpiryDate,
-                        aprobacionDate: new Date().toISOString()
-                    } : null;
-                    
-                    return {
-                        ...client, 
-                        qualifications: updatedQualifications, 
-                        lastUpdate: new Date().toISOString(),
-                        financing: newFinancing ? [...(client.financing || []), newFinancing] : client.financing
-                    };
-                }
-                return client;
-            })
-        );
-    };
 
     const handleExport = () => {
-        const dataToExport = { clients, sgrs, campaigns, products, version: '1.0' };
+        const dataToExport = { version: APP_DATA_VERSION, data: { clients, sgrs, campaigns, products } };
         const dataStr = JSON.stringify(dataToExport, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        
         const date = new Date();
         const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         link.download = `crm_backup_${dateString}.json`;
-
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
         alert('¡Backup guardado en tu carpeta de Descargas!');
     };
 
@@ -480,11 +262,11 @@ export default function App() {
             reader.onload = (e) => {
                 try {
                     const importedData = JSON.parse(e.target.result);
-                    if (importedData.clients && importedData.sgrs && importedData.campaigns) {
-                        setClients(importedData.clients);
-                        setSgrs(importedData.sgrs);
-                        setCampaigns(importedData.campaigns);
-                        setProducts(importedData.products || initialProducts);
+                    if (importedData.data.clients && importedData.data.sgrs) {
+                        setClients(importedData.data.clients);
+                        setSgrs(importedData.data.sgrs);
+                        setCampaigns(importedData.data.campaigns || initialCampaigns);
+                        setProducts(importedData.data.products || initialProducts);
                         alert('Datos importados correctamente.');
                         setShowImportOnStartup(false);
                     } else {
@@ -502,78 +284,61 @@ export default function App() {
         document.getElementById('import-file-input').click();
     };
 
-    const navigateToClient = (client) => {
-        setView('clients');
-        setPreSelectedClient(client);
-    };
-    
-    const clearPreSelectedClient = () => {
-        setPreSelectedClient(null);
-    };
-
     return (
-        <>
-            <div className="bg-gray-100 font-sans min-h-screen flex">
-                <aside className="w-20 bg-gray-800 text-white flex flex-col items-center py-4">
-                    <div className="space-y-6 flex-grow">
-                        <button onClick={() => setView('dashboard')} className={`p-3 rounded-lg ${view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Panel de Inicio"><LayoutDashboard /></button>
-                        <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Clientes"><FunnelIcon /></button>
-                        <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
-                        <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Agenda"><Calendar /></button>
-                        <button onClick={() => setView('products')} className={`p-3 rounded-lg ${view === 'products' ? 'bg-blue-600' : 'hover:bg-ray-700'}`} title="Productos"><Tag /></button>
-                        <button onClick={() => setView('sgr')} className={`p-3 rounded-lg ${view === 'sgr' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="SGR"><Shield /></button>
-                        <button onClick={() => setView('campaigns')} className={`p-3 rounded-lg ${view === 'campaigns' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Campañas"><Megaphone /></button>
-                    </div>
-                </aside>
-                <div className="flex-1 flex flex-col">
-                    <Header onImportClick={triggerImport} onExportClick={handleExport} lastSaved={lastSaved} />
-                    <main className="flex-1 overflow-y-auto">
-                        <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
-                        {view === 'dashboard' && <DashboardView clients={clients} onUpdateClient={handleUpdateClient} setView={setView} onNewClient={() => { setView('clients'); setTriggerNewClient(true); }} onNavigateToClient={navigateToClient} />}
-                        
-                        {view === 'funnel' && <FunnelView 
-                            clients={clients} 
-                            onNavigateToClient={navigateToClient} 
-                            onUpdateClientStatus={handleUpdateClientStatusAndNotes}
-                            sgrs={sgrs} 
-                            handleStartQualification={handleStartQualification}
-                            updateSgrOutcomes={updateSgrOutcomes}
-                        />}
-                        
-                        {view === 'clients' && <ClientsView 
-                            clients={clients} 
-                            setClients={setClients} 
-                            sgrs={sgrs} 
-                            products={products}
-                            triggerNewClient={triggerNewClient} 
-                            setTriggerNewClient={setTriggerNewClient}
-                            preSelectedClient={preSelectedClient} 
-                            clearPreSelectedClient={clearPreSelectedClient}
-                            documentRequirements={uniqueDocumentRequirements}
-                            onAddDocument={handleAddDocument}
-                            handleStartQualification={handleStartQualification}
-                            onUpdateQualificationStatus={handleUpdateQualificationStatus}
-                        />}
-
-                        {view === 'agenda' && <AgendaView clients={clients} onUpdateClient={handleUpdateClient} />}
-                        {view === 'products' && <ProductsView products={products} setProducts={setProducts} />}
-                        
-                        {view === 'sgr' && <SGRView 
-                            sgrs={sgrs} 
-                            clients={clients}
-                            onAddSgr={handleAddSgr}
-                            onUpdateSgr={handleUpdateSgr}
-                            onDeleteSgr={handleDeleteSgr}
-                            onAddItemToChecklist={handleAddItemToChecklist}
-                            onUpdateChecklistItem={handleUpdateChecklistItem}
-                            onDeleteChecklistItem={handleDeleteChecklistItem}
-                        />}
-                        
-                        {view === 'campaigns' && <CampaignsView allClients={clients} onUpdateClient={handleUpdateClient} campaigns={campaigns} setCampaigns={setCampaigns} onNavigateToClient={navigateToClient} />}
-                    </main>
+        <div className="bg-gray-100 font-sans min-h-screen flex">
+            <aside className="w-20 bg-gray-800 text-white flex flex-col items-center py-4">
+                <div className="space-y-6 flex-grow">
+                    <button onClick={() => setView('dashboard')} className={`p-3 rounded-lg ${view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Panel de Inicio"><LayoutDashboard /></button>
+                    <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Clientes"><FunnelIcon /></button>
+                    <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
+                    <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Agenda"><Calendar /></button>
+                    <button onClick={() => setView('products')} className={`p-3 rounded-lg ${view === 'products' ? 'bg-blue-600' : 'hover:bg-ray-700'}`} title="Productos"><Tag /></button>
+                    <button onClick={() => setView('sgr')} className={`p-3 rounded-lg ${view === 'sgr' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="SGR"><Shield /></button>
+                    <button onClick={() => setView('campaigns')} className={`p-3 rounded-lg ${view === 'campaigns' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Campañas"><Megaphone /></button>
                 </div>
+            </aside>
+            <div className="flex-1 flex flex-col">
+                <Header onImportClick={triggerImport} onExportClick={handleExport} lastSaved={lastSaved} />
+                <main className="flex-1 overflow-y-auto">
+                    <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
+                    {view === 'dashboard' && <DashboardView clients={clients} onUpdateClient={handleUpdateClient} setView={setView} onNewClient={() => { setView('clients'); setTriggerNewClient(true); }} onNavigateToClient={navigateToClient} />}
+                    
+                    {view === 'funnel' && <FunnelView 
+                        clients={clients} 
+                        sgrs={sgrs}
+                        onUpdateManagementStatus={handleUpdateManagementStatus}
+                        onUpdateSgrQualification={handleUpdateSgrQualification}
+                    />}
+                    
+                    {view === 'clients' && <ClientsView 
+                        onAddClient={handleAddClient}
+                        clients={clients}
+                        setClients={setClients}
+                        sgrs={sgrs}
+                        products={products}
+                        triggerNewClient={triggerNewClient}
+                        setTriggerNewClient={setTriggerNewClient}
+                        preSelectedClient={preSelectedClient}
+                        clearPreSelectedClient={() => setPreSelectedClient(null)}
+                        onAddDocument={handleAddDocument}
+                    />}
+
+                    {view === 'agenda' && <AgendaView clients={clients} onUpdateClient={handleUpdateClient} />}
+                    {view === 'products' && <ProductsView products={products} setProducts={setProducts} />}
+                    
+                    {view === 'sgr' && <SGRView 
+                        sgrs={sgrs} 
+                        clients={clients}
+                        onAddSgr={handleAddSgr}
+                        onUpdateSgr={handleUpdateSgr}
+                        onDeleteSgr={handleDeleteSgr}
+                    />}
+                    
+                    {view === 'campaigns' && <CampaignsView allClients={clients} onUpdateClient={handleUpdateClient} campaigns={campaigns} setCampaigns={setCampaigns} onNavigateToClient={navigateToClient} />}
+                </main>
             </div>
             {showImportOnStartup && <ImportOnStartupModal onImport={triggerImport} onStartNew={() => setShowImportOnStartup(false)} />}
-        </>
+        </div>
     );
 }
+
