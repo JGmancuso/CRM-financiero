@@ -24,7 +24,16 @@ export default function PreConsultationModal({ onClose, onProceed }) {
 
     const handleUpdateDebtorStatus = (debtorData) => {
         const type = (clientProxy.cuit || clientProxy.cuil).startsWith('30') ? 'juridica' : 'fisica';
-        setConsultedData({ debtorStatus: debtorData, id: clientProxy.cuit || clientProxy.cuil, type });
+        setConsultedData({
+            debtorStatus: debtorData,
+            id: clientProxy.cuit || clientProxy.cuil,
+            type,
+            // Agrega campos básicos para el formulario
+            email: debtorData.email || '',
+            phone: debtorData.phone || '',
+            address: debtorData.address || '',
+            contact: debtorData.contact || ''
+        });
     };
 
     return (
@@ -39,6 +48,11 @@ export default function PreConsultationModal({ onClose, onProceed }) {
                 {clientProxy && (
                     <DebtorStatusTab client={clientProxy} onUpdateDebtorStatus={handleUpdateDebtorStatus} />
                 )}
+                {clientProxy && !consultedData && (
+                    <div className="text-yellow-700 bg-yellow-100 rounded p-2 my-2">
+                        Realiza la consulta y espera a que se muestren los datos antes de avanzar.
+                    </div>
+                )}
 
                 <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
                     <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
@@ -50,3 +64,5 @@ export default function PreConsultationModal({ onClose, onProceed }) {
         </div>
     );
 }
+
+

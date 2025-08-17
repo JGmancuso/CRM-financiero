@@ -191,6 +191,7 @@ export default function App() {
         setClients(prevClients => [...prevClients, newClient]);
         alert(`Cliente "${newClient.name}" creado exitosamente.`);
         setView('funnel');
+        setTriggerNewClient(false); // <-- Importante para resetear el trigger
     };
 
     const handleUpdateClient = (updatedClient) => {
