@@ -6,7 +6,7 @@ import ClientList from '../components/clients/ClientList';
 import ClientDetail from '../components/clients/ClientDetail';
 import ClientForm from '../components/clients/ClientForm';
 
-export default function ClientsView({ onAddClient, clients, setClients, sgrs, products, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
+export default function ClientsView({ onAddClient, clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
     const [selectedClient, setSelectedClient] = useState(null);
     const [viewMode, setViewMode] = useState('list');
     const [editingClient, setEditingClient] = useState(null);
@@ -52,6 +52,8 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
             window.removeEventListener('mouseup', handleMouseUp);
         };
     }, [handleMouseMove, handleMouseUp]);
+    
+    // Eliminamos el useEffect que manejaba triggerNewClient para el modal
 
     useEffect(() => {
         if (preSelectedClient) {
@@ -77,15 +79,6 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
     const handleShowForm = (clientToEdit = null) => {
         setEditingClient(clientToEdit);
         setSelectedClient(clientToEdit);
-        setViewMode('form'); // Esto es lo que muestra el formulario
-    };
-
-    // Elimina triggerNewClient y setTriggerNewClient de los props y de cualquier uso
-
-    // Nueva función para mostrar el formulario de nuevo cliente vacío
-    const handleNewClient = () => {
-        setEditingClient({});
-        setSelectedClient(null);
         setViewMode('form');
     };
 
@@ -227,7 +220,7 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
                     <Briefcase size={64} className="mx-auto mb-4" />
                     <h2 className="text-2xl font-semibold">No hay clientes</h2>
                     <p className="mb-4">Tu lista de clientes está vacía.</p>
-                    <button onClick={handleNewClient} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center mx-auto">
+                    <button onClick={() => handleShowForm()} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center mx-auto">
                         <PlusCircle size={18} className="mr-2"/> Crear Primer Cliente
                     </button>
                 </div>
@@ -243,7 +236,7 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                         <input type="text" placeholder="Buscar cliente..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
-                    <button onClick={handleNewClient} className="flex-shrink-0 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition duration-300" title="Nuevo Cliente">
+                    <button onClick={() => handleShowForm()} className="flex-shrink-0 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition duration-300" title="Nuevo Cliente">
                         <PlusCircle />
                     </button>
                 </div>
@@ -269,16 +262,9 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
                         onAddDocument={onAddDocument}
                         handleStartQualification={handleStartQualification}
                         onUpdateQualificationStatus={handleUpdateQualificationStatus}
-                    />
-                }
+                    />}
 
-                {viewMode === 'form' && 
-                    <ClientForm 
-                        onSave={handleSaveClient} 
-                        onCancel={() => setViewMode(selectedClient ? 'detail' : 'list')} 
-                        clientToEdit={editingClient}
-                    />
-                }
+                {viewMode === 'form' && <ClientForm onSave={handleSaveClient} onCancel={() => setViewMode(selectedClient ? 'detail' : 'list')} clientToEdit={editingClient} />}
                 
                 {(viewMode === 'list' || !selectedClient) && clients.length > 0 && (
                     <div className="flex items-center justify-center h-full">
@@ -293,26 +279,6 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
         </div>
     );
 }
-
-/* Proceso de alta de cliente:
-
-1. Haz clic en el botón "Nuevo Cliente" (ícono de PlusCircle) en la parte superior de la lista.
-2. Ingresa el CUIT o CUIL (campo obligatorio). El resto de los campos pueden completarse ahora o después.
-3. Haz clic en "Guardar" para crear el cliente.
-4. El sistema muestra el detalle del nuevo cliente creado.
-
-No existe un paso previo ni consulta previa: la carga es directa y solo requiere CUIT/CUIL.
-*/
-
-
-
-
-
-
-
-
-
-
 
 
 
