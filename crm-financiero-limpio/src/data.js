@@ -51,7 +51,6 @@ export const initialSGRs = [
     }
 ];
 
-// MODIFICADO: Se actualizan los estadios del embudo según el nuevo flujo.
 export const FUNNEL_STAGES = {
     PROSPECTO: 'PROSPECTO',
     INFO_SOLICITADA: 'INFO SOLICITADA',
@@ -71,7 +70,6 @@ export const initialProducts = [
 
 export const industries = ["Agropecuario", "Industria Manufacturera", "Comercio", "Servicios", "Construcción", "Tecnología", "Salud", "Transporte y Logística", "Otro"];
 
-// MODIFICADO: Se simplifican los clientes iniciales. La lógica de 'management' se creará automáticamente en App.js.
 export const initialClients = [
     {
         id: 'client-1',

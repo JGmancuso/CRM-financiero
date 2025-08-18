@@ -2,10 +2,15 @@
 
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  // Le cambiamos el nombre para que sea más claro: ahora pide los datos
-  onRequestDataForQuit: (callback) => ipcRenderer.on('request-data-for-quit', callback),
-  
-  // NUEVA FUNCIÓN: React la usará para enviar el backup a Electron
-  sendQuitData: (data) => ipcRenderer.send('quit-data', data)
+contextBridge.exposeInMainWorld('electron', {
+  ipcRenderer: {
+    send: (channel, data) => ipcRenderer.send(channel, data),
+    on: (channel, func) => {
+      // Función para recibir respuestas
+      const subscription = (event, ...args) => func(...args);
+      ipcRenderer.on(channel, subscription);
+      // Devuelve una función para limpiar el listener y evitar fugas de memoria
+      return () => ipcRenderer.removeListener(channel, subscription);
+    }
+  }
 });

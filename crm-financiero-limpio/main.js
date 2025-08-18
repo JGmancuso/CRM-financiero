@@ -68,3 +68,5 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
+
+// La llave '}' extra que causaba el error ha sido eliminada de aquí.
