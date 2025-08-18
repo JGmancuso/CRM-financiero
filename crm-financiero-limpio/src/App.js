@@ -1,6 +1,6 @@
 // src/App.js
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Users as FunnelIcon, Briefcase, Shield, Megaphone, Upload, Download, Calendar, Tag } from 'lucide-react';
 import { initialClients, initialSGRs, initialCampaigns, initialProducts, sgrChecklists, FUNNEL_STAGES } from './data';
 import DashboardView from './views/DashboardView';
@@ -50,7 +50,7 @@ const addBusinessDays = (startDate, days) => {
     return date;
 };
 
-const APP_DATA_VERSION = '2.2'; // Nueva versión para forzar la actualización de datos
+const APP_DATA_VERSION = '2.2';
 
 export default function App() {
     const [clients, setClients] = useState(() => {
@@ -176,14 +176,24 @@ export default function App() {
         );
     };
 
+    // --- MODIFICADO ---
     const handleAddClient = (newClientData) => {
+        // Extraemos los datos del nuevo negocio para manejarlos por separado
+        const { motivo, montoAproximado, observaciones, ...clientDetails } = newClientData;
+    
         const newClient = {
-            ...newClientData,
+            ...clientDetails, // El resto de los datos del cliente (nombre, cuit, etc.)
             id: `client-${Date.now()}`,
+            relevamiento: motivo, // Guardamos el motivo en el campo 'relevamiento'
             management: {
                 id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                status: FUNNEL_STAGES.PROSPECTO,
-                history: [{ status: FUNNEL_STAGES.PROSPECTO, date: new Date().toISOString(), notes: "Cliente recién creado." }],
+                status: FUNNEL_STAGES.PROSPECTO, // Siempre se crea como Prospecto
+                history: [{ 
+                    status: FUNNEL_STAGES.PROSPECTO, 
+                    date: new Date().toISOString(), 
+                    // Usamos las observaciones y el monto en el primer historial
+                    notes: `Monto Aprox: ${montoAproximado || 'N/A'}. Observaciones: ${observaciones || 'Creación inicial.'}`
+                }],
             },
             qualifications: [],
             activities: [],
@@ -191,7 +201,7 @@ export default function App() {
         setClients(prevClients => [...prevClients, newClient]);
         alert(`Cliente "${newClient.name}" creado exitosamente.`);
         setView('funnel');
-        setTriggerNewClient(false); // <-- Importante para resetear el trigger
+        setTriggerNewClient(false);
     };
 
     const handleUpdateClient = (updatedClient) => {
@@ -256,6 +266,7 @@ export default function App() {
         alert('¡Backup guardado en tu carpeta de Descargas!');
     };
 
+    // --- MODIFICADO ---
     const handleImport = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -264,17 +275,39 @@ export default function App() {
                 try {
                     const importedData = JSON.parse(e.target.result);
                     if (importedData.data.clients && importedData.data.sgrs) {
-                        setClients(importedData.data.clients);
+                        
+                        const transformedClients = importedData.data.clients.map(client => {
+                            if (client.management && client.management.id) {
+                                return client;
+                            }
+                            return {
+                                ...client,
+                                management: {
+                                    id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                                    status: client.status || FUNNEL_STAGES.PROSPECTO,
+                                    history: client.history || [{
+                                        status: client.status || FUNNEL_STAGES.PROSPECTO,
+                                        date: new Date().toISOString(),
+                                        notes: "Gestión creada desde importación de backup antiguo."
+                                    }],
+                                },
+                                qualifications: client.qualifications || [],
+                                activities: client.activities || [],
+                            };
+                        });
+    
+                        setClients(transformedClients);
                         setSgrs(importedData.data.sgrs);
                         setCampaigns(importedData.data.campaigns || initialCampaigns);
                         setProducts(importedData.data.products || initialProducts);
-                        alert('Datos importados correctamente.');
+                        alert('Datos importados y actualizados correctamente.');
                         setShowImportOnStartup(false);
                     } else {
                         alert('El archivo no tiene el formato correcto.');
                     }
                 } catch (error) {
                     alert('Error al leer el archivo. Asegúrate de que sea un backup válido.');
+                    console.error("Error en importación:", error);
                 }
             };
             reader.readAsText(file);
@@ -302,13 +335,16 @@ export default function App() {
                 <Header onImportClick={triggerImport} onExportClick={handleExport} lastSaved={lastSaved} />
                 <main className="flex-1 overflow-y-auto">
                     <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
+                    
                     {view === 'dashboard' && <DashboardView clients={clients} onUpdateClient={handleUpdateClient} setView={setView} onNewClient={() => { setView('clients'); setTriggerNewClient(true); }} onNavigateToClient={navigateToClient} />}
                     
+                    {/* --- MODIFICADO --- */}
                     {view === 'funnel' && <FunnelView 
                         clients={clients} 
                         sgrs={sgrs}
                         onUpdateManagementStatus={handleUpdateManagementStatus}
                         onUpdateSgrQualification={handleUpdateSgrQualification}
+                        onNavigateToClient={navigateToClient}
                     />}
                     
                     {view === 'clients' && <ClientsView 
@@ -342,4 +378,3 @@ export default function App() {
         </div>
     );
 }
-

@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { FUNNEL_STAGES } from '../data';
-import { Briefcase, Edit, Eye, ArrowRight } from 'lucide-react';
+import { Briefcase, Edit, ArrowRight } from 'lucide-react';
 
 // --- MODAL PARA VER DETALLES E HISTORIAL ---
 const ManagementDetailModal = ({ client, onClose, onAdvance }) => {
@@ -212,13 +212,15 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
                                                         className="bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-md transition"
+                                                        onClick={() => handleCardClick(client)}
                                                     >
                                                         <div className="flex justify-between items-start">
                                                             <div>
                                                                 <h3 className="font-bold text-gray-800">{client.name}</h3>
-                                                                <p className="text-xs text-gray-500">ID: {client.management.id.slice(-6)}</p>
+                                                                <p className="text-sm text-gray-600 mt-1 italic">
+                                                                    {client.relevamiento || 'Sin motivo de contacto'}
+                                                                </p>
                                                             </div>
-                                                            <button onClick={() => handleCardClick(client)} className="text-gray-400 hover:text-blue-600"><Eye size={16}/></button>
                                                         </div>
                                                     </div>
                                                 )}
@@ -258,5 +260,3 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
         </DragDropContext>
     );
 }
-
-
