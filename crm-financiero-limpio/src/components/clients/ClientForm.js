@@ -1,3 +1,5 @@
+// src/components/clients/ClientForm.js
+
 import React, { useState, useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 import { FUNNEL_STAGES, industries } from '../../data';
@@ -7,7 +9,6 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
     const [client, setClient] = useState({});
 
     useEffect(() => {
-        // Define la estructura por defecto de un cliente nuevo.
         const defaultClient = {
             type: 'juridica',
             name: '',
@@ -28,11 +29,12 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
             qualifications: [],
             hasIndependentActivity: false,
             contactPerson: { name: '', role: '', email: '', phone: '' },
-            status: FUNNEL_STAGES.PROSPECTO // Corregido a mayúsculas
+            // --- CAMPOS NUEVOS PARA EL NEGOCIO INICIAL ---
+            motivo: '',
+            montoAproximado: '',
+            observaciones: ''
         };
 
-        // Combina la estructura por defecto con los datos recibidos (si existen).
-        // Esto asegura que todos los campos estén presentes.
         setClient({ ...defaultClient, ...(clientToEdit || {}) });
         
     }, [clientToEdit]);
@@ -69,12 +71,11 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
         onSave(client);
     };
 
-    // Nueva validación de campos requeridos
     const isValid = () => {
         if (!client.name) return false;
         if (client.type === 'juridica' && !client.cuit) return false;
         if (client.type === 'fisica' && !client.cuil) return false;
-        // Elimina la validación de email y otros campos opcionales
+        if (!clientToEdit && !client.motivo) return false; // El motivo es requerido al crear
         return true;
     };
 
@@ -82,10 +83,14 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
         <div className="bg-white p-6 rounded-xl shadow-lg animate-fade-in">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">{clientToEdit && clientToEdit.id ? 'Editar Cliente' : 'Nuevo Cliente'}</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* ... (secciones existentes) ... */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField name="name" label="Nombre / Razón Social" value={client.name || ''} onChange={handleChange} required />
-                    <InputField name="status" label="Estado en Embudo" value={client.status || ''} onChange={handleChange} select>{Object.values(FUNNEL_STAGES).map(s => <option key={s}>{s}</option>)}</InputField>
+                    {/* El estado solo se muestra al EDITAR un cliente */}
+                    {clientToEdit && 
+                        <InputField name="status" label="Estado en Embudo" value={client.management?.status || ''} onChange={handleChange} select>
+                            {Object.values(FUNNEL_STAGES).map(s => <option key={s}>{s}</option>)}
+                        </InputField>
+                    }
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Tipo de Cliente</label>
@@ -111,6 +116,20 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     <div className="flex items-center"><input type="checkbox" name="sellsToFinalConsumer" checked={client.sellsToFinalConsumer || false} onChange={handleChange} className="rounded mr-2" /><span className="text-sm text-gray-600">¿Vende a Consumidor Final?</span></div>
                 </div>
 
+                {/* --- SECCIÓN AÑADIDA PARA NUEVO NEGOCIO (SOLO AL CREAR CLIENTE) --- */}
+                {!clientToEdit && (
+                    <div className="p-4 border rounded-lg bg-gray-50">
+                        <h3 className="font-semibold text-gray-700 mb-4">Nuevo Negocio Inicial</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InputField name="motivo" label="Motivo de Contacto" value={client.motivo || ''} onChange={handleChange} required />
+                            <InputField name="montoAproximado" label="Monto Aproximado" type="number" value={client.montoAproximado || ''} onChange={handleChange} />
+                            <div className="md:col-span-2">
+                                <InputField name="observaciones" label="Observaciones" value={client.observaciones || ''} onChange={handleChange} textarea />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
                 <div className="p-4 border rounded-lg">
                     <h3 className="font-semibold text-gray-700 mb-2">Datos del Contacto</h3>
                     <div className="grid grid-cols-2 gap-4">
@@ -121,8 +140,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     </div>
                 </div>
                 
-                <InputField name="relevamiento" label="Relevamiento" value={client.relevamiento || ''} onChange={handleChange} />
-                <InputField name="review" label="Reseña" value={client.review || ''} onChange={handleChange} />
+                <InputField name="review" label="Reseña General del Cliente" value={client.review || ''} onChange={handleChange} textarea />
 
                 {client.type === 'juridica' && (
                     <div className="p-4 border rounded-lg">
@@ -143,7 +161,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700"
+                        className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
                         disabled={!isValid()}
                     >
                         Guardar Cliente
@@ -153,8 +171,3 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
         </div>
     );
 }
-
-
-
-
-

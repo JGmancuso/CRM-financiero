@@ -4,7 +4,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-let isQuitting = false; // La bandera para controlar el cierre
+let isQuitting = false;
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -21,14 +21,12 @@ function createWindow () {
   mainWindow.loadURL(startUrl);
 
   mainWindow.on('close', (e) => {
-    // Si ya estamos en proceso de cierre, no hacemos nada más.
     if (isQuitting) {
       return;
     }
     
     e.preventDefault();
     
-    // IMPORTANTE: Activamos la bandera aquí, ANTES de hacer nada más.
     isQuitting = true;
     
     mainWindow.webContents.send('request-data-for-quit');
@@ -54,7 +52,6 @@ ipcMain.on('quit-data', (event, data) => {
     console.error('Falló el guardado del backup:', err);
   }
   
-  // Ahora que el guardado terminó, podemos cerrar la app con seguridad.
   app.quit();
 });
 
@@ -68,5 +65,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
-
-// La llave '}' extra que causaba el error ha sido eliminada de aquí.

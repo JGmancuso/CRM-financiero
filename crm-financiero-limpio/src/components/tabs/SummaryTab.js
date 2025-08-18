@@ -1,11 +1,13 @@
+// src/components/tabs/SummaryTab.js
+
 import React, { useState, useMemo } from 'react';
-import { Mail, Phone, Briefcase, Gift, FileText, Globe, ShoppingCart, Users, Building, User, Link as LinkIcon, MapPin } from 'lucide-react';
+import { Mail, Phone, Briefcase, Gift, FileText, Globe, ShoppingCart, Users, Building, User, Link as LinkIcon, MapPin, Fingerprint } from 'lucide-react';
 import InfoItem from '../common/InfoItem';
 
 // Componente auxiliar para el texto expandible
 const ExpandableText = ({ text }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const snippetLength = 150; // Cantidad de caracteres para el resumen
+    const snippetLength = 150;
 
     if (!text) {
         return <p className="font-normal text-gray-500 bg-gray-50 p-3 rounded-md mt-1">No hay notas.</p>;
@@ -46,6 +48,8 @@ export default function SummaryTab({ client, allClients }) {
                 <InfoItem icon={<Phone size={20} />} label="Teléfono" value={client.phone} />
                 <InfoItem icon={<MapPin size={20} />} label="Ubicación" value={client.location} />
                 <InfoItem icon={client.type === 'juridica' ? <Briefcase size={20} /> : <User size={20} />} label={client.type === 'juridica' ? 'CUIT' : 'CUIL'} value={client.type === 'juridica' ? client.cuit : client.cuil} />
+                {/* --- LÍNEA AÑADIDA --- */}
+                <InfoItem icon={<Fingerprint size={20} />} label="ID Interno" value={client.id ? client.id : 'sin numero'} />
                 {client.type === 'fisica' && (
                     <>
                         <InfoItem icon={<Briefcase size={20} />} label="Actividad Independiente" value={client.hasIndependentActivity ? 'Sí' : 'No'} />

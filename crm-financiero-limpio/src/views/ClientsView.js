@@ -6,7 +6,8 @@ import ClientList from '../components/clients/ClientList';
 import ClientDetail from '../components/clients/ClientDetail';
 import ClientForm from '../components/clients/ClientForm';
 
-export default function ClientsView({ onAddClient, clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus }) {
+// --- CAMBIO 1: Añadir onAddNewBusiness a la lista de props ---
+export default function ClientsView({ onAddClient, clients, setClients, sgrs, products, triggerNewClient, setTriggerNewClient, preSelectedClient, clearPreSelectedClient, documentRequirements, onAddDocument, handleStartQualification, handleUpdateQualificationStatus, onAddNewBusiness }) {
     const [selectedClient, setSelectedClient] = useState(null);
     const [viewMode, setViewMode] = useState('list');
     const [editingClient, setEditingClient] = useState(null);
@@ -53,8 +54,6 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
         };
     }, [handleMouseMove, handleMouseUp]);
     
-    // Eliminamos el useEffect que manejaba triggerNewClient para el modal
-
     useEffect(() => {
         if (preSelectedClient) {
             setSelectedClient(preSelectedClient);
@@ -262,6 +261,7 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
                         onAddDocument={onAddDocument}
                         handleStartQualification={handleStartQualification}
                         onUpdateQualificationStatus={handleUpdateQualificationStatus}
+                        onAddNewBusiness={onAddNewBusiness} // <-- CAMBIO 2: Pasar la prop a ClientDetail
                     />}
 
                 {viewMode === 'form' && <ClientForm onSave={handleSaveClient} onCancel={() => setViewMode(selectedClient ? 'detail' : 'list')} clientToEdit={editingClient} />}
@@ -279,7 +279,4 @@ export default function ClientsView({ onAddClient, clients, setClients, sgrs, pr
         </div>
     );
 }
-
-
-
 

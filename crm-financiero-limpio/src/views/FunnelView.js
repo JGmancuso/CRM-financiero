@@ -1,8 +1,9 @@
 // src/views/FunnelView.js
+
 import React, { useState, useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { FUNNEL_STAGES } from '../data';
-import { Briefcase, Edit, ArrowRight } from 'lucide-react';
+import { ArrowRight, History } from 'lucide-react';
 
 // --- MODAL PARA VER DETALLES E HISTORIAL ---
 const ManagementDetailModal = ({ client, onClose, onAdvance }) => {
@@ -11,7 +12,7 @@ const ManagementDetailModal = ({ client, onClose, onAdvance }) => {
             <div className="bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-xl">
                 <h2 className="text-2xl font-bold mb-4">Historial de Gestión: {client.name}</h2>
                 <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
-                    {client.management.history.map((entry, index) => (
+                    {(client.management.history || []).map((entry, index) => (
                         <div key={index} className="border-l-4 pl-4 py-2 border-blue-500">
                             <p className="font-semibold text-gray-800">{entry.status}</p>
                             <p className="text-sm text-gray-600"><strong>Próximos Pasos:</strong> {entry.nextSteps || 'N/A'}</p>
@@ -30,7 +31,6 @@ const ManagementDetailModal = ({ client, onClose, onAdvance }) => {
         </div>
     );
 };
-
 
 // --- MODAL PARA CAMBIO DE ESTADO GENERAL ---
 const StatusChangeModal = ({ client, sgrs, onClose, onSave }) => {
@@ -86,7 +86,7 @@ const StatusChangeModal = ({ client, sgrs, onClose, onSave }) => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Enviar a SGRs</label>
                             <div className="mt-2 space-y-2">
-                                {sgrs.map(sgr => (
+                                {(sgrs || []).map(sgr => (
                                     <label key={sgr.id} className="flex items-center">
                                         <input type="checkbox" onChange={() => handleSgrSelection(sgr.name)} className="h-4 w-4 text-blue-600 border-gray-300 rounded" />
                                         <span className="ml-2 text-gray-700">{sgr.name}</span>
@@ -105,9 +105,9 @@ const StatusChangeModal = ({ client, sgrs, onClose, onSave }) => {
     );
 };
 
-// --- MODAL PARA GESTIONAR CALIFICACIONES DE SGRs ---
+// --- MODAL PARA GESTIONAR CALIFICACIONES DE SGRs (CON LA CORRECCIÓN) ---
 const QualificationManagementModal = ({ client, onClose, onSave }) => {
-    const [qualifications, setQualifications] = useState(JSON.parse(JSON.stringify(client.qualifications)));
+    const [qualifications, setQualifications] = useState(JSON.parse(JSON.stringify(client.qualifications || [])));
 
     const handleUpdate = (qualId, field, value) => {
         const updated = qualifications.map(q => q.qualificationId === qualId ? { ...q, [field]: value } : q);
@@ -123,32 +123,38 @@ const QualificationManagementModal = ({ client, onClose, onSave }) => {
             <div className="bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-2xl">
                 <h2 className="text-2xl font-bold mb-4">Gestionar Calificaciones: {client.name}</h2>
                 <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-                    {qualifications.map(qual => (
-                        <div key={qual.qualificationId} className="border p-3 rounded-lg">
-                            <p className="font-semibold">{qual.sgrName}</p>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                                <div>
-                                    <label className="text-xs">Estado</label>
-                                    <select value={qual.status} onChange={(e) => handleUpdate(qual.qualificationId, 'status', e.target.value)} className="w-full p-1 border rounded">
-                                        <option value="en_espera">En Espera</option>
-                                        <option value="aprobado">Aprobado</option>
-                                        <option value="rechazado">Rechazado</option>
-                                    </select>
+                    {qualifications.map(qual => {
+                        // --- ESTA ES LA CORRECCIÓN ---
+                        // Aseguramos que siempre haya un estado por defecto para mostrar el formulario.
+                        const currentStatus = qual.status || 'en_espera';
+                        
+                        return (
+                            <div key={qual.qualificationId} className="border p-3 rounded-lg">
+                                <p className="font-semibold">{qual.sgrName}</p>
+                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                    <div>
+                                        <label className="text-xs">Estado</label>
+                                        <select value={currentStatus} onChange={(e) => handleUpdate(qual.qualificationId, 'status', e.target.value)} className="w-full p-1 border rounded">
+                                            <option value="en_espera">En Espera</option>
+                                            <option value="aprobado">Aprobado</option>
+                                            <option value="rechazado">Rechazado</option>
+                                        </select>
+                                    </div>
+                                    {currentStatus === 'aprobado' && (
+                                        <>
+                                            <div><label className="text-xs">Monto Aprobado</label><input type="number" value={qual.amount || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'amount', parseFloat(e.target.value))} className="w-full p-1 border rounded" /></div>
+                                            <div><label className="text-xs">Vencimiento</label><input type="date" value={qual.dueDate || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'dueDate', e.target.value)} className="w-full p-1 border rounded" /></div>
+                                            <div><label className="text-xs">Destino</label><input type="text" value={qual.destination || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'destination', e.target.value)} className="w-full p-1 border rounded" /></div>
+                                        </>
+                                    )}
+                                    {currentStatus === 'rechazado' && (
+                                        <div><label className="text-xs">Motivo</label><input type="text" value={qual.reason || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'reason', e.target.value)} className="w-full p-1 border rounded" /></div>
+                                    )}
                                 </div>
-                                {qual.status === 'aprobado' && (
-                                    <>
-                                        <div><label className="text-xs">Monto Aprobado</label><input type="number" value={qual.amount || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'amount', parseFloat(e.target.value))} className="w-full p-1 border rounded" /></div>
-                                        <div><label className="text-xs">Vencimiento</label><input type="date" value={qual.dueDate || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'dueDate', e.target.value)} className="w-full p-1 border rounded" /></div>
-                                        <div><label className="text-xs">Destino</label><input type="text" value={qual.destination || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'destination', e.target.value)} className="w-full p-1 border rounded" /></div>
-                                    </>
-                                )}
-                                {qual.status === 'rechazado' && (
-                                    <div><label className="text-xs">Motivo</label><input type="text" value={qual.reason || ''} onChange={(e) => handleUpdate(qual.qualificationId, 'reason', e.target.value)} className="w-full p-1 border rounded" /></div>
-                                )}
+                                <button onClick={() => handleSave(qualifications.find(q => q.qualificationId === qual.qualificationId))} className="mt-2 text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">Guardar Gestión</button>
                             </div>
-                            <button onClick={() => handleSave(qualifications.find(q => q.qualificationId === qual.qualificationId))} className="mt-2 text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">Guardar Gestión</button>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
                 <div className="mt-6 flex justify-end">
                     <button onClick={onClose} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300">Cerrar</button>
@@ -159,11 +165,11 @@ const QualificationManagementModal = ({ client, onClose, onSave }) => {
 };
 
 
-export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, onUpdateSgrQualification }) {
+export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, onUpdateSgrQualification, onNavigateToClient }) {
     const [selectedClient, setSelectedClient] = useState(null);
-    const [modalType, setModalType] = useState(null); // 'detail', 'status', o 'qualification'
+    const [modalType, setModalType] = useState(null);
 
-    const handleCardClick = (client) => {
+    const handleManageClick = (client) => {
         setSelectedClient(client);
         setModalType('detail');
     };
@@ -211,16 +217,16 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
-                                                        className="bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-md transition"
-                                                        onClick={() => handleCardClick(client)}
+                                                        className="bg-white p-4 rounded-lg shadow hover:shadow-md transition cursor-pointer"
+                                                        onClick={() => handleManageClick(client)}
                                                     >
-                                                        <div className="flex justify-between items-start">
-                                                            <div>
-                                                                <h3 className="font-bold text-gray-800">{client.name}</h3>
-                                                                <p className="text-sm text-gray-600 mt-1 italic">
-                                                                    {client.relevamiento || 'Sin motivo de contacto'}
-                                                                </p>
-                                                            </div>
+                                                        <div className="flex flex-col">
+                                                            <h3 className="font-bold text-gray-800">
+                                                                {client.name}
+                                                            </h3>
+                                                            <p className="text-sm text-gray-600 mt-1 italic">
+                                                                {client.relevamiento || 'Sin motivo de contacto'}
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 )}

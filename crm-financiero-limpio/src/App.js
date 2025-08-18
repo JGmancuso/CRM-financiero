@@ -84,6 +84,7 @@ export default function App() {
                 },
                 qualifications: client.qualifications || [],
                 activities: client.activities || [],
+                documents: client.documents || [],
             };
         });
     });
@@ -176,32 +177,67 @@ export default function App() {
         );
     };
 
-    // --- MODIFICADO ---
     const handleAddClient = (newClientData) => {
-        // Extraemos los datos del nuevo negocio para manejarlos por separado
         const { motivo, montoAproximado, observaciones, ...clientDetails } = newClientData;
     
         const newClient = {
-            ...clientDetails, // El resto de los datos del cliente (nombre, cuit, etc.)
+            ...clientDetails,
             id: `client-${Date.now()}`,
-            relevamiento: motivo, // Guardamos el motivo en el campo 'relevamiento'
+            relevamiento: motivo,
             management: {
                 id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-                status: FUNNEL_STAGES.PROSPECTO, // Siempre se crea como Prospecto
+                status: FUNNEL_STAGES.PROSPECTO,
                 history: [{ 
                     status: FUNNEL_STAGES.PROSPECTO, 
                     date: new Date().toISOString(), 
-                    // Usamos las observaciones y el monto en el primer historial
                     notes: `Monto Aprox: ${montoAproximado || 'N/A'}. Observaciones: ${observaciones || 'Creación inicial.'}`
                 }],
             },
             qualifications: [],
             activities: [],
+            documents: [],
         };
         setClients(prevClients => [...prevClients, newClient]);
         alert(`Cliente "${newClient.name}" creado exitosamente.`);
         setView('funnel');
         setTriggerNewClient(false);
+    };
+
+    const handleAddNewBusiness = (clientId, businessData) => {
+        setClients(prevClients => 
+            prevClients.map(client => {
+                if (client.id === clientId) {
+                    const updatedClient = { ...client };
+                    
+                    const newManagement = {
+                        id: `gest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                        status: FUNNEL_STAGES.PROSPECTO,
+                        history: [
+                            ...(updatedClient.management.history || []),
+                            {
+                                status: 'NUEVO NEGOCIO INICIADO',
+                                date: new Date().toISOString(),
+                                notes: `Se inició un nuevo flujo de trabajo. Motivo: ${businessData.motivo}`
+                            },
+                            {
+                                status: FUNNEL_STAGES.PROSPECTO,
+                                date: new Date().toISOString(),
+                                notes: `Monto Aprox: ${businessData.montoAproximado || 'N/A'}. Observaciones: ${businessData.observaciones || ''}`
+                            }
+                        ]
+                    };
+    
+                    updatedClient.management = newManagement;
+                    updatedClient.relevamiento = businessData.motivo;
+                    updatedClient.lastUpdate = new Date().toISOString();
+    
+                    return updatedClient;
+                }
+                return client;
+            })
+        );
+        alert('Nuevo negocio creado. El cliente ha sido movido a "Prospecto" en el embudo.');
+        setView('funnel');
     };
 
     const handleUpdateClient = (updatedClient) => {
@@ -266,7 +302,6 @@ export default function App() {
         alert('¡Backup guardado en tu carpeta de Descargas!');
     };
 
-    // --- MODIFICADO ---
     const handleImport = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -293,6 +328,7 @@ export default function App() {
                                 },
                                 qualifications: client.qualifications || [],
                                 activities: client.activities || [],
+                                documents: client.documents || [],
                             };
                         });
     
@@ -338,7 +374,6 @@ export default function App() {
                     
                     {view === 'dashboard' && <DashboardView clients={clients} onUpdateClient={handleUpdateClient} setView={setView} onNewClient={() => { setView('clients'); setTriggerNewClient(true); }} onNavigateToClient={navigateToClient} />}
                     
-                    {/* --- MODIFICADO --- */}
                     {view === 'funnel' && <FunnelView 
                         clients={clients} 
                         sgrs={sgrs}
@@ -358,6 +393,7 @@ export default function App() {
                         preSelectedClient={preSelectedClient}
                         clearPreSelectedClient={() => setPreSelectedClient(null)}
                         onAddDocument={handleAddDocument}
+                        onAddNewBusiness={handleAddNewBusiness}
                     />}
 
                     {view === 'agenda' && <AgendaView clients={clients} onUpdateClient={handleUpdateClient} />}

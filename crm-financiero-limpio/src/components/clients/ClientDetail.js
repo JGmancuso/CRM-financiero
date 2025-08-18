@@ -1,7 +1,7 @@
 // src/components/clients/ClientDetail.js
 
 import React, { useState, useEffect } from 'react';
-import { Building, User, Edit, Trash2, FileText, Shield, Paperclip, BarChart2, DollarSign, CheckSquare, Clock, Landmark } from 'lucide-react';
+import { Building, User, Edit, Trash2, FileText, Shield, Paperclip, BarChart2, DollarSign, CheckSquare, Clock, Landmark, PlusCircle } from 'lucide-react';
 import SummaryTab from '../tabs/SummaryTab';
 import QualificationsTab from '../tabs/QualificationsTab';
 import DocumentsTab from '../tabs/DocumentsTab';
@@ -15,8 +15,50 @@ import FinancingModal from '../modals/FinancingModal';
 import DocumentViewerModal from '../modals/DocumentViewerModal';
 import QualificationModal from '../modals/QualificationModal';
 import { initialSGRs } from '../../data';
+import InputField from '../common/InputField';
 
-export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument }) {
+// --- NUEVO MODAL PARA CREAR UN NEGOCIO ---
+const NewBusinessModal = ({ client, onSave, onClose }) => {
+    const [businessData, setBusinessData] = useState({
+        motivo: '',
+        montoAproximado: '',
+        observaciones: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setBusinessData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = () => {
+        if (!businessData.motivo) {
+            alert('El motivo es obligatorio.');
+            return;
+        }
+        onSave(client.id, businessData);
+        onClose();
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-4">Nuevo Negocio para {client.name}</h2>
+                <div className="space-y-4">
+                    <InputField name="motivo" label="Motivo del Nuevo Negocio" value={businessData.motivo} onChange={handleChange} required />
+                    <InputField name="montoAproximado" label="Monto Aproximado" type="number" value={businessData.montoAproximado} onChange={handleChange} />
+                    <InputField name="observaciones" label="Observaciones Iniciales" value={businessData.observaciones} onChange={handleChange} textarea />
+                </div>
+                <div className="mt-6 flex justify-end space-x-3">
+                    <button onClick={onClose} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300">Cancelar</button>
+                    <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Crear Negocio</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- CAMBIO 1: Añadir onAddNewBusiness a las props ---
+export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument, onAddNewBusiness }) {
     const [activeTab, setActiveTab] = useState('resumen');
     const [showActivityModal, setShowActivityModal] = useState(false);
     const [editingActivity, setEditingActivity] = useState(null);
@@ -24,6 +66,8 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
     const [showQualificationModal, setShowQualificationModal] = useState(false);
     const [editingQualification, setEditingQualification] = useState(null);
     const [viewingDoc, setViewingDoc] = useState(null);
+    // --- CAMBIO 2: Añadir estado para el nuevo modal ---
+    const [showNewBusinessModal, setShowNewBusinessModal] = useState(false);
 
     useEffect(() => { setActiveTab('resumen'); }, [client]);
 
@@ -67,6 +111,10 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                     <p className="text-gray-500">{client.industry}</p>
                 </div>
                 <div className="flex space-x-2">
+                    {/* --- CAMBIO 3: Añadir botón de "Nuevo Negocio" --- */}
+                    <button onClick={() => setShowNewBusinessModal(true)} className="p-2 text-green-600 hover:bg-green-100 rounded-full transition" title="Nuevo Negocio">
+                        <PlusCircle size={20} />
+                    </button>
                     <button onClick={() => onEdit(client)} className="p-2 text-gray-600 hover:bg-gray-200 rounded-full transition"><Edit size={20} /></button>
                     <button onClick={() => onDelete(client.id)} className="p-2 text-red-500 hover:bg-red-100 rounded-full transition"><Trash2 size={20} /></button>
                 </div>
@@ -81,7 +129,7 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                 </nav>
             </div>
             <div>
-                {activeTab === 'resumen' && <SummaryTab client={client} />}
+                <SummaryTab client={client} />
                 {activeTab === 'deudores' && <DebtorStatusTab client={client} onUpdateDebtorStatus={onUpdateDebtorStatus} />}
                 {activeTab === 'calificaciones' && <QualificationsTab client={client} onAddQualification={handleShowQualificationModal} />}
                 
@@ -102,6 +150,9 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
             {showFinancingModal && <FinancingModal onClose={() => setShowFinancingModal(false)} onSave={(instrument) => { onSaveFinancing(instrument); setShowFinancingModal(false); }} clientQualifications={client.qualifications || []} clientFinancing={client.financing || []} />}
             {viewingDoc && <DocumentViewerModal doc={viewingDoc} onClose={() => setViewingDoc(null)} />}
             {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={initialSGRs} />}
+            
+            {/* --- CAMBIO 4: Renderizar el nuevo modal --- */}
+            {showNewBusinessModal && <NewBusinessModal client={client} onSave={onAddNewBusiness} onClose={() => setShowNewBusinessModal(false)} />}
         </div>
     );
 }

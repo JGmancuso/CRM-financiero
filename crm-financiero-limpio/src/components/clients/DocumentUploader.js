@@ -24,10 +24,10 @@ export default function DocumentUploader({ documentRequirements, onSave, clientI
         }
 
         const newDocument = {
-            type: 'file', // O podrías tener lógica para detectar links
+            type: 'file',
             name: file.name,
             category: isOther ? otherDescription.trim() : selectedRequirement,
-            file: file, // El archivo en sí
+            file: file,
         };
 
         onSave(clientId, newDocument);
@@ -53,7 +53,8 @@ export default function DocumentUploader({ documentRequirements, onSave, clientI
                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="">Selecciona un tipo de requisito...</option>
-                            {documentRequirements.map(req => (
+                            {/* --- LÍNEA MODIFICADA: Añadido || [] para seguridad --- */}
+                            {(documentRequirements || []).map(req => (
                                 <option key={req} value={req}>{req}</option>
                             ))}
                             <option value="Otro...">Otro...</option>

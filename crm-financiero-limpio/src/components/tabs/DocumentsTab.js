@@ -2,23 +2,20 @@
 
 import React from 'react';
 import { Paperclip, Link as LinkIcon } from 'lucide-react';
-// 1. Importamos el nuevo componente que creamos
 import DocumentUploader from '../clients/DocumentUploader';
 
-// 2. Actualizamos las props que recibe el componente
 export default function DocumentsTab({ client, onViewDocument, documentRequirements, onAddDocument }) {
+    // Esta línea ya previene el error. Si client.documents es undefined, usa un array vacío. ¡Excelente!
     const documents = client.documents || [];
     
     return (
         <div>
-            {/* 3. Añadimos el nuevo componente de carga en la parte superior de la pestaña */}
             <DocumentUploader 
                 documentRequirements={documentRequirements}
                 onSave={onAddDocument}
                 clientId={client.id}
             />
 
-            {/* El resto del código muestra la lista de documentos existentes */}
             <h3 className="text-lg font-semibold text-gray-700 mt-8 mb-4">Documentos Cargados</h3>
             <div className="space-y-3">
                 {documents.length > 0 ? documents.map(doc => (
