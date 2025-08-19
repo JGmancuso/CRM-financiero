@@ -1,10 +1,9 @@
 // src/components/tabs/SummaryTab.js
 
 import React, { useState, useMemo } from 'react';
-import { Mail, Phone, Briefcase, Gift, FileText, Globe, ShoppingCart, Users, Building, User, Link as LinkIcon, MapPin, Fingerprint } from 'lucide-react';
+import { Mail, Phone, Briefcase, Gift, FileText, Globe, ShoppingCart, Users, Building, User, Link as LinkIcon, MapPin, Fingerprint, CalendarCheck, UserSquare } from 'lucide-react';
 import InfoItem from '../common/InfoItem';
 
-// Componente auxiliar para el texto expandible
 const ExpandableText = ({ text }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const snippetLength = 150;
@@ -32,6 +31,34 @@ const ExpandableText = ({ text }) => {
     );
 };
 
+// --- FUNCIÓN PARA CALCULAR EL AÑO FISCAL EXIGIBLE ---
+const getRequiredFiscalYear = (lastCloseDateStr) => {
+    if (!lastCloseDateStr) return 'No especificado';
+
+    // Aseguramos que la fecha se interprete correctamente en UTC para evitar problemas de zona horaria
+    const closeDate = new Date(lastCloseDateStr + 'T00:00:00');
+    const currentDate = new Date();
+    
+    const closeYear = closeDate.getUTCFullYear();
+    
+    // Calculamos la fecha 4 meses después del cierre
+    const fourMonthsAfter = new Date(closeDate);
+    fourMonthsAfter.setUTCMonth(fourMonthsAfter.getUTCMonth() + 4);
+
+    // Calculamos la fecha 5 meses después del cierre
+    const fiveMonthsAfter = new Date(closeDate);
+    fiveMonthsAfter.setUTCMonth(fiveMonthsAfter.getUTCMonth() + 5);
+
+    if (currentDate <= fourMonthsAfter) {
+        return `Aún es exigible el balance del año ${closeYear - 1}`;
+    }
+    if (currentDate > fourMonthsAfter && currentDate <= fiveMonthsAfter) {
+        return `Por exigirse el balance del año ${closeYear}`;
+    }
+    // Si han pasado más de 5 meses
+    return `Exigible el balance del año ${closeYear}`;
+};
+
 
 export default function SummaryTab({ client, allClients }) {
     const participations = useMemo(() => {
@@ -40,15 +67,16 @@ export default function SummaryTab({ client, allClients }) {
                          .map(c => ({ companyName: c.name, companyId: c.id, share: c.partners.find(p => p.cuil === client.cuil).share }));
     }, [client, allClients]);
 
+    const requiredYearStatus = getRequiredFiscalYear(client.lastFiscalClose);
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Información de Contacto</h3>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">Información Principal</h3>
                 <InfoItem icon={<Mail size={20} />} label="Email" value={client.email} />
                 <InfoItem icon={<Phone size={20} />} label="Teléfono" value={client.phone} />
                 <InfoItem icon={<MapPin size={20} />} label="Ubicación" value={client.location} />
                 <InfoItem icon={client.type === 'juridica' ? <Briefcase size={20} /> : <User size={20} />} label={client.type === 'juridica' ? 'CUIT' : 'CUIL'} value={client.type === 'juridica' ? client.cuit : client.cuil} />
-                {/* --- LÍNEA AÑADIDA --- */}
                 <InfoItem icon={<Fingerprint size={20} />} label="ID Interno" value={client.id ? client.id : 'sin numero'} />
                 {client.type === 'fisica' && (
                     <>
@@ -56,9 +84,24 @@ export default function SummaryTab({ client, allClients }) {
                         <InfoItem icon={<Gift size={20} />} label="Fecha de Nacimiento" value={client.birthDate ? new Date(client.birthDate).toLocaleDateString('es-AR', { timeZone: 'UTC' }) : '-'} />
                     </>
                 )}
+                
+                {/* --- SECCIÓN DE CONTACTO AÑADIDA --- */}
+                {client.contactPerson && client.contactPerson.name && (
+                    <div className="mt-6">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-4">Persona de Contacto</h3>
+                        <InfoItem icon={<UserSquare size={20} />} label="Nombre" value={client.contactPerson.name} />
+                        <InfoItem icon={<Briefcase size={20} />} label="Cargo" value={client.contactPerson.role} />
+                        <InfoItem icon={<Mail size={20} />} label="Email Contacto" value={client.contactPerson.email} />
+                        <InfoItem icon={<Phone size={20} />} label="Teléfono Contacto" value={client.contactPerson.phone} />
+                    </div>
+                )}
             </div>
             <div>
                 <h3 className="text-lg font-semibold text-gray-700 mb-4">Detalles Comerciales</h3>
+                {/* --- CAMPO DE AÑO FISCAL AÑADIDO --- */}
+                <InfoItem icon={<CalendarCheck size={20} />} label="Año Fiscal Exigible">
+                    <p className="font-normal text-gray-800 bg-gray-50 p-3 rounded-md mt-1">{requiredYearStatus}</p>
+                </InfoItem>
                 <InfoItem icon={<FileText size={20} />} label="Relevamiento">
                     <ExpandableText text={client.relevamiento} />
                 </InfoItem>

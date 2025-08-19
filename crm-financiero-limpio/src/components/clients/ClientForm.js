@@ -29,7 +29,8 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
             qualifications: [],
             hasIndependentActivity: false,
             contactPerson: { name: '', role: '', email: '', phone: '' },
-            // --- CAMPOS NUEVOS PARA EL NEGOCIO INICIAL ---
+            lastFiscalClose: '', // --- CAMPO AÑADIDO AL ESTADO POR DEFECTO ---
+            status: FUNNEL_STAGES.PROSPECTO,
             motivo: '',
             montoAproximado: '',
             observaciones: ''
@@ -75,7 +76,6 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
         if (!client.name) return false;
         if (client.type === 'juridica' && !client.cuit) return false;
         if (client.type === 'fisica' && !client.cuil) return false;
-        if (!clientToEdit && !client.motivo) return false; // El motivo es requerido al crear
         return true;
     };
 
@@ -85,12 +85,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField name="name" label="Nombre / Razón Social" value={client.name || ''} onChange={handleChange} required />
-                    {/* El estado solo se muestra al EDITAR un cliente */}
-                    {clientToEdit && 
-                        <InputField name="status" label="Estado en Embudo" value={client.management?.status || ''} onChange={handleChange} select>
-                            {Object.values(FUNNEL_STAGES).map(s => <option key={s}>{s}</option>)}
-                        </InputField>
-                    }
+                    {clientToEdit && <InputField name="status" label="Estado en Embudo" value={client.status || ''} onChange={handleChange} select>{Object.values(FUNNEL_STAGES).map(s => <option key={s}>{s}</option>)}</InputField>}
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Tipo de Cliente</label>
@@ -108,6 +103,10 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     </InputField>
                     <InputField name="location" label="Localidad" value={client.location || ''} onChange={handleChange} />
                     <InputField name="provincia" label="Provincia" value={client.provincia || ''} onChange={handleChange} />
+                    
+                    {/* --- CAMPO AÑADIDO --- */}
+                    <InputField name="lastFiscalClose" label="Último Cierre Fiscal" type="date" value={client.lastFiscalClose || ''} onChange={handleChange} />
+                    
                     {client.type === 'juridica' ? <InputField name="activity" label="Actividad Principal" value={client.activity || ''} onChange={handleChange} /> : <>
                         <InputField name="birthDate" label="Fecha de Nacimiento" type="date" value={client.birthDate || ''} onChange={handleChange} />
                         <div><label className="flex items-center pt-6"><input type="checkbox" name="hasIndependentActivity" checked={client.hasIndependentActivity || false} onChange={handleChange} className="rounded" /><span className="ml-2 text-sm text-gray-600">¿Tiene actividad independiente?</span></label></div>
@@ -116,7 +115,6 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     <div className="flex items-center"><input type="checkbox" name="sellsToFinalConsumer" checked={client.sellsToFinalConsumer || false} onChange={handleChange} className="rounded mr-2" /><span className="text-sm text-gray-600">¿Vende a Consumidor Final?</span></div>
                 </div>
 
-                {/* --- SECCIÓN AÑADIDA PARA NUEVO NEGOCIO (SOLO AL CREAR CLIENTE) --- */}
                 {!clientToEdit && (
                     <div className="p-4 border rounded-lg bg-gray-50">
                         <h3 className="font-semibold text-gray-700 mb-4">Nuevo Negocio Inicial</h3>
@@ -140,7 +138,8 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     </div>
                 </div>
                 
-                <InputField name="review" label="Reseña General del Cliente" value={client.review || ''} onChange={handleChange} textarea />
+                <InputField name="relevamiento" label="Relevamiento" value={client.relevamiento || ''} onChange={handleChange} textarea />
+                <InputField name="review" label="Reseña" value={client.review || ''} onChange={handleChange} textarea />
 
                 {client.type === 'juridica' && (
                     <div className="p-4 border rounded-lg">

@@ -21,14 +21,17 @@ export default function SGRModal({ onClose, onSave, existingSGR }) {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-                <h2 className="text-xl font-bold mb-6">{existingSGR ? 'Editar SGR' : 'Nueva SGR'}</h2>
+                {/* --- CAMBIO 1 --- */}
+                <h2 className="text-xl font-bold mb-6">{existingSGR ? 'Editar Entidad' : 'Nueva Entidad'}</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <InputField label="Nombre de la SGR" name="name" value={sgr.name} onChange={handleChange} required />
+                    {/* --- CAMBIO 2 --- */}
+                    <InputField label="Nombre de la Entidad" name="name" value={sgr.name} onChange={handleChange} required />
                     <InputField label="Cupo Total" name="totalQuota" type="number" value={sgr.totalQuota} onChange={handleChange} required />
                     <div className="flex justify-end space-x-3 pt-4">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
                         <button type="submit" className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">
-                            {existingSGR ? 'Guardar Cambios' : 'Guardar SGR'}
+                            {/* --- CAMBIO 3 --- */}
+                            {existingSGR ? 'Guardar Cambios' : 'Guardar Entidad'}
                         </button>
                     </div>
                 </form>

@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { PlusCircle, Edit, Trash2, Send, Check, X } from 'lucide-react';
 import SGRModal from '../components/modals/SGRModal';
 
-// ++ NUEVO SUB-COMPONENTE PARA CADA ITEM INDIVIDUAL DEL CHECKLIST ++
 const ChecklistItem = ({ item, index, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editText, setEditText] = useState(item);
@@ -17,7 +16,7 @@ const ChecklistItem = ({ item, index, onUpdate, onDelete }) => {
     };
 
     const handleCancel = () => {
-        setEditText(item); // Resetea el texto al original
+        setEditText(item);
         setIsEditing(false);
     };
 
@@ -48,7 +47,6 @@ const ChecklistItem = ({ item, index, onUpdate, onDelete }) => {
     );
 };
 
-// Componente ChecklistManager actualizado para usar ChecklistItem
 const ChecklistManager = ({ title, items, onAddItem, onUpdateItem, onDeleteItem }) => {
     const [newItem, setNewItem] = useState('');
 
@@ -94,7 +92,6 @@ export default function SGRView({ sgrs, onAddSgr, onUpdateSgr, onDeleteSgr, onAd
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sgrToEdit, setSgrToEdit] = useState(null);
 
-    // ... (Las funciones handleAddNew, handleEdit, handleSave, handleDelete, closeModal no cambian)
     const handleAddNew = () => { setSgrToEdit(null); setIsModalOpen(true); };
     const handleEdit = (sgr) => { setSgrToEdit(sgr); setIsModalOpen(true); };
     const handleSave = (sgrData) => { if (sgrToEdit) { onUpdateSgr({ ...sgrToEdit, ...sgrData }); } else { onAddSgr(sgrData); } closeModal(); };
@@ -104,13 +101,15 @@ export default function SGRView({ sgrs, onAddSgr, onUpdateSgr, onDeleteSgr, onAd
     return (
         <div className="p-8">
             <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">Perfiles de SGR</h1>
+                {/* --- CAMBIO 1 --- */}
+                <h1 className="text-3xl font-bold text-gray-800">Entidades de Garantía/Crediticias</h1>
                 <button onClick={handleAddNew} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center">
-                    <PlusCircle size={18} className="mr-2"/> Nueva SGR
+                    {/* --- CAMBIO 2 --- */}
+                    <PlusCircle size={18} className="mr-2"/> Nueva Entidad
                 </button>
             </div>
             <div className="space-y-8">
-                {sgrs.map(sgr => (
+                {(sgrs || []).map(sgr => (
                     <div key={sgr.id} className="bg-white p-6 rounded-xl shadow-lg">
                         <div className="flex justify-between items-start">
                             <h2 className="text-2xl font-bold text-gray-700">{sgr.name}</h2>
