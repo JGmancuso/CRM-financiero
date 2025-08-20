@@ -17,7 +17,6 @@ import QualificationModal from '../modals/QualificationModal';
 import { initialSGRs } from '../../data';
 import InputField from '../common/InputField';
 
-// --- NUEVO MODAL PARA CREAR UN NEGOCIO ---
 const NewBusinessModal = ({ client, onSave, onClose }) => {
     const [businessData, setBusinessData] = useState({
         motivo: '',
@@ -57,7 +56,6 @@ const NewBusinessModal = ({ client, onSave, onClose }) => {
     );
 };
 
-// --- CAMBIO 1: Añadir onAddNewBusiness a las props ---
 export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument, onAddNewBusiness }) {
     const [activeTab, setActiveTab] = useState('resumen');
     const [showActivityModal, setShowActivityModal] = useState(false);
@@ -66,7 +64,6 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
     const [showQualificationModal, setShowQualificationModal] = useState(false);
     const [editingQualification, setEditingQualification] = useState(null);
     const [viewingDoc, setViewingDoc] = useState(null);
-    // --- CAMBIO 2: Añadir estado para el nuevo modal ---
     const [showNewBusinessModal, setShowNewBusinessModal] = useState(false);
 
     useEffect(() => { setActiveTab('resumen'); }, [client]);
@@ -111,7 +108,6 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                     <p className="text-gray-500">{client.industry}</p>
                 </div>
                 <div className="flex space-x-2">
-                    {/* --- CAMBIO 3: Añadir botón de "Nuevo Negocio" --- */}
                     <button onClick={() => setShowNewBusinessModal(true)} className="p-2 text-green-600 hover:bg-green-100 rounded-full transition" title="Nuevo Negocio">
                         <PlusCircle size={20} />
                     </button>
@@ -128,30 +124,23 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                     ))}
                 </nav>
             </div>
+            
+            {/* --- CÓDIGO CORREGIDO: VUELTA A LA LÓGICA CLÁSICA DE PESTAÑAS --- */}
             <div>
-                <SummaryTab client={client} />
+                {activeTab === 'resumen' && <SummaryTab client={client} />}
                 {activeTab === 'deudores' && <DebtorStatusTab client={client} onUpdateDebtorStatus={onUpdateDebtorStatus} />}
                 {activeTab === 'calificaciones' && <QualificationsTab client={client} onAddQualification={handleShowQualificationModal} />}
-                
-                {activeTab === 'documentos' && 
-                    <DocumentsTab 
-                        client={client} 
-                        onViewDocument={handleDocumentClick}
-                        documentRequirements={documentRequirements}
-                        onAddDocument={onAddDocument}
-                    />}
-
+                {activeTab === 'documentos' && <DocumentsTab client={client} onViewDocument={handleDocumentClick} documentRequirements={documentRequirements} onAddDocument={onAddDocument} />}
                 {activeTab === 'inversion' && <InvestmentTab client={client} />}
                 {activeTab === 'financiacion' && <FinancingTab client={client} onAddInstrument={() => setShowFinancingModal(true)} />}
                 {activeTab === 'actividades' && <ActivitiesTab client={client} onAddActivity={handleShowActivityModal} onToggleActivity={onToggleActivity} />}
                 {activeTab === 'historial' && <HistoryTab client={client} />}
             </div>
+
             {showActivityModal && <ActivityModal onClose={() => setShowActivityModal(false)} onSave={(activity) => { onSaveActivity(activity); setShowActivityModal(false); }} activityToEdit={editingActivity} />}
             {showFinancingModal && <FinancingModal onClose={() => setShowFinancingModal(false)} onSave={(instrument) => { onSaveFinancing(instrument); setShowFinancingModal(false); }} clientQualifications={client.qualifications || []} clientFinancing={client.financing || []} />}
             {viewingDoc && <DocumentViewerModal doc={viewingDoc} onClose={() => setViewingDoc(null)} />}
             {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={initialSGRs} />}
-            
-            {/* --- CAMBIO 4: Renderizar el nuevo modal --- */}
             {showNewBusinessModal && <NewBusinessModal client={client} onSave={onAddNewBusiness} onClose={() => setShowNewBusinessModal(false)} />}
         </div>
     );

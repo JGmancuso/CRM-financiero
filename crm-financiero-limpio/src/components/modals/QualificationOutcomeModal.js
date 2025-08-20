@@ -1,39 +1,35 @@
+// src/components/modals/QualificationOutcomeModal.js
+
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import InputField from '../common/InputField';
 import { FUNNEL_STAGES } from '../../data';
 
 export default function QualificationOutcomeModal({ client, onClose, onSave }) {
-    const activeQualifications = client.qualifications.filter(q => q.status === FUNNEL_STAGES.in_qualification);
-    const [qualifications, setQualifications] = useState(activeQualifications);
+    const activeQualifications = client.qualifications.filter(q => q.status === 'en_espera');
+    const [qualifications, setQualifications] = useState(
+        JSON.parse(JSON.stringify(activeQualifications))
+    );
     
-    // Obtener los nombres de SGRs únicos para mostrar
     const uniqueSgrNames = [...new Set(qualifications.map(q => q.sgrName))];
 
-    const handleStatusChange = (sgrName, newStatus) => {
+    const handleUpdate = (qualId, field, value) => {
         setQualifications(prev =>
             prev.map(q => 
-                q.sgrName === sgrName 
-                    ? { ...q, status: newStatus } 
+                q.qualificationId === qualId 
+                    ? { ...q, [field]: value } 
                     : q
             )
         );
     };
 
-    const handleQualificationDataChange = (sgrName, name, value) => {
-        setQualifications(prev =>
-            prev.map(q => 
-                q.sgrName === sgrName
-                    ? { 
-                        ...q,
-                        lineAmount: name === 'lineAmount' ? parseFloat(value) || 0 : q.lineAmount,
-                        destination: name === 'destination' ? value : q.destination,
-                        lineExpiryDate: name === 'lineExpiryDate' ? value : q.lineExpiryDate,
-                        notes: name === 'notes' ? [{ date: new Date().toISOString(), note: value }] : q.notes
-                    } 
-                    : q
-            )
-        );
+    const handleSubmit = () => {
+        // Filtramos solo las calificaciones que han sido modificadas (tienen un status diferente a 'en_espera')
+        const updatedQualifications = qualifications.filter(q => q.status !== 'en_espera');
+        if(updatedQualifications.length > 0) {
+            onSave(updatedQualifications);
+        }
+        onClose();
     };
 
     return (
@@ -43,75 +39,74 @@ export default function QualificationOutcomeModal({ client, onClose, onSave }) {
                     <X size={24} />
                 </button>
                 <h2 className="text-2xl font-bold mb-4">Gestión de Calificaciones para {client.name}</h2>
-                <div className="space-y-6">
-                    {uniqueSgrNames.map((sgrName, index) => {
-                        const qualification = qualifications.find(q => q.sgrName === sgrName);
+                <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
+                    {qualifications.map((qualification, index) => {
                         return (
-                            <div key={index} className="p-4 bg-gray-100 rounded-lg shadow-inner">
-                                <div className="flex justify-between items-center mb-3">
-                                    <h3 className="font-semibold text-lg">{sgrName}</h3>
-                                    <select 
-                                        value={qualification?.status || FUNNEL_STAGES.in_qualification} 
-                                        onChange={(e) => handleStatusChange(sgrName, e.target.value)}
-                                        className="border-gray-300 rounded-md shadow-sm text-sm"
+                            <div key={index} className="p-4 bg-gray-50 rounded-lg shadow-inner">
+                                <h3 className="font-semibold text-lg mb-3">{qualification.sgrName}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <InputField
+                                        label="Dictamen"
+                                        name="status"
+                                        as="select"
+                                        value={qualification.status || 'en_espera'}
+                                        onChange={(e) => handleUpdate(qualification.qualificationId, 'status', e.target.value)}
                                     >
-                                        <option value={FUNNEL_STAGES.in_qualification}>En Calificación</option>
-                                        <option value={FUNNEL_STAGES.qualified}>Calificado (Ganado)</option>
-                                        <option value={FUNNEL_STAGES.lost}>No Calificado (Perdido)</option>
-                                    </select>
+                                        <option value="en_espera">En Espera</option>
+                                        <option value="aprobado">Aprobado</option>
+                                        <option value="rechazado">Rechazado</option>
+                                    </InputField>
+
+                                    {qualification.status === 'aprobado' && (
+                                        <>
+                                            <InputField
+                                                label="Monto Aprobado"
+                                                name="amount"
+                                                type="number"
+                                                value={qualification.amount || ''}
+                                                onChange={(e) => handleUpdate(qualification.qualificationId, 'amount', e.target.value)}
+                                            />
+                                            <InputField
+                                                label="Vencimiento de la Línea"
+                                                name="dueDate"
+                                                type="date"
+                                                value={qualification.dueDate || ''}
+                                                onChange={(e) => handleUpdate(qualification.qualificationId, 'dueDate', e.target.value)}
+                                            />
+                                            <InputField
+                                                label="Destino de los fondos"
+                                                name="destination"
+                                                value={qualification.destination || ''}
+                                                onChange={(e) => handleUpdate(qualification.qualificationId, 'destination', e.target.value)}
+                                            />
+                                        </>
+                                    )}
+
+                                    {qualification.status === 'rechazado' && (
+                                        <div className="md:col-span-2">
+                                            <InputField
+                                                label="Motivo del rechazo"
+                                                name="reason"
+                                                type="textarea"
+                                                value={qualification.reason || ''}
+                                                onChange={(e) => handleUpdate(qualification.qualificationId, 'reason', e.target.value)}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
-
-                                {(qualification?.status === FUNNEL_STAGES.qualified) && (
-                                    <div className="space-y-2 p-2 border-l-4 border-green-500 bg-white">
-                                        <h4 className="font-semibold text-sm text-green-700">Datos de la Línea Aprobada</h4>
-                                        <InputField
-                                            label="Monto Aprobado"
-                                            name="lineAmount"
-                                            type="number"
-                                            value={qualification.lineAmount}
-                                            onChange={(e) => handleQualificationDataChange(sgrName, 'lineAmount', e.target.value)}
-                                        />
-                                        <InputField
-                                            label="Destino de los fondos"
-                                            name="destination"
-                                            value={qualification.destination}
-                                            onChange={(e) => handleQualificationDataChange(sgrName, 'destination', e.target.value)}
-                                        />
-                                        <InputField
-                                            label="Vencimiento de la Línea"
-                                            name="lineExpiryDate"
-                                            type="date"
-                                            value={qualification.lineExpiryDate}
-                                            onChange={(e) => handleQualificationDataChange(sgrName, 'lineExpiryDate', e.target.value)}
-                                        />
-                                    </div>
-                                )}
-
-                                {(qualification?.status === FUNNEL_STAGES.lost) && (
-                                    <div className="space-y-2 p-2 border-l-4 border-red-500 bg-white">
-                                        <h4 className="font-semibold text-sm text-red-700">Motivo del rechazo</h4>
-                                        <InputField
-                                            label="Motivo"
-                                            name="notes"
-                                            type="textarea"
-                                            value={qualification.notes[0]?.note || ''}
-                                            onChange={(e) => handleQualificationDataChange(sgrName, 'notes', e.target.value)}
-                                        />
-                                    </div>
-                                )}
                             </div>
                         );
                     })}
                 </div>
-                <div className="flex justify-end space-x-2 mt-6">
-                    <button onClick={onClose} className="bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-400">
+                <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
+                    <button onClick={onClose} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">
                         Cerrar
                     </button>
                     <button 
-                        onClick={() => onSave(qualifications)} 
+                        onClick={handleSubmit} 
                         className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700"
                     >
-                        Guardar cambios
+                        Guardar Cambios
                     </button>
                 </div>
             </div>

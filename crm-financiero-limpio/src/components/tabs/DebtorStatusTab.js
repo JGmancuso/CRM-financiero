@@ -61,7 +61,6 @@ const bankNameMapping = {
     'banco de la provincia de buenos aires':'BAPRO',
 };
 
-// Ordenar las llaves por longitud descendente para que las más específicas coincidan primero
 const sortedBankKeys = Object.keys(bankNameMapping).sort((a, b) => b.length - a.length);
 
 const getShortBankName = (fullName) => {
@@ -140,16 +139,16 @@ export default function DebtorStatusTab({ client, onUpdateDebtorStatus }) {
             if (debtResponse.ok) {
                 debtApiData = await debtResponse.json();
             } else if (debtResponse.status === 404) {
-                 debtApiData = { results: { periodos: [] } }; // No hay deuda, es un caso válido
+                 debtApiData = { results: { periodos: [] } };
             } else {
-                 const errorData = await debtResponse.json().catch(() => ({})); // Intenta parsear el error, si no puede, devuelve objeto vacío
+                 const errorData = await debtResponse.json().catch(() => ({}));
                  throw new Error(`Error en Deudas: ${errorData.errorMessages?.[0] || debtResponse.status}`);
             }
 
             if (checksResponse.ok) {
                 checksApiData = await checksResponse.json();
             } else if (checksResponse.status === 404) {
-                checksApiData = { results: { causales: [] } }; // No hay cheques, es un caso válido
+                checksApiData = { results: { causales: [] } };
             } else {
                 const errorData = await checksResponse.json().catch(() => ({}));
                 throw new Error(`Error en Cheques: ${errorData.errorMessages?.[0] || checksResponse.status}`);
@@ -186,7 +185,9 @@ export default function DebtorStatusTab({ client, onUpdateDebtorStatus }) {
     const graphData = useMemo(() => {
         if (!data || !data.history) return { periods: [], entities: {}, maxTotal: 0 };
 
-        const periods = [...new Set(data.history.flatMap(h => Object.keys(h.montoEvol)))].sort().reverse();
+        // --- CAMBIO AQUÍ: Se eliminó .reverse() para ordenar de más viejo a más nuevo ---
+        const periods = [...new Set(data.history.flatMap(h => Object.keys(h.montoEvol)))].sort();
+        
         const entities = {};
         const entityColors = ['bg-blue-500', 'bg-teal-500', 'bg-indigo-500', 'bg-pink-500', 'bg-sky-500'];
         let colorIndex = 0;
