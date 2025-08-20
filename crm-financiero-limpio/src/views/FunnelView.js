@@ -8,7 +8,29 @@ import QualificationOutcomeModal from '../components/modals/QualificationOutcome
 
 // --- MODAL PARA VER DETALLES E HISTORIAL ---
 const ManagementDetailModal = ({ client, onClose, onAdvance }) => {
-    // ... (código del modal sin cambios)
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-xl">
+                <h2 className="text-2xl font-bold mb-4">Historial de Gestión: {client.name}</h2>
+                <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
+                    {(client.management.history || []).map((entry, index) => (
+                        <div key={index} className="border-l-4 pl-4 py-2 border-blue-500">
+                            <p className="font-semibold text-gray-800">{entry.status}</p>
+                            <p className="text-sm text-gray-600"><strong>Próximos Pasos:</strong> {entry.nextSteps || 'N/A'}</p>
+                            <p className="text-sm text-gray-600"><strong>Notas:</strong> {entry.notes || 'N/A'}</p>
+                            <p className="text-xs text-gray-400 mt-1">{new Date(entry.date).toLocaleString()}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-6 flex justify-between items-center">
+                    <button onClick={onClose} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300">Cerrar</button>
+                    <button onClick={onAdvance} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center">
+                        Avanzar Gestión <ArrowRight size={16} className="ml-2" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 // --- MODAL PARA CAMBIO DE ESTADO ---
@@ -23,9 +45,8 @@ const StatusChangeModal = ({ client, sgrs, onClose, onSave, defaultStatus = '' }
             alert("Por favor, complete el próximo estado y los próximos pasos.");
             return;
         }
-        // --- CAMBIO AQUÍ: Se usa EN_ANALISIS ---
-        if (nextStatus === FUNNEL_STAGES.EN_ANALISIS && sgrsToQualify.length === 0) {
-            alert("Por favor, seleccione al menos una Entidad para enviar a análisis.");
+        if (nextStatus === FUNNEL_STAGES.EN_CALIFICACION && sgrsToQualify.length === 0) {
+            alert("Por favor, seleccione al menos una Entidad para enviar a calificación.");
             return;
         }
         onSave(client.id, nextStatus, { nextSteps, notes, sgrsToQualify });
@@ -62,10 +83,9 @@ const StatusChangeModal = ({ client, sgrs, onClose, onSave, defaultStatus = '' }
                         <label className="block text-sm font-medium text-gray-700">Observaciones</label>
                         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows="3" className="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
                     </div>
-                    {/* --- CAMBIO AQUÍ: Se usa EN_ANALISIS --- */}
-                    {nextStatus === FUNNEL_STAGES.EN_ANALISIS && (
+                    {nextStatus === FUNNEL_STAGES.EN_CALIFICACION && (
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Enviar a Entidades para Análisis</label>
+                            <label className="block text-sm font-medium text-gray-700">Enviar a Entidades para Calificación</label>
                             <div className="mt-2 space-y-2">
                                 {(sgrs || []).map(sgr => (
                                     <label key={sgr.id} className="flex items-center">
@@ -99,8 +119,7 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
     
     const handleAdvanceClick = () => {
         if (!selectedClient) return;
-        // --- CAMBIO AQUÍ: Se usa EN_ANALISIS ---
-        if (selectedClient.management.status === FUNNEL_STAGES.EN_ANALISIS) {
+        if (selectedClient.management.status === FUNNEL_STAGES.EN_CALIFICACION) {
             setModalType('qualification');
         } else {
             setModalType('status');
@@ -134,6 +153,15 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
                 grouped[client.management.status].push(client);
             }
         });
+
+        for (const stage in grouped) {
+            grouped[stage].sort((a, b) => {
+                const dateA = new Date(a.management.history[a.management.history.length - 1].date);
+                const dateB = new Date(b.management.history[b.management.history.length - 1].date);
+                return dateA - dateB;
+            });
+        }
+
         return stages.map(stage => ({ id: stage, name: stage.replace(/_/g, ' '), clients: grouped[stage] }));
     }, [clients]);
     
@@ -211,6 +239,7 @@ export default function FunnelView({ clients, sgrs, onUpdateManagementStatus, on
                 {selectedClient && modalType === 'qualification' && (
                     <QualificationOutcomeModal
                         client={selectedClient}
+                        sgrs={sgrs}
                         onClose={closeModal}
                         onSave={(updatedQualificationsArray) => {
                             onUpdateSgrQualification(selectedClient.id, updatedQualificationsArray);

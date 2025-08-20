@@ -95,7 +95,6 @@ export default function App() {
     
     const [view, setView] = useState('funnel');
     const [lastSaved, setLastSaved] = useState(null);
-    const [showImportOnStartup, setShowImportOnStartup] = useState(false);
     const [triggerNewClient, setTriggerNewClient] = useState(false);
     const [preSelectedClient, setPreSelectedClient] = useState(null);
 
@@ -133,7 +132,7 @@ export default function App() {
                         updatedClient.activities = [...(updatedClient.activities || []), newActivity];
                     }
 
-                    if (newStatus === FUNNEL_STAGES.EN_ANALISIS && details.sgrsToQualify) {
+                    if (newStatus === FUNNEL_STAGES.EN_CALIFICACION && details.sgrsToQualify) {
                         const newQualifications = details.sgrsToQualify.map(sgrName => ({
                             qualificationId: `qual-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                             sgrName: sgrName,
@@ -150,22 +149,19 @@ export default function App() {
         );
     };
     
+
+
     const handleUpdateSgrQualification = (clientId, updatedQualificationsArray) => {
         setClients(prevClients =>
             prevClients.map(client => {
                 if (client.id === clientId) {
-                    const finalQualifications = client.qualifications.map(oldQual => {
-                        const updatedVersion = updatedQualificationsArray.find(
-                            newQual => newQual.qualificationId === oldQual.qualificationId
-                        );
-                        return updatedVersion || oldQual;
-                    });
+                    const clientCopy = { ...client, qualifications: updatedQualificationsArray };
 
-                    const clientCopy = { ...client, qualifications: finalQualifications };
+                    // La lógica para determinar si se ganó o perdió la gestión no cambia.
+                    // Se ejecuta después de haber actualizado todas las calificaciones.
+                    const resolvedQualifications = clientCopy.qualifications.filter(q => q.status !== 'en_espera');
 
-                    const resolvedQualifications = finalQualifications.filter(q => q.status !== 'en_espera');
-
-                    if (finalQualifications.length > 0 && resolvedQualifications.length === finalQualifications.length) {
+                    if (clientCopy.qualifications.length > 0 && resolvedQualifications.length === clientCopy.qualifications.length) {
                         const hasApproval = resolvedQualifications.some(q => q.status === 'aprobado');
                         if (hasApproval) {
                             clientCopy.management.status = FUNNEL_STAGES.GANADO;
@@ -333,7 +329,6 @@ export default function App() {
                         setCampaigns(importedData.data.campaigns || initialCampaigns);
                         setProducts(importedData.data.products || initialProducts);
                         alert('Datos importados y actualizados correctamente.');
-                        setShowImportOnStartup(false);
                     } else {
                         alert('El archivo no tiene el formato correcto.');
                     }
@@ -353,7 +348,7 @@ export default function App() {
     return (
         <div className="bg-gray-100 font-sans min-h-screen flex">
             <aside className="w-20 bg-gray-800 text-white flex flex-col items-center py-4">
-                <div className="space-y-6 flex-grow">
+                 <div className="space-y-6 flex-grow">
                     <button onClick={() => setView('dashboard')} className={`p-3 rounded-lg ${view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Panel de Inicio"><LayoutDashboard /></button>
                     <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Clientes"><FunnelIcon /></button>
                     <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
@@ -406,7 +401,6 @@ export default function App() {
                     {view === 'campaigns' && <CampaignsView allClients={clients} onUpdateClient={handleUpdateClient} campaigns={campaigns} setCampaigns={setCampaigns} onNavigateToClient={navigateToClient} />}
                 </main>
             </div>
-            {showImportOnStartup && <ImportOnStartupModal onImport={triggerImport} onStartNew={() => setShowImportOnStartup(false)} />}
         </div>
     );
 }
