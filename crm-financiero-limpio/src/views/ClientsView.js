@@ -13,7 +13,14 @@ export default function ClientsView({
     onDeleteClient,
     onAddClientAndBusiness,
     onAddNewBusiness,
-    onAddDocument
+    onAddDocument,
+    // Asumiendo que estas props vienen de App.js también
+    onSaveActivity,
+    onToggleActivity,
+    onSaveFinancing,
+    onSaveQualification,
+    onUpdateDebtorStatus,
+    documentRequirements
 }) {
     const [selectedClient, setSelectedClient] = useState(null);
     const [selectedNegocio, setSelectedNegocio] = useState(null);
@@ -28,9 +35,10 @@ export default function ClientsView({
     }, [clients, selectedClient]);
 
     useEffect(() => {
-        if (selectedClient) {
-            const negocioAsociado = negocios.find(n => n.cliente.id === selectedClient.id);
-            setSelectedNegocio(negocioAsociado);
+        if (selectedClient && negocios) {
+            // Encuentra el primer negocio activo, o el más reciente si hay varios
+            const negociosDelCliente = negocios.filter(n => n.cliente.id === selectedClient.id);
+            setSelectedNegocio(negociosDelCliente[0] || null);
         } else {
             setSelectedNegocio(null);
         }
@@ -93,6 +101,7 @@ export default function ClientsView({
                 {viewMode === 'detail' && selectedClient && 
                     <ClientDetail 
                         client={selectedClient}
+                        clients={clients} // <-- Se pasa la lista completa de clientes
                         negocio={selectedNegocio}
                         sgrs={sgrs}
                         onUpdateNegocio={onUpdateNegocio}
@@ -100,6 +109,12 @@ export default function ClientsView({
                         onDelete={onDeleteClient}
                         onAddDocument={onAddDocument}
                         onAddNewBusiness={onAddNewBusiness}
+                        onSaveActivity={onSaveActivity}
+                        onToggleActivity={onToggleActivity}
+                        onSaveFinancing={onSaveFinancing}
+                        onSaveQualification={onSaveQualification}
+                        onUpdateDebtorStatus={onUpdateDebtorStatus}
+                        documentRequirements={documentRequirements}
                     />}
                 {viewMode === 'form' && <ClientForm onSave={handleSave} onCancel={handleCancelForm} clientToEdit={editingClient} />}
                 {viewMode !== 'form' && !selectedClient && (

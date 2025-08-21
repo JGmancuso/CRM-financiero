@@ -36,8 +36,14 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
             observaciones: ''
         };
 
-        setClient({ ...defaultClient, ...(clientToEdit || {}) });
+         const clientData = { ...defaultClient, ...(clientToEdit || {}) };
         
+        // Unificamos CUIT/CUIL al cargar un cliente para editarlo
+        if (clientData.cuil && !clientData.cuit) {
+            clientData.cuit = clientData.cuil;
+            delete clientData.cuil; // Eliminamos la propiedad redundante
+        }
+        setClient(clientData);
     }, [clientToEdit]);
 
     const handleChange = (e) => {
@@ -73,9 +79,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
     };
 
     const isValid = () => {
-        if (!client.name) return false;
-        if (client.type === 'juridica' && !client.cuit) return false;
-        if (client.type === 'fisica' && !client.cuil) return false;
+        if (!client.name || !client.cuit) return false;
         return true;
     };
 
@@ -95,7 +99,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit }) {
                     </select>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {client.type === 'juridica' ? <InputField name="cuit" label="CUIT" value={client.cuit || ''} onChange={handleChange} required /> : <InputField name="cuil" label="CUIL" value={client.cuil || ''} onChange={handleChange} required />}
+                    <InputField name="cuit" label="CUIT / CUIL" value={client.cuit || ''} onChange={handleChange} required />
                     <InputField name="email" label="Email Principal" type="email" value={client.email || ''} onChange={handleChange} />
                     <InputField name="phone" label="Teléfono Principal" value={client.phone || ''} onChange={handleChange} />
                     <InputField name="industry" label="Industria" value={client.industry || ''} onChange={handleChange} select>

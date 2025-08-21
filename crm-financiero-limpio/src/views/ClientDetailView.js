@@ -1,3 +1,4 @@
+// ClientDetailView.js
 import React, { useState } from 'react';
 import { User, MapPin, Edit, PlusCircle, DollarSign, Activity, Clock } from 'lucide-react';
 import ClientModal from '../components/modals/ClientModal';
@@ -5,13 +6,7 @@ import SimulationModal from '../components/modals/SimulationModal';
 import ActivityModal from '../components/modals/ActivityModal';
 import QualificationStatusModal from '../components/modals/QualificationStatusModal';
 
-// NOTA: Este es un nuevo componente para mostrar el detalle completo de un cliente.
-// Se asume que la estructura de datos del cliente ahora incluye:
-// - contactPerson: 'string'
-// - province: 'string'
-// - financing: [{...datos de la simulacion}]
-
-export default function ClientDetailView({ client, onUpdateClient, onBack, products, onStartQualification, onUpdateQualificationStatus }) {
+export default function ClientDetailView({ client, onUpdateClient, onBack, products, onStartQualification, onUpdateQualificationStatus, onAddTask, tasks }) {
     const [activeTab, setActiveTab] = useState('general');
     const [isEditingClient, setIsEditingClient] = useState(false);
     const [isSimulating, setIsSimulating] = useState(false);
@@ -39,20 +34,13 @@ export default function ClientDetailView({ client, onUpdateClient, onBack, produ
         setIsSimulating(false);
     };
     
+    // La función ahora usa onAddTask en lugar de guardar en el cliente
     const handleSaveActivity = (activity) => {
-        const newActivity = activity.id ? activity : { ...activity, id: `act-${Date.now()}` };
-        const updatedActivities = client.activities ? 
-            (client.activities.find(a => a.id === newActivity.id) ? 
-                client.activities.map(a => a.id === newActivity.id ? newActivity : a) :
-                [...client.activities, newActivity])
-            : [newActivity];
-
-        const updatedClient = {
-            ...client,
-            activities: updatedActivities,
-            lastUpdate: new Date().toISOString()
-        };
-        onUpdateClient(updatedClient);
+        onAddTask({
+            ...activity, 
+            clientId: client.id, 
+            clientName: client.name
+        });
         setIsAddingActivity(false);
     };
 
@@ -84,20 +72,22 @@ export default function ClientDetailView({ client, onUpdateClient, onBack, produ
         </div>
     );
 
+    const clientTasks = tasks.filter(t => t.clientId === client.id);
+
     const renderActivitiesTab = () => (
          <div>
             <button onClick={() => setIsAddingActivity(true)} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center mb-6">
                 <PlusCircle size={18} className="mr-2"/> Nueva Actividad
             </button>
             <div className="space-y-4">
-                {(client.activities || []).map(act => (
+                {clientTasks.length > 0 ? clientTasks.map(act => (
                     <div key={act.id} className="p-4 bg-gray-50 rounded-lg">
-                        <p className={`font-bold ${act.completed ? 'line-through' : ''}`}>{act.title}</p>
+                        <p className={`font-bold ${act.isCompleted ? 'line-through' : ''}`}>{act.title}</p>
                         <p>Tipo: {act.type}</p>
                         <p>Fecha: {new Date(act.date).toLocaleString('es-AR')}</p>
                         <p className="text-sm mt-1">{act.note}</p>
                     </div>
-                ))}
+                )) : <p>No hay actividades registradas para este cliente.</p>}
             </div>
         </div>
     );
@@ -114,7 +104,6 @@ export default function ClientDetailView({ client, onUpdateClient, onBack, produ
         </div>
     );
     
-    // Nuevo tab para la calificación
     const renderQualificationsTab = () => (
         <div className="space-y-4">
             {(client.qualifications || []).length > 0 ? (
@@ -124,7 +113,6 @@ export default function ClientDetailView({ client, onUpdateClient, onBack, produ
                         <p className="text-sm text-gray-600">Estado: {qualification.status}</p>
                         <p className="text-xs text-gray-500 mt-1">Enviado: {new Date(qualification.submissionDate).toLocaleDateString()}</p>
                         
-                        {/* Dropdown para cambiar el estado individual */}
                         <div className="mt-2">
                             <label className="text-xs text-gray-500">Actualizar estado:</label>
                             <select 

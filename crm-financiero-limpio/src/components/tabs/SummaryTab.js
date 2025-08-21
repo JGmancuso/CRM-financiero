@@ -1,8 +1,9 @@
-// src/components/tabs/SummaryTab.js
-
+// src/tabs/SummaryTab.js
 import React, { useState, useMemo } from 'react';
 import { Mail, Phone, Briefcase, Gift, FileText, Globe, ShoppingCart, Users, Building, User, Link as LinkIcon, MapPin, Fingerprint, CalendarCheck, UserSquare } from 'lucide-react';
 import InfoItem from '../common/InfoItem';
+
+
 
 const ExpandableText = ({ text }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -31,40 +32,27 @@ const ExpandableText = ({ text }) => {
     );
 };
 
-// --- FUNCIÓN PARA CALCULAR EL AÑO FISCAL EXIGIBLE ---
 const getRequiredFiscalYear = (lastCloseDateStr) => {
     if (!lastCloseDateStr) return 'No especificado';
-
-    // Aseguramos que la fecha se interprete correctamente en UTC para evitar problemas de zona horaria
     const closeDate = new Date(lastCloseDateStr + 'T00:00:00');
     const currentDate = new Date();
-    
     const closeYear = closeDate.getUTCFullYear();
-    
-    // Calculamos la fecha 4 meses después del cierre
-    const fourMonthsAfter = new Date(closeDate);
-    fourMonthsAfter.setUTCMonth(fourMonthsAfter.getUTCMonth() + 4);
-
-    // Calculamos la fecha 5 meses después del cierre
     const fiveMonthsAfter = new Date(closeDate);
     fiveMonthsAfter.setUTCMonth(fiveMonthsAfter.getUTCMonth() + 5);
 
-    if (currentDate <= fourMonthsAfter) {
+    if (currentDate <= fiveMonthsAfter) {
         return `Aún es exigible el balance del año ${closeYear - 1}`;
     }
-    if (currentDate > fourMonthsAfter && currentDate <= fiveMonthsAfter) {
-        return `Por exigirse el balance del año ${closeYear}`;
-    }
-    // Si han pasado más de 5 meses
     return `Exigible el balance del año ${closeYear}`;
 };
 
 
 export default function SummaryTab({ client, allClients }) {
     const participations = useMemo(() => {
-        if (!allClients || client.type !== 'fisica') return [];
-        return allClients.filter(c => c.type === 'juridica' && c.partners?.some(p => p.cuil === client.cuil))
-                         .map(c => ({ companyName: c.name, companyId: c.id, share: c.partners.find(p => p.cuil === client.cuil).share }));
+        const clientId = client.cuit || client.cuil;
+        if (!allClients || !clientId || client.type !== 'fisica') return [];
+        return allClients.filter(c => c.type === 'juridica' && c.partners?.some(p => p.cuil === clientId))
+                         .map(c => ({ companyName: c.name, companyId: c.id, share: c.partners.find(p => p.cuil === clientId).share }));
     }, [client, allClients]);
 
     const requiredYearStatus = getRequiredFiscalYear(client.lastFiscalClose);
@@ -76,8 +64,15 @@ export default function SummaryTab({ client, allClients }) {
                 <InfoItem icon={<Mail size={20} />} label="Email" value={client.email} />
                 <InfoItem icon={<Phone size={20} />} label="Teléfono" value={client.phone} />
                 <InfoItem icon={<MapPin size={20} />} label="Ubicación" value={client.location} />
-                <InfoItem icon={client.type === 'juridica' ? <Briefcase size={20} /> : <User size={20} />} label={client.type === 'juridica' ? 'CUIT' : 'CUIL'} value={client.type === 'juridica' ? client.cuit : client.cuil} />
-                <InfoItem icon={<Fingerprint size={20} />} label="ID Interno" value={client.id ? client.id : 'sin numero'} />
+                
+                {/* --- CAMBIO REALIZADO AQUÍ --- */}
+                <InfoItem 
+                    icon={<Briefcase size={20} />} 
+                    label="CUIT / CUIL" 
+                    value={client.cuit || client.cuil} 
+                />
+
+                <InfoItem icon={<Fingerprint size={20} />} label="ID Interno" value={client.id || 'sin numero'} />
                 {client.type === 'fisica' && (
                     <>
                         <InfoItem icon={<Briefcase size={20} />} label="Actividad Independiente" value={client.hasIndependentActivity ? 'Sí' : 'No'} />
@@ -85,7 +80,6 @@ export default function SummaryTab({ client, allClients }) {
                     </>
                 )}
                 
-                {/* --- SECCIÓN DE CONTACTO AÑADIDA --- */}
                 {client.contactPerson && client.contactPerson.name && (
                     <div className="mt-6">
                         <h3 className="text-lg font-semibold text-gray-700 mb-4">Persona de Contacto</h3>
@@ -98,7 +92,6 @@ export default function SummaryTab({ client, allClients }) {
             </div>
             <div>
                 <h3 className="text-lg font-semibold text-gray-700 mb-4">Detalles Comerciales</h3>
-                {/* --- CAMPO DE AÑO FISCAL AÑADIDO --- */}
                 <InfoItem icon={<CalendarCheck size={20} />} label="Año Fiscal Exigible">
                     <p className="font-normal text-gray-800 bg-gray-50 p-3 rounded-md mt-1">{requiredYearStatus}</p>
                 </InfoItem>

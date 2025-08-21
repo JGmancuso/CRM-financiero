@@ -1,11 +1,12 @@
+// DashboardView.js
 import React, { useState, useMemo } from 'react';
-import { Calendar, CheckSquare, AlertCircle, Edit, PlusCircle } from 'lucide-react';
+import { Calendar, CheckSquare, AlertCircle, Edit, PlusCircle, Trash2 } from 'lucide-react';
 import { FUNNEL_STAGES } from '../data';
 import EventDetailModal from '../components/modals/EventDetailModal';
 import ActivityModal from '../components/modals/ActivityModal';
 import FunnelStageDetailModal from '../components/modals/FunnelStageDetailModal';
 
-export default function DashboardView({ clients, onUpdateClient, setView, onNewClient, onNavigateToClient }) {
+export default function DashboardView({ clients, onUpdateClient, tasks, onUpdateTask, onDeleteTask, setView, onNewClient, onNavigateToClient }) {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [editingActivity, setEditingActivity] = useState(null);
     const [viewingStage, setViewingStage] = useState(null);
@@ -18,49 +19,39 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
     const twoWeeksFromNow = new Date(today);
     twoWeeksFromNow.setDate(today.getDate() + 15);
 
-    const handleToggleActivity = (clientId, activityId) => {
-        const client = clients.find(c => c.id === clientId);
-        if (!client) return;
-        const updatedActivities = (client.activities || []).map(a => 
-            a.id === activityId ? { ...a, completed: !a.completed } : a
-        );
-        onUpdateClient({ ...client, activities: updatedActivities, lastUpdate: new Date().toISOString() });
+    const handleToggleTask = (taskId) => {
+        const taskToUpdate = tasks.find(t => t.id === taskId);
+        if (taskToUpdate) {
+            onUpdateTask({ ...taskToUpdate, isCompleted: !taskToUpdate.isCompleted });
+        }
     };
-
-    const handleSaveActivity = (activity) => {
-        const client = clients.find(c => c.id === editingActivity.clientId);
-        if(!client) return;
-
-        const activities = [...(client.activities || [])];
-        const index = activities.findIndex(a => a.id === activity.id);
-        activities[index] = activity;
-        
-        onUpdateClient({ ...client, activities, lastUpdate: new Date().toISOString() });
+    
+    const handleSaveTask = (taskData) => {
+        onUpdateTask(taskData);
         setEditingActivity(null);
     };
 
-    const allActivities = useMemo(() => 
-        clients.flatMap(c => (c.activities || []).map(a => ({ ...a, clientName: c.name, clientId: c.id, client: c }))),
-    [clients]);
-
-    const eventsToday = allActivities
-        .filter(a => {
-            const activityDate = new Date(a.date);
-            return activityDate >= today && activityDate < tomorrow && !a.completed;
-        })
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    const overdueTasks = useMemo(() => 
+        tasks.filter(task => new Date(task.date) < today && !task.isCompleted)
+             .sort((a, b) => new Date(a.date) - new Date(b.date)), 
+    [tasks, today]);
         
-    const upcomingEvents = allActivities
-        .filter(a => {
-            const activityDate = new Date(a.date);
-            return activityDate >= tomorrow && activityDate < twoWeeksFromNow && !a.completed;
+    const eventsToday = useMemo(() => 
+        tasks.filter(task => {
+            const taskDate = new Date(task.date);
+            return taskDate >= today && taskDate < tomorrow && !task.isCompleted;
         })
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    const overdueTasks = allActivities
-        .filter(a => new Date(a.date) < today && !a.completed)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-
+        .sort((a, b) => new Date(a.date) - new Date(b.date)),
+    [tasks, today, tomorrow]);
+        
+    const upcomingEvents = useMemo(() => 
+        tasks.filter(task => {
+            const taskDate = new Date(task.date);
+            return taskDate >= tomorrow && taskDate < twoWeeksFromNow && !task.isCompleted;
+        })
+        .sort((a, b) => new Date(a.date) - new Date(b.date)),
+    [tasks, tomorrow, twoWeeksFromNow]);
+    
     const funnelStats = useMemo(() => {
         return Object.values(FUNNEL_STAGES).map(stage => ({
             name: stage,
@@ -72,6 +63,11 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
         onNavigateToClient(client);
         setViewingStage(null);
     };
+    
+    // Esta función ya no es necesaria, ya que las tareas se gestionan globalmente.
+    // const handleToggleActivity = (clientId, activityId) => {
+    //    ...
+    // };
 
     return (
         <div className="p-8">
@@ -91,12 +87,12 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
                                     <div key={task.id} className="flex items-center p-3 bg-red-50 rounded-lg">
                                         <div className="flex-grow">
                                             <p className="font-semibold">{task.title}</p>
-                                            {/* NAVEGACIÓN: Al hacer clic en el nombre del cliente, se navega a su detalle */}
                                             <p className="text-sm text-gray-500 hover:underline cursor-pointer" onClick={() => onNavigateToClient(task.client)}>{task.clientName}</p>
                                             <p className="text-sm text-gray-500">Venció el {new Date(task.date).toLocaleDateString('es-AR', {timeZone: 'UTC'})}</p>
                                         </div>
                                         <button onClick={() => setEditingActivity(task)} title="Reprogramar" className="p-1 text-gray-500 hover:text-blue-600 ml-2"><Edit size={18}/></button>
-                                        <button onClick={() => handleToggleActivity(task.clientId, task.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                        <button onClick={() => handleToggleTask(task.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                        <button onClick={() => onDeleteTask(task.id)} title="Eliminar" className="p-1 text-gray-500 hover:text-red-600"><Trash2 size={18}/></button>
                                     </div>
                                 ))}
                             </div>
@@ -111,12 +107,12 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
                                         {event.type === 'event' ? <Calendar className="text-purple-500 mr-4 flex-shrink-0" /> : <CheckSquare className="text-green-500 mr-4 flex-shrink-0" />}
                                         <div>
                                             <p className="font-semibold">{event.title}</p>
-                                            {/* NAVEGACIÓN: Al hacer clic en el nombre del cliente, se navega a su detalle */}
                                             <p className="text-sm text-gray-500 hover:underline cursor-pointer" onClick={() => onNavigateToClient(event.client)}>{event.clientName} - {new Date(event.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</p>
                                         </div>
                                     </div>
                                     <button onClick={() => setEditingActivity(event)} title="Editar" className="p-1 text-gray-500 hover:text-blue-600 ml-2"><Edit size={18}/></button>
-                                    <button onClick={() => handleToggleActivity(event.clientId, event.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                    <button onClick={() => handleToggleTask(event.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                    <button onClick={() => onDeleteTask(event.id)} title="Eliminar" className="p-1 text-gray-500 hover:text-red-600"><Trash2 size={18}/></button>
                                 </div>
                             )) : <p className="text-gray-500">No hay eventos para hoy.</p>}
                         </div>
@@ -130,12 +126,12 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
                                         {event.type === 'event' ? <Calendar className="text-purple-500 mr-4 flex-shrink-0" /> : <CheckSquare className="text-green-500 mr-4 flex-shrink-0" />}
                                         <div>
                                             <p className="font-semibold">{event.title}</p>
-                                            {/* NAVEGACIÓN: Al hacer clic en el nombre del cliente, se navega a su detalle */}
                                             <p className="text-sm text-gray-500 hover:underline cursor-pointer" onClick={() => onNavigateToClient(event.client)}>{event.clientName} - {new Date(event.date).toLocaleDateString('es-AR', {timeZone: 'UTC'})}</p>
                                         </div>
                                     </div>
                                     <button onClick={() => setEditingActivity(event)} title="Editar" className="p-1 text-gray-500 hover:text-blue-600 ml-2"><Edit size={18}/></button>
-                                    <button onClick={() => handleToggleActivity(event.clientId, event.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                    <button onClick={() => handleToggleTask(event.id)} title="Completar" className="p-1 text-gray-500 hover:text-green-600"><CheckSquare size={18}/></button>
+                                    <button onClick={() => onDeleteTask(event.id)} title="Eliminar" className="p-1 text-gray-500 hover:text-red-600"><Trash2 size={18}/></button>
                                 </div>
                             )) : <p className="text-gray-500">No hay eventos próximos.</p>}
                         </div>
@@ -155,7 +151,7 @@ export default function DashboardView({ clients, onUpdateClient, setView, onNewC
                 </div>
             </div>
             {selectedEvent && <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />}
-            {editingActivity && <ActivityModal activityToEdit={editingActivity} onClose={() => setEditingActivity(null)} onSave={handleSaveActivity} />}
+            {editingActivity && <ActivityModal activityToEdit={editingActivity} onClose={() => setEditingActivity(null)} onSave={handleSaveTask} />}
             {viewingStage && <FunnelStageDetailModal stageName={viewingStage} clients={clients.filter(c => c.status === viewingStage)} onClose={() => setViewingStage(null)} onClientSelect={handleClientSelectFromFunnel} />}
         </div>
     );

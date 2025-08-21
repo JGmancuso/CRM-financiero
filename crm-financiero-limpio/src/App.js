@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Users as FunnelIcon, Briefcase, Shield, Megaphone, Upload, Download, Calendar, Tag } from 'lucide-react';
 import FunnelView from './views/FunnelView';
@@ -42,6 +43,7 @@ export default function App() {
     const [sgrs, setSgrs] = useState([]);
     const [campaigns, setCampaigns] = useState([]);
     const [products, setProducts] = useState([]);
+    const [tasks, setTasks] = useState([]); // Nuevo estado para las tareas
     const [view, setView] = useState('funnel');
     const [lastSaved, setLastSaved] = useState(null);
 
@@ -62,21 +64,22 @@ export default function App() {
         setSgrs(finalData.sgrs || []);
         setCampaigns(finalData.campaigns || []);
         setProducts(finalData.products || []);
+        setTasks(finalData.tasks || []); // Cargar las tareas
     }, []);
 
     useEffect(() => {
         const dataToSave = { 
             version: APP_DATA_VERSION, 
-            data: { clients, negocios, sgrs, campaigns, products } 
+            data: { clients, negocios, sgrs, campaigns, products, tasks } // Incluir las tareas en el guardado
         };
         localStorage.setItem('crm-data', JSON.stringify(dataToSave));
         setLastSaved(new Date());
-    }, [clients, negocios, sgrs, campaigns, products]);
+    }, [clients, negocios, sgrs, campaigns, products, tasks]); // Escuchar cambios en las tareas
 
     const handleExport = () => {
         const dataToExport = { 
             version: APP_DATA_VERSION, 
-            data: { clients, negocios, sgrs, campaigns, products } 
+            data: { clients, negocios, sgrs, campaigns, products, tasks } // Incluir las tareas
         };
         const dataStr = JSON.stringify(dataToExport, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
@@ -105,6 +108,7 @@ export default function App() {
                     setSgrs(importedData.data.sgrs || []);
                     setCampaigns(importedData.data.campaigns || []);
                     setProducts(importedData.data.products || []);
+                    setTasks(importedData.data.tasks || []); // Importar las tareas
                     alert('Datos del backup importados correctamente.');
                 } else {
                     alert('El archivo de backup no tiene el formato correcto (requiere "negocios" y "clients").');
@@ -179,7 +183,38 @@ export default function App() {
             })
         );
     };
-    
+
+    const handleAddNewBusiness = (clientId, businessData) => {
+        const client = clients.find(c => c.id === clientId);
+        if (!client) {
+            alert("Error: No se encontró el cliente.");
+            return;
+        }
+
+        const newBusiness = {
+            id: `negocio-${clientId}-${Date.now()}`,
+            nombre: businessData.motivo,
+            estado: 'PROSPECTO',
+            montoSolicitado: businessData.montoAproximado,
+            fechaProximoSeguimiento: new Date().toISOString(),
+            history: [{
+                date: new Date().toISOString(),
+                type: 'Creación de Nuevo Negocio',
+                reason: businessData.observaciones || 'Creado desde detalle de cliente.'
+            }],
+            cliente: {
+                id: client.id,
+                nombre: client.nombre,
+                cuit: client.cuit
+            }
+        };
+
+        setNegocios(prevNegocios => [...prevNegocios, newBusiness]);
+
+        alert(`Nuevo negocio "${newBusiness.nombre}" creado para ${client.nombre}.`);
+        setView('funnel');
+    };
+
     const handleAddDocument = (clientId, newDocument) => {
         setClients(prevClients => 
             prevClients.map(client => {
@@ -210,6 +245,37 @@ export default function App() {
         }
     };
 
+    // Funciones para gestionar tareas de la agenda
+    const handleAddTask = (taskData) => {
+        const newTask = {
+            ...taskData,
+            id: `task-${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            isCompleted: false
+        };
+        setTasks(prevTasks => [...prevTasks, newTask]);
+        return newTask;
+    };
+
+    const handleUpdateTask = (updatedTask) => {
+        setTasks(prevTasks => prevTasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+    };
+
+    const handleDeleteTask = (taskId) => {
+        setTasks(prevTasks => prevTasks.filter(t => t.id !== taskId));
+    };
+    
+    const handleUpdateDebtorStatus = (clientId, newDebtorStatusData) => {
+        setClients(prevClients =>
+            prevClients.map(client => {
+                if (client.id === clientId) {
+                    return { ...client, debtorStatus: newDebtorStatusData, lastUpdate: new Date().toISOString() };
+                }
+                return client;
+            })
+        );
+    };
+
     return (
         <div className="bg-gray-100 font-sans min-h-screen flex">
             <aside className="w-20 bg-gray-800 text-white flex flex-col items-center py-4">
@@ -228,7 +294,7 @@ export default function App() {
                 <main className="flex-1 overflow-y-auto">
                     <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
                     
-                    {view === 'dashboard' && <DashboardView clients={clients} />}
+                    {view === 'dashboard' && <DashboardView clients={clients} tasks={tasks} />}
                     
                     {view === 'funnel' && <FunnelView 
                         negocios={negocios} 
@@ -246,11 +312,11 @@ export default function App() {
                         onAddClientAndBusiness={handleAddClientAndBusiness}
                         onAddDocument={handleAddDocument}
                         onDeleteClient={handleDeleteSgr}
-                        onAddNewBusiness={() => alert('Función para nuevo negocio no implementada.')}
+                        onAddNewBusiness={handleAddNewBusiness}
+                        onAddTask={handleAddTask} 
+                         onUpdateDebtorStatus={handleUpdateDebtorStatus} // <-- Se pasa la función
                     />}
 
-                    {/* --- CAMBIO REALIZADO AQUÍ --- */}
-                    
                     {view === 'sgr' && <SGRView 
                         sgrs={sgrs}
                         onAddSgr={handleAddSgr}
@@ -258,8 +324,7 @@ export default function App() {
                         onDeleteSgr={handleDeleteSgr}
                     />}
                     
-                    
-                    {view === 'agenda' && <AgendaView clients={clients} />}
+                    {view === 'agenda' && <AgendaView clients={clients} tasks={tasks} onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} onDeleteTask={handleDeleteTask} />}
                     {view === 'products' && <ProductsView products={products} setProducts={setProducts} />}
                     {view === 'campaigns' && <CampaignsView allClients={clients} sgrs={sgrs} onNavigateToClient={() => {}} />}
                 </main>
