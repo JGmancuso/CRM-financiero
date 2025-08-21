@@ -125,6 +125,13 @@ export default function DebtorStatusTab({ client, onUpdateDebtorStatus }) {
         setData(null);
         
         const clientId = client.cuit || client.cuil;
+        // --- CAMBIO CLAVE: AÑADIMOS ESTA VERIFICACIÓN ---
+        
+        if (!clientId || clientId.trim() === '') {
+            setError("El cliente no tiene un CUIT o CUIL cargado para poder realizar la consulta.");
+            setLoading(false);
+            return; // Detenemos la ejecución de la función aquí
+        }
         const formattedId = clientId.replace(/-/g, '');
 
         try {

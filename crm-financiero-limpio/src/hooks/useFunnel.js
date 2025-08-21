@@ -1,75 +1,106 @@
-// src/hooks/useFunnel.js
+import { useState, useEffect } from 'react';
 
-import { useState, useMemo } from 'react';
-import { FUNNEL_STAGES } from '../data';
+const FUNNEL_STAGES = {
+    'PROSPECTO': 'Prospecto',
+    'INFO_SOLICITADA': 'Info Solicitada',
+    'EN_ARMADO': 'En Armado',
+    'EN_CALIFICACION': 'En Calificación',
+    'PROPUESTA_FIRMADA': 'Propuesta Firmada',
+    'GANADO': 'Ganado',
+    'PERDIDO': 'Perdido',
+};
 
-export function useFunnel(clients) {
-    const [selectedClient, setSelectedClient] = useState(null);
-    const [modalType, setModalType] = useState(null);
-    const [draggedToStatus, setDraggedToStatus] = useState('');
+export const useFunnel = (initialNegocios, onUpdateNegocio) => {
+    const [columns, setColumns] = useState({});
+    const [modalData, setModalData] = useState(null);
 
-    const handleManageClick = (client) => {
-        setSelectedClient(client);
-        setModalType('detail');
-    };
-    
-    const handleAdvanceClick = () => {
-        if (!selectedClient) return;
-        if (selectedClient.management.status === FUNNEL_STAGES.EN_CALIFICACION) {
-            setModalType('qualification');
-        } else {
-            setModalType('status');
-        }
-    };
+    useEffect(() => {
+        const newColumns = Object.keys(FUNNEL_STAGES).reduce((acc, stageKey) => {
+            acc[stageKey] = { name: FUNNEL_STAGES[stageKey], items: [] };
+            return acc;
+        }, {});
 
-    const closeModal = () => {
-        setSelectedClient(null);
-        setModalType(null);
-        setDraggedToStatus('');
-    };
-
-    const handleOnDragEnd = (result) => {
-        const { source, destination, draggableId } = result;
-        if (!destination || source.droppableId === destination.droppableId) {
-            return;
-        }
-        const client = clients.find(c => c.management.id === draggableId);
-        if (client) {
-            setSelectedClient(client);
-            setDraggedToStatus(destination.droppableId);
-            setModalType('status');
-        }
-    };
-
-    const funnelData = useMemo(() => {
-        const stages = Object.values(FUNNEL_STAGES);
-        const grouped = stages.reduce((acc, stage) => ({ ...acc, [stage]: [] }), {});
-        
-        (clients || []).forEach(client => {
-            if (client.management && grouped.hasOwnProperty(client.management.status)) {
-                grouped[client.management.status].push(client);
+        (initialNegocios || []).forEach(negocio => {
+            const stageKey = negocio.estado || 'PROSPECTO';
+            if (newColumns[stageKey]) {
+                newColumns[stageKey].items.push(negocio);
+            } else {
+                newColumns['PROSPECTO'].items.push(negocio);
             }
         });
+        setColumns(newColumns);
+    }, [initialNegocios]);
 
-        for (const stage in grouped) {
-            grouped[stage].sort((a, b) => {
-                const dateA = new Date(a.management.history[a.management.history.length - 1].date);
-                const dateB = new Date(b.management.history[b.management.history.length - 1].date);
-                return dateA - dateB;
-            });
+    const handleOnDragEnd = (result) => {
+        if (!result.destination) return;
+        const { source, destination } = result;
+
+        if (source.droppableId === destination.droppableId) {
+            const column = columns[source.droppableId];
+            const copiedItems = [...column.items];
+            const [removed] = copiedItems.splice(source.index, 1);
+            copiedItems.splice(destination.index, 0, removed);
+            setColumns({ ...columns, [source.droppableId]: { ...column, items: copiedItems } });
+            return;
         }
 
-        return stages.map(stage => ({ id: stage, name: stage.replace(/_/g, ' '), clients: grouped[stage] }));
-    }, [clients]);
+        const sourceColumn = columns[source.droppableId];
+        const destColumn = columns[destination.droppableId];
+        const sourceItems = [...sourceColumn.items];
+        const [movedItem] = sourceItems.splice(source.index, 1);
+        const destItems = [...destColumn.items];
+        destItems.splice(destination.index, 0, movedItem);
 
-    return {
-        funnelData,
-        selectedClient,
-        modalType,
-        draggedToStatus,
-        handleManageClick,
-        handleAdvanceClick,
-        closeModal,
-        handleOnDragEnd
+        setColumns({
+            ...columns,
+            [source.droppableId]: { ...sourceColumn, items: sourceItems },
+            [destination.droppableId]: { ...destColumn, items: destItems }
+        });
+
+        // 👇 CAMBIO REALIZADO AQUÍ
+        setModalData({
+            negocio: movedItem,
+            newStatus: destination.droppableId,
+            newStatusName: FUNNEL_STAGES[destination.droppableId] 
+        });
     };
-}
+
+    const handleModalClose = () => {
+        const revertedColumns = Object.keys(FUNNEL_STAGES).reduce((acc, stageKey) => {
+            acc[stageKey] = { name: FUNNEL_STAGES[stageKey], items: [] };
+            return acc;
+        }, {});
+        (initialNegocios || []).forEach(negocio => {
+            const stageKey = negocio.estado || 'PROSPECTO';
+            if (revertedColumns[stageKey]) {
+                revertedColumns[stageKey].items.push(negocio);
+            }
+        });
+        setColumns(revertedColumns);
+        setModalData(null);
+    };
+    
+    const handleModalSave = (formData) => {
+        if (!modalData) return;
+        const { negocio, newStatus } = modalData;
+
+        const negocioActualizado = {
+            ...negocio,
+            estado: newStatus,
+            lastUpdate: new Date().toISOString(),
+            history: [
+                ...(negocio.history || []),
+                {
+                    date: new Date().toISOString(),
+                    type: `Cambio de Etapa: ${FUNNEL_STAGES[newStatus]}`,
+                    reason: formData.reason,
+                    user: 'Usuario Actual'
+                }
+            ]
+        };
+        onUpdateNegocio(negocioActualizado);
+        setModalData(null);
+    };
+
+    return { columns, handleOnDragEnd, modalData, handleModalSave, handleModalClose };
+};

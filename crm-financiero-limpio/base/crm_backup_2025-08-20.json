@@ -5613,18 +5613,29 @@
         "qualifications": [],
         "status": "PROSPECTO",
         "creationDate": "2025-08-14T17:34:55.477Z",
-        "lastUpdate": "2025-08-20T15:43:40.515Z",
+        "lastUpdate": "2025-08-21T01:10:15.550Z",
         "management": {
-          "id": "gest-1755525370528-e51s0ftyw",
-          "status": "PROSPECTO",
+          "id": "gest-1755738615550-wiu7gt9nu",
+          "status": "Prospecto",
           "history": [
             {
               "status": "PROSPECTO",
               "date": "2025-08-18T13:56:10.528Z",
               "notes": "Gestión creada desde importación de backup antiguo."
+            },
+            {
+              "status": "NUEVO NEGOCIO INICIADO",
+              "date": "2025-08-21T01:10:15.550Z",
+              "notes": "Se inició un nuevo flujo de trabajo. Motivo: fff"
+            },
+            {
+              "status": "Prospecto",
+              "date": "2025-08-21T01:10:15.550Z",
+              "notes": "Monto Aprox: 55555555555555. Observaciones: fgsdfgs"
             }
           ]
-        }
+        },
+        "relevamiento": "fff"
       },
       {
         "name": "Bessone Lider Jorge Juan",

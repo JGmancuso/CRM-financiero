@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import InputField from '../components/common/InputField';
 import { PlusCircle, Trash2, Archive } from 'lucide-react';
-import { initialSGRs } from '../data';
 import CampaignLogModal from '../components/modals/CampaignLogModal';
 
-export default function CampaignsView({ allClients, onUpdateClient, campaigns, setCampaigns, onNavigateToClient }) {
-    const [selectedCampaign, setSelectedCampaign] = useState(campaigns.find(c => !c.isArchived) || campaigns[0]);
+export default function CampaignsView({ allClients, onUpdateClient, campaigns = [], setCampaigns, onNavigateToClient, sgrs }) {
+    const [selectedCampaign, setSelectedCampaign] = useState(() => {
+        const activeCampaign = campaigns.find(c => !c.isArchived);
+        return activeCampaign || campaigns[0] || null;
+    });
     const [loggingClient, setLoggingClient] = useState(null);
     const [showArchived, setShowArchived] = useState(false);
 
@@ -31,7 +33,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns, s
         if (window.confirm("¿Seguro que quieres eliminar esta campaña?")) {
             const updatedCampaigns = campaigns.filter(c => c.id !== campaignId);
             setCampaigns(updatedCampaigns);
-            if (selectedCampaign.id === campaignId) {
+            if (selectedCampaign && selectedCampaign.id === campaignId) {
                 setSelectedCampaign(updatedCampaigns.find(c => c.isArchived === showArchived) || updatedCampaigns[0] || null);
             }
         }
@@ -40,7 +42,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns, s
     const archiveCampaign = (campaignId) => {
         const updatedCampaigns = campaigns.map(c => c.id === campaignId ? {...c, isArchived: true} : c);
         setCampaigns(updatedCampaigns);
-        if (selectedCampaign.id === campaignId) {
+        if (selectedCampaign && selectedCampaign.id === campaignId) {
             setSelectedCampaign(updatedCampaigns.find(c => !c.isArchived) || updatedCampaigns[0] || null);
         }
     };
@@ -146,7 +148,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns, s
                             </InputField>
                             <InputField label="Calificación SGR" name="sgrName" value={selectedCampaign.filters.sgrName} onChange={handleFilterChange} select>
                                 <option value="any">Cualquiera</option>
-                                {initialSGRs.map(sgr => <option key={sgr.id} value={sgr.name}>{sgr.name}</option>)}
+                                {(sgrs || []).map(sgr => <option key={sgr.id} value={sgr.name}>{sgr.name}</option>)}
                             </InputField>
                             <InputField label="Instrumento" name="instrument" value={selectedCampaign.filters.instrument} onChange={handleFilterChange} select>
                                 <option value="any">Cualquiera</option><option>Cheque</option><option>Pagaré</option><option>FCE</option><option>ON</option>
@@ -191,4 +193,4 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns, s
             {loggingClient && <CampaignLogModal client={loggingClient} campaign={selectedCampaign} onClose={() => setLoggingClient(null)} onSave={handleSaveLog} />}
         </div>
     );
-} 
+}

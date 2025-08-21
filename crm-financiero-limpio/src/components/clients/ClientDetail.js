@@ -1,5 +1,3 @@
-// src/components/clients/ClientDetail.js
-
 import React, { useState, useEffect } from 'react';
 import { Building, User, Edit, Trash2, FileText, Shield, Paperclip, BarChart2, DollarSign, CheckSquare, Clock, Landmark, PlusCircle } from 'lucide-react';
 import SummaryTab from '../tabs/SummaryTab';
@@ -14,8 +12,8 @@ import ActivityModal from '../modals/ActivityModal';
 import FinancingModal from '../modals/FinancingModal';
 import DocumentViewerModal from '../modals/DocumentViewerModal';
 import QualificationModal from '../modals/QualificationModal';
-import { initialSGRs } from '../../data';
 import InputField from '../common/InputField';
+import { FUNNEL_STAGES } from '../../data'; 
 
 const NewBusinessModal = ({ client, onSave, onClose }) => {
     const [businessData, setBusinessData] = useState({
@@ -56,7 +54,7 @@ const NewBusinessModal = ({ client, onSave, onClose }) => {
     );
 };
 
-export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument, onAddNewBusiness }) {
+export default function ClientDetail({ client, negocio, onUpdateNegocio,onEdit, onDelete, onSaveActivity, onToggleActivity, onSaveFinancing, onSaveQualification, onUpdateDebtorStatus, documentRequirements, onAddDocument, onAddNewBusiness, sgrs }) {
     const [activeTab, setActiveTab] = useState('resumen');
     const [showActivityModal, setShowActivityModal] = useState(false);
     const [editingActivity, setEditingActivity] = useState(null);
@@ -67,6 +65,25 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
     const [showNewBusinessModal, setShowNewBusinessModal] = useState(false);
 
     useEffect(() => { setActiveTab('resumen'); }, [client]);
+
+    const handleStatusChange = (e) => {
+        const newStatus = e.target.value;
+        if (negocio && newStatus !== negocio.estado) {
+            const updatedNegocio = {
+                ...negocio,
+                estado: newStatus,
+                history: [
+                    ...(negocio.history || []),
+                    {
+                        date: new Date().toISOString(),
+                        type: `Cambio de Etapa (Manual): ${FUNNEL_STAGES[newStatus]}`,
+                        reason: 'Actualizado desde el detalle del cliente.'
+                    }
+                ]
+            };
+            onUpdateNegocio(updatedNegocio);
+        }
+    };
 
     const handleDocumentClick = (doc) => {
         if (doc.type === 'link') {
@@ -125,7 +142,6 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
                 </nav>
             </div>
             
-            {/* --- CÓDIGO CORREGIDO: VUELTA A LA LÓGICA CLÁSICA DE PESTAÑAS --- */}
             <div>
                 {activeTab === 'resumen' && <SummaryTab client={client} />}
                 {activeTab === 'deudores' && <DebtorStatusTab client={client} onUpdateDebtorStatus={onUpdateDebtorStatus} />}
@@ -140,7 +156,7 @@ export default function ClientDetail({ client, onEdit, onDelete, onSaveActivity,
             {showActivityModal && <ActivityModal onClose={() => setShowActivityModal(false)} onSave={(activity) => { onSaveActivity(activity); setShowActivityModal(false); }} activityToEdit={editingActivity} />}
             {showFinancingModal && <FinancingModal onClose={() => setShowFinancingModal(false)} onSave={(instrument) => { onSaveFinancing(instrument); setShowFinancingModal(false); }} clientQualifications={client.qualifications || []} clientFinancing={client.financing || []} />}
             {viewingDoc && <DocumentViewerModal doc={viewingDoc} onClose={() => setViewingDoc(null)} />}
-            {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={initialSGRs} />}
+            {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={sgrs} />}
             {showNewBusinessModal && <NewBusinessModal client={client} onSave={onAddNewBusiness} onClose={() => setShowNewBusinessModal(false)} />}
         </div>
     );
