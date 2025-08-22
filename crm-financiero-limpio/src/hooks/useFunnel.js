@@ -36,6 +36,7 @@ export const useFunnel = (initialNegocios, onUpdateNegocio) => {
         const { source, destination } = result;
 
         if (source.droppableId === destination.droppableId) {
+            // Reordenar en la misma columna (lógica sin cambios)
             const column = columns[source.droppableId];
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
@@ -51,13 +52,14 @@ export const useFunnel = (initialNegocios, onUpdateNegocio) => {
         const destItems = [...destColumn.items];
         destItems.splice(destination.index, 0, movedItem);
 
+        // Actualizamos visualmente el estado para que el usuario vea el cambio
         setColumns({
             ...columns,
             [source.droppableId]: { ...sourceColumn, items: sourceItems },
             [destination.droppableId]: { ...destColumn, items: destItems }
         });
 
-        // 👇 CAMBIO REALIZADO AQUÍ
+        // Preparamos los datos para el modal
         setModalData({
             negocio: movedItem,
             newStatus: destination.droppableId,
@@ -66,6 +68,7 @@ export const useFunnel = (initialNegocios, onUpdateNegocio) => {
     };
 
     const handleModalClose = () => {
+        // Revertimos el cambio visual si el usuario cierra el modal
         const revertedColumns = Object.keys(FUNNEL_STAGES).reduce((acc, stageKey) => {
             acc[stageKey] = { name: FUNNEL_STAGES[stageKey], items: [] };
             return acc;
@@ -80,24 +83,33 @@ export const useFunnel = (initialNegocios, onUpdateNegocio) => {
         setModalData(null);
     };
     
+    // ✨ CAMBIO PRINCIPAL AQUÍ 👇
     const handleModalSave = (formData) => {
         if (!modalData) return;
         const { negocio, newStatus } = modalData;
 
+        // Creamos el objeto del negocio actualizado con los nuevos campos
         const negocioActualizado = {
             ...negocio,
             estado: newStatus,
             lastUpdate: new Date().toISOString(),
+            // Guardamos los datos del formulario directamente en el objeto del negocio
+            motivoUltimoCambio: formData.motivo,
+            proximosPasos: formData.proximosPasos,
+            documentacionFaltante: formData.faltantes,
             history: [
                 ...(negocio.history || []),
                 {
                     date: new Date().toISOString(),
-                    type: `Cambio de Etapa: ${FUNNEL_STAGES[newStatus]}`,
-                    reason: formData.reason,
-                    user: 'Usuario Actual'
+                    type: `Cambio a: ${FUNNEL_STAGES[newStatus]}`,
+                    // Guardamos una razón más completa en el historial
+                    reason: formData.motivo, 
+                    user: 'Usuario Actual' 
                 }
             ]
         };
+        
+        // Llamamos a la función de App.js que actualiza el estado y crea la tarea
         onUpdateNegocio(negocioActualizado);
         setModalData(null);
     };

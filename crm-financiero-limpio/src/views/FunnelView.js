@@ -2,8 +2,9 @@ import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useFunnel } from '../hooks/useFunnel';
 import FunnelColumn from '../components/funnel/FunnelColumn';
-import FunnelStatusModal from '../components/modals/FunnelStatusModal';
+//import FunnelStatusModal from '../components/modals/FunnelStatusModal';
 
+import StageChangeModal from '../components/modals/StageChangeModal';
 export default function FunnelView({ negocios, sgrs, onUpdateNegocio, onUpdateSgrQualification }) {
     
     const { 
@@ -35,13 +36,13 @@ export default function FunnelView({ negocios, sgrs, onUpdateNegocio, onUpdateSg
 
             {/* 👇 CAMBIO REALIZADO AQUÍ */}
             {modalData && (
-                <FunnelStatusModal
+                <StageChangeModal
                     negocio={modalData.negocio}
-                    newStatus={modalData.newStatusName}
+                    newStatusName={modalData.newStatusName}
                     onClose={handleModalClose}
                     onSave={handleModalSave}
                 />
-            )}
+            )}  
         </div>
     );
 }

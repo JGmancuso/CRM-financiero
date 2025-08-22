@@ -66,7 +66,7 @@ const NewBusinessModal = ({ client, onSave, onClose }) => {
 
 export default function ClientDetail({ 
     client, 
-    clients, // Recibe la lista completa
+    clients,
     negocio, 
     onUpdateNegocio, 
     onEdit, 
@@ -113,6 +113,12 @@ export default function ClientDetail({
             };
             onUpdateNegocio(updatedNegocio);
         }
+    };
+    
+    const handleSaveAndCloseModal = (activityData) => {
+        onSaveActivity(client.id, activityData);
+        setShowActivityModal(false);
+        setEditingActivity(null);
     };
 
     const tabs = [
@@ -175,11 +181,11 @@ export default function ClientDetail({
                 {activeTab === 'calificaciones' && <QualificationsTab client={client} onAddQualification={()=>{}} />}
                 {activeTab === 'documentos' && <DocumentsTab client={client} onViewDocument={()=>{}} documentRequirements={documentRequirements} onAddDocument={onAddDocument} />}
                 {activeTab === 'financiacion' && <FinancingTab client={client} onAddInstrument={()=>{}} />}
-                {activeTab === 'actividades' && <ActivitiesTab client={client} onAddActivity={()=>{}} onToggleActivity={onToggleActivity} />}
+                {activeTab === 'actividades' && <ActivitiesTab client={client} onAddActivity={() => setShowActivityModal(true)} onToggleActivity={(activityId) => onToggleActivity(client.id, activityId)} />}
                 {activeTab === 'historial' && <HistoryTab history={negocio?.history || client.history || []} />}
             </div>
 
-            {showActivityModal && <ActivityModal onClose={() => setShowActivityModal(false)} onSave={(activity) => { onSaveActivity(activity); setShowActivityModal(false); }} activityToEdit={editingActivity} />}
+            {showActivityModal && <ActivityModal client={client} onClose={() => setShowActivityModal(false)} onSave={handleSaveAndCloseModal} activityToEdit={editingActivity} />}
             {showFinancingModal && <FinancingModal onClose={() => setShowFinancingModal(false)} onSave={(instrument) => { onSaveFinancing(instrument); setShowFinancingModal(false); }} clientQualifications={client.qualifications || []} />}
             {viewingDoc && <DocumentViewerModal doc={viewingDoc} onClose={() => setViewingDoc(null)} />}
             {showQualificationModal && <QualificationModal onClose={() => setShowQualificationModal(false)} onSave={(q) => { onSaveQualification(q); setShowQualificationModal(false); }} qualificationToEdit={editingQualification} sgrs={sgrs} />}

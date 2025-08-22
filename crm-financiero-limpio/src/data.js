@@ -48,6 +48,7 @@ export const initialData = {
     ),
 
     // El resto de los datos también viene del JSON.
+    clients: transformedData.data.clients || [],
     sgrs: transformedData.data.sgrs || [],
     campaigns: transformedData.data.campaigns || [],
     products: transformedData.data.products || [],
