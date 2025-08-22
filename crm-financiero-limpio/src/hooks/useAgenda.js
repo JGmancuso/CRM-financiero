@@ -1,50 +1,48 @@
 import { useMemo } from 'react';
 
-// Este hook recibe la lista completa de clientes y devuelve las tareas filtradas.
-export function useAgenda(clients) {
-    // 1. Creamos una lista única con todas las actividades de todos los clientes
-    const allTasks = useMemo(() => 
-        (clients || []).flatMap(client => 
-            (client.activities || []).map(activity => ({
-                ...activity,
-                clientName: client.nombre || client.name, // Usamos 'nombre' como principal
-                clientId: client.id
-            }))
-        ), 
-    [clients]);
+// 1. El hook ahora recibe 'tasks', no 'clients'.
+export function useAgenda(tasks) {
+    // 2. Ya no necesitamos procesar los clientes, usamos la lista de 'tasks' directamente.
+    const allTasks = tasks || [];
 
-    // 2. Definimos los rangos de fechas
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    const { today, tomorrow, twoWeeksFromNow } = useMemo(() => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Establece la hora a las 00:00:00 para comparaciones precisas
+        
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
 
-    const twoWeeksFromNow = new Date(today);
-    twoWeeksFromNow.setDate(today.getDate() + 15);
+        const twoWeeksFromNow = new Date(today);
+        twoWeeksFromNow.setDate(today.getDate() + 15); // Rango de 14 días a partir de mañana
 
-    // 3. Filtramos las tareas en tres grupos: vencidas, de hoy y próximas
+        return { today, tomorrow, twoWeeksFromNow };
+    }, []);
+
     const overdueTasks = useMemo(() => 
-        allTasks.filter(task => new Date(task.date) < today && !task.completed)
-             .sort((a, b) => new Date(a.date) - new Date(b.date)), 
+        allTasks.filter(task => {
+            // 3. Usamos 'task.dueDate' en lugar de 'task.date'
+            const taskDate = new Date(task.dueDate + 'T00:00:00'); // Aseguramos que se interprete como local
+            return taskDate < today && !task.isCompleted;
+        }).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)), 
     [allTasks, today]);
         
     const eventsToday = useMemo(() => 
         allTasks.filter(task => {
-            const taskDate = new Date(task.date);
-            return taskDate >= today && taskDate < tomorrow && !task.completed;
+            // 3. Usamos 'task.dueDate' en lugar de 'task.date'
+            const taskDate = new Date(task.dueDate + 'T00:00:00');
+            return taskDate.getTime() === today.getTime() && !task.isCompleted;
         })
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
-    [allTasks, today, tomorrow]);
+        .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()),
+    [allTasks, today]);
         
     const upcomingEvents = useMemo(() => 
         allTasks.filter(task => {
-            const taskDate = new Date(task.date);
-            return taskDate >= tomorrow && taskDate < twoWeeksFromNow && !task.completed;
+            // 3. Usamos 'task.dueDate' en lugar de 'task.date'
+            const taskDate = new Date(task.dueDate + 'T00:00:00');
+            return taskDate >= tomorrow && taskDate < twoWeeksFromNow && !task.isCompleted;
         })
-        .sort((a, b) => new Date(a.date) - new Date(b.date)),
+        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)),
     [allTasks, tomorrow, twoWeeksFromNow]);
 
-    // 4. El hook devuelve un objeto con las listas ya procesadas
     return { overdueTasks, eventsToday, upcomingEvents };
 }
