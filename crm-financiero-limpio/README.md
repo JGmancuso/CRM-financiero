@@ -1,84 +1,98 @@
-# CRM Financiero
+¡Por supuesto! Es una excelente idea actualizar la documentación para que refleje todas las mejoras que hemos implementado. Un buen README.md es fundamental para cualquier proyecto.
 
-Este es un CRM (Customer Relationship Management) personalizado, construido como una Single Page Application (SPA) con React, diseñado para la gestión de clientes y oportunidades de negocio en el sector financiero. El corazón de la aplicación es un embudo de negocios interactivo estilo Kanban que permite un seguimiento visual del progreso de cada oportunidad.
+Basado en todo lo que hemos construido, he preparado un nuevo archivo README.md que describe la arquitectura actual, las nuevas funcionalidades de automatización y la lógica mejorada.
 
-## ✨ Características Principales
+Simplemente copia y pega este contenido en tu archivo README.md.
 
-  * **Gestión de Clientes:** Permite crear, editar y visualizar un listado completo de clientes, tanto personas físicas como jurídicas.
-  * **Embudo de Negocios Interactivo:** Una vista Kanban (`FunnelView`) donde las oportunidades de negocio (`negocios`) se pueden arrastrar y soltar entre distintas etapas.
-  * **Gestión de Negocios:** Soporta la creación de múltiples negocios por cliente y permite modificar el estado de un negocio desde la vista de detalle del cliente.
-  * **Consulta de Deudores:** Integra una pestaña para consultar la situación crediticia de un cliente, con un fallback a datos de ejemplo para desarrollo.
-  * **Persistencia de Datos:** Guarda automáticamente todo el estado de la aplicación (clientes, negocios, etc.) en el `localStorage` del navegador.
-  * **Importación y Exportación:** Incluye funciones para guardar un backup completo del estado de la aplicación en un archivo `.json` y para restaurarlo.
+CRM Financiero Proactivo
+Este es un CRM (Customer Relationship Management) personalizado, construido como una Single Page Application (SPA) con React. Ha sido diseñado para la gestión de clientes y oportunidades de negocio, con un enfoque en la automatización de tareas y el seguimiento proactivo para maximizar la productividad.
 
-## 💻 Stack Tecnológico
+✨ Características Principales
+Gestión de Clientes: Permite crear, editar y visualizar un listado completo de clientes.
 
-  * **Frontend:** [React.js](https://reactjs.org/)
-  * **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
-  * **Íconos:** [Lucide React](https://lucide.dev/)
-  * **Drag and Drop:** [React Beautiful DnD](https://github.com/atlassian/react-beautiful-dnd)
-  * **Estado:** Hooks de React (`useState`, `useEffect`, `useMemo`) a nivel de componente (`App.js`).
+Embudo de Negocios Inteligente: Una vista Kanban (FunnelView) donde las oportunidades (negocios) se pueden arrastrar y soltar. Cada movimiento desencadena acciones inteligentes.
 
-## 📁 Estructura del Proyecto
+Generación Automática de Tareas: Al cambiar un negocio de etapa, el sistema crea automáticamente una tarea de seguimiento en la agenda, asegurando que ningún pendiente se olvide.
 
-La estructura de carpetas está organizada por funcionalidad para mantener el código ordenado y escalable.
+Agenda y Dashboard de Productividad: Una AgendaView dedicada y un DashboardView que organizan todas las tareas por urgencia: Vencidas, Para Hoy y Próximas.
 
-```
+Captura de Contexto Detallado: Al mover una tarjeta, un modal solicita información clave como el motivo del cambio, los próximos pasos y la documentación faltante, enriqueciendo cada oportunidad.
+
+Visualización Enriquecida: La información de contexto se muestra directamente en las tarjetas del embudo y en los detalles de las tareas de la agenda, ofreciendo una visión completa de un solo vistazo.
+
+Persistencia de Datos: Guarda automáticamente todo el estado de la aplicación (clientes, negocios, tareas) en el localStorage del navegador.
+
+Importación y Exportación: Incluye funciones para guardar y restaurar un backup completo del estado de la aplicación en un archivo .json.
+
+💻 Stack Tecnológico
+Frontend: React.js
+
+Estilos: Tailwind CSS
+
+Íconos: Lucide React
+
+Drag and Drop: React Beautiful DnD
+
+Estado y Lógica: Hooks de React (useState, useEffect, useMemo) y Hooks personalizados.
+
+📁 Estructura del Proyecto
+La estructura del proyecto está organizada por funcionalidad para promover la mantenibilidad y escalabilidad.
+
 /src
 ├── components/
-│   ├── clients/       # Componentes específicos de la vista de clientes (Detail, Form, List)
-│   ├── common/        # Componentes reutilizables (Accordion, InfoItem, InputField)
-│   ├── funnel/        # Componentes del embudo (Column, Card)
-│   ├── modals/        # Modales para acciones específicas (FunnelStatus, Qualification, etc.)
-│   └── tabs/          # Componentes para las pestañas de la vista de detalle (Summary, DebtorStatus, etc.)
+│   ├── common/        # Componentes reutilizables (Botones, Inputs, etc.)
+│   ├── funnel/        # Componentes del embudo (FunnelColumn, NegocioCard)
+│   └── modals/        # Modales (StageChangeModal, ActivityModal, etc.)
 │
 ├── hooks/
-│   └── useFunnel.js   # Hook personalizado con la lógica del embudo de negocios
+│   ├── useFunnel.js   # Hook con la lógica de drag & drop y modales del embudo.
+│   └── useAgenda.js   # Hook para filtrar y categorizar tareas por fecha.
+│
+├── services/
+│   └── TaskAutomationService.js # Lógica de negocio para la creación automática de tareas.
 │
 ├── views/
-│   ├── App.js         # Componente raíz, cerebro de la aplicación
-│   ├── ClientsView.js # Vista principal de gestión de clientes
-│   ├── FunnelView.js  # Vista principal del embudo de negocios
-│   └── ...            # Otras vistas principales (Dashboard, SGR, etc.)
+│   ├── App.js         # Componente raíz, cerebro de la aplicación.
+│   ├── FunnelView.js  # Vista principal del embudo de negocios.
+│   ├── ClientsView.js # Vista de gestión de clientes.
+│   ├── AgendaView.js  # Vista dedicada a la lista de tareas.
+│   └── DashboardView.js # Panel de inicio con resúmenes y tareas urgentes.
 │
-├── data.js            # Carga y exporta los datos iniciales (lee el .json)
-├── crm_negocios.json  # Archivo de base de datos en formato JSON
-└── index.js           # Punto de entrada de la aplicación React
-```
+├── data.js            # Carga y exporta los datos iniciales.
+└── index.js           # Punto de entrada de la aplicación.
+🧠 Lógica y Arquitectura
+La aplicación sigue una arquitectura robusta y desacoplada, basada en los siguientes principios:
 
-## 🧠 Lógica y Arquitectura
+1. Estado Centralizado en App.js
+App.js actúa como la única fuente de verdad. Mantiene el estado principal (clients, negocios, tasks) y pasa tanto los datos como las funciones para modificarlos (handlers) hacia abajo a los componentes hijos a través de props.
 
-La aplicación sigue varios principios clave de diseño:
+2. Flujo de Acciones Inteligente (Funnel → Tareas)
+El proceso de automatización sigue un flujo claro y predecible:
 
-### 1\. Estado Centralizado en `App.js`
+Acción del Usuario: El usuario arrastra una NegocioCard en la FunnelView.
 
-`App.js` actúa como el **cerebro** de la aplicación. Mantiene el estado principal de todos los datos (listas de clientes, negocios, SGRs, etc.) usando el hook `useState`. Toda la información fluye desde `App.js` hacia abajo a los componentes hijos a través de `props`.
+Lógica de UI (Hook): El hook useFunnel intercepta el evento onDragEnd, actualiza el estado visual y abre el modal StageChangeModal para solicitar información adicional.
 
-### 2\. Modelo de Datos Dual: Clientes y Negocios
+Captura de Datos: El usuario rellena el formulario del modal (motivo, próximos pasos, etc.) y guarda.
 
-La aplicación maneja dos listas de datos principales que están relacionadas:
+Actualización de Estado (App.js): El handler handleNegocioStageChange en App.js es invocado. Este actualiza el estado del negocio con la nueva información.
 
-  * **`clients`**: Una lista de todos los clientes. Cada objeto contiene la información de contacto y detalles del cliente.
-  * **`negocios`**: Una lista de todas las oportunidades de negocio. Cada objeto `negocio` contiene:
-      * Detalles de la oportunidad (nombre, monto, etc.).
-      * La propiedad **`estado`**, que define su etapa en el embudo.
-      * Un objeto **`cliente` anidado** con la información básica del cliente al que pertenece.
+Lógica de Negocio (Servicio): El mismo handler llama al TaskAutomationService, pasándole el negocio actualizado.
 
-Esta estructura permite que un solo cliente pueda tener múltiples negocios asociados.
+Creación de Tarea: El servicio, que contiene las reglas de negocio, devuelve un objeto de tarea formateado. App.js recibe este objeto y lo añade al estado de tasks, completando el ciclo.
 
-### 3\. Flujo de Datos y Funciones "Handler"
+3. Separación de Responsabilidades
+El código está organizado para que cada parte tenga una única responsabilidad, facilitando su mantenimiento:
 
-Para modificar el estado, los componentes hijos (como `ClientsView` o `FunnelView`) no lo hacen directamente. En su lugar, `App.js` les pasa funciones "handler" como props (ej: `onUpdateNegocio`, `onAddClientAndBusiness`). Cuando un componente hijo necesita cambiar algo, llama a una de estas funciones, y `App.js` se encarga de actualizar su propio estado. Esto asegura un flujo de datos predecible y unidireccional.
+Vistas y Componentes: Se encargan exclusivamente de renderizar la interfaz y llamar a los handlers ante las interacciones del usuario.
 
-### 4\. Persistencia en `localStorage`
+Hooks Personalizados: Encapsulan lógica compleja relacionada con la UI (el estado del embudo, el filtrado de fechas de la agenda) para ser reutilizada y testeada de forma aislada.
 
-Un `useEffect` en `App.js` vigila cualquier cambio en los datos principales (`clients`, `negocios`, etc.). Cuando detecta un cambio, guarda una copia completa del estado en el `localStorage` del navegador. Al recargar la página, otro `useEffect` intenta leer estos datos guardados para restaurar la aplicación a su último estado.
+Servicios: Contienen lógica de negocio pura, sin depender de React. TaskAutomationService.js no sabe nada sobre componentes; solo sabe cómo crear una tarea a partir de un negocio.
 
-## 🚀 Próximas Mejoras
+🚀 Próximas Mejoras
+Backend Real: Desarrollar un backend (ej: con Node.js/Express y una base de datos como PostgreSQL) para reemplazar localStorage y permitir el uso multiusuario y la persistencia de datos real.
 
-Para futuras versiones, podemos enfocarnos en:
+Notificaciones: Implementar un sistema de notificaciones para alertar sobre tareas que vencen pronto.
 
-  * Implementar completamente las funciones pendientes (ej: `onDeleteClient`, `onAddNewBusiness` para múltiples negocios en la vista de detalle).
-  * Desarrollar un backend real (ej: con Node.js/Express y una base de datos como PostgreSQL) para reemplazar `localStorage` y permitir el uso multiusuario.
-  * Crear un "proxy" en el backend para hacer las llamadas a la API del BCRA de forma segura y evitar las restricciones CORS.
-  * Mejorar la vista de detalle del cliente para que pueda mostrar y gestionar una lista de múltiples negocios activos.
+Proxy para APIs Externas: Crear un "proxy" en el backend para hacer llamadas a APIs (ej: BCRA) de forma segura.

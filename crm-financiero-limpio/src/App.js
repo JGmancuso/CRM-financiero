@@ -148,6 +148,7 @@ export default function App() {
     };
     
     // --- MANEJADORES PRINCIPALES DE DATOS ---
+    // MANTENER ESTA VERSIÓN
     const handleAddClientAndBusiness = (clientFormData) => {
         const { motivo, montoAproximado, observaciones, ...clientDetails } = clientFormData;
         const newClient = {
@@ -157,8 +158,8 @@ export default function App() {
         };
         const newBusiness = {
             id: `negocio-${newClient.id}`,
-            nombre: motivo || `Oportunidad para ${newClient.name}`,
-            estado: 'PROSPECTO',
+            nombre: `${clientDetails.name} - ${motivo || 'Nueva Oportunidad'}`, // <-- Lógica nueva
+            estado: 'PROSPECTO', // <-- Lógica nueva
             montoSolicitado: parseFloat(montoAproximado) || 0,
             fechaProximoSeguimiento: new Date().toISOString(),
             history: [{
@@ -166,7 +167,11 @@ export default function App() {
                 type: 'Creación de Negocio',
                 reason: observaciones || 'Creación inicial.'
             }],
-            cliente: { id: newClient.id, nombre: newClient.name, cuit: newClient.cuit }
+            cliente: {
+                id: newClient.id,
+                nombre: newClient.name,
+                cuit: newClient.cuit
+            }
         };
         setClients(prevClients => [...prevClients, newClient]);
         setNegocios(prevNegocios => [...prevNegocios, newBusiness]);

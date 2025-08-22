@@ -2,6 +2,12 @@ import React from 'react';
 import { Clock } from 'lucide-react';
 
 export default function HistoryTab({ client }) {
+    // 👇 VALIDACIÓN AÑADIDA AQUÍ
+    // Si el cliente aún no se ha cargado, evitamos el error.
+    if (!client) {
+        return <p className="text-gray-500 p-4">Cargando historial...</p>;
+    }
+
     const history = client.history || [];
 
     return (
