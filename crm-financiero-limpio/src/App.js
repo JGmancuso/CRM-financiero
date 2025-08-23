@@ -320,8 +320,9 @@ export default function App() {
                  <div className="space-y-6 flex-grow">
                     <button onClick={() => setView('dashboard')} className={`p-3 rounded-lg ${view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Panel de Inicio"><LayoutDashboard /></button>
                     <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Negocios"><FunnelIcon /></button>
-                    <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
                     <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Agenda"><Calendar /></button>
+                    <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
+                    
                     <button onClick={() => setView('products')} className={`p-3 rounded-lg ${view === 'products' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Productos"><Tag /></button>
                     <button onClick={() => setView('sgr')} className={`p-3 rounded-lg ${view === 'sgr' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Entidades de Garantía"><Shield /></button>
                     <button onClick={() => setView('campaigns')} className={`p-3 rounded-lg ${view === 'campaigns' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Campañas"><Megaphone /></button>
@@ -350,7 +351,7 @@ export default function App() {
                         onUpdateNegocio={handleNegocioStageChange} 
                         onUpdateSgrQualification={() => {}} 
                     />}
-                    
+                    {view === 'agenda' && <AgendaView clients={clients} tasks={tasks} onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} onDeleteTask={handleDeleteTask} />}
                     {view === 'clients' && <ClientsView 
                         clients={clients}
                         negocios={negocios}
@@ -375,7 +376,7 @@ export default function App() {
                         onDeleteSgr={handleDeleteSgr}
                     />}
                     
-                    {view === 'agenda' && <AgendaView clients={clients} tasks={tasks} onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} onDeleteTask={handleDeleteTask} />}
+                    
                     {view === 'products' && <ProductsView products={products} setProducts={setProducts} />}
                     {view === 'campaigns' && <CampaignsView allClients={clients} sgrs={sgrs} onNavigateToClient={() => {}} />}
                 </main>
