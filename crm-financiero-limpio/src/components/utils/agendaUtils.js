@@ -6,7 +6,8 @@ const parseDateAsLocal = (dateString) => {
     return new Date(year, month - 1, day);
 };
 
-function getUnifiedAgendaItems(clients, tasks) {
+// Recibe 'clientes' en lugar de 'clients'
+function getUnifiedAgendaItems(clientes, tasks) {
     const funnelTasks = (tasks || [])
         .filter(task => task.dueDate)
         .map(task => ({
@@ -14,7 +15,8 @@ function getUnifiedAgendaItems(clients, tasks) {
             source: task.clientName === 'Tarea General' ? 'gestiones' : 'embudo',
         }));
 
-    const clientActivities = (clients || [])
+    // Usa 'clientes' en lugar de 'clients'
+    const clientActivities = (clientes || [])
         .flatMap(client => 
             (client.activities || [])
                 .filter(activity => activity.date)
@@ -22,7 +24,8 @@ function getUnifiedAgendaItems(clients, tasks) {
                     id: activity.id,
                     title: activity.description || 'Actividad',
                     details: activity.note,
-                    dueDate: activity.date.split('T')[0],
+                    // Cortamos la hora de la fecha
+                    dueDate: activity.date.split('T')[0], 
                     isCompleted: activity.completed || false,
                     clientName: client.nombre || client.name,
                     clientId: client.id,
@@ -30,6 +33,7 @@ function getUnifiedAgendaItems(clients, tasks) {
                     source: 'clientes',
                 }))
         );
+
     return [...funnelTasks, ...clientActivities];
 }
 
