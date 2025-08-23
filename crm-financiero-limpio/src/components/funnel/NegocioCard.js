@@ -1,125 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { 
-    User, ChevronDown, ChevronUp, DollarSign, Flag, AlertTriangle, Info,
-    Edit, Check, X as CancelIcon, Calendar, Briefcase
-} from 'lucide-react';
+import React from 'react';
+import { User, DollarSign, Clock } from 'lucide-react';
 
-export default function NegocioCard({ negocio, index, onUpdateNegocio }) {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [isEditingTitle, setIsEditingTitle] = useState(false);
-    const [newTitle, setNewTitle] = useState(negocio.nombre);
-
-    useEffect(() => {
-        setNewTitle(negocio.nombre);
-    }, [negocio.nombre]);
-
+export default function NegocioCard({ negocio, onCardClick }) {
     if (!negocio) return null;
-    
-    const handleSaveTitle = () => {
-        onUpdateNegocio({ ...negocio, nombre: newTitle });
-        setIsEditingTitle(false);
+
+    // Función auxiliar para calcular días desde una fecha
+    const daysSince = (dateString) => {
+        if (!dateString) return null;
+        const today = new Date();
+        const pastDate = new Date(dateString);
+        today.setHours(0, 0, 0, 0);
+        pastDate.setHours(0, 0, 0, 0);
+        const diffTime = Math.abs(today - pastDate);
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
     };
 
-    const handleCancelEdit = () => {
-        setNewTitle(negocio.nombre);
-        setIsEditingTitle(false);
+    // Lógica para encontrar la fecha del último cambio de estado
+    const findLastStageChangeDate = () => {
+        if (!negocio.history || negocio.history.length === 0) {
+            return negocio.creationDate;
+        }
+        const reversedHistory = [...negocio.history].reverse();
+        const lastChange = reversedHistory.find(item => item.type && item.type.includes('Cambio a:'));
+        return lastChange ? lastChange.date : negocio.creationDate;
     };
 
+    const diasEnEstado = daysSince(findLastStageChangeDate());
+
+    // Función para obtener el estilo del indicador de tiempo según los días
+    const getIndicatorStyle = (days) => {
+        if (days === null) return 'bg-gray-100 text-gray-600';
+        if (days <= 5) return 'bg-green-100 text-green-800';
+        if (days <= 10) return 'bg-yellow-100 text-yellow-800';
+        if (days <= 19) return 'bg-orange-100 text-orange-800';
+        return 'bg-red-100 text-red-800';
+    };
+
+    const indicatorStyle = getIndicatorStyle(diasEnEstado);
+
+    // Formatea el monto del negocio usando la moneda especificada
     const montoFormateado = new Intl.NumberFormat('es-AR', {
-        style: 'currency', currency: 'ARS',
+        style: 'currency',
+        currency: negocio.moneda || 'ARS',
     }).format(negocio.montoSolicitado || 0);
 
-    const fechaSeguimiento = negocio.fechaProximoSeguimiento 
-        ? new Date(negocio.fechaProximoSeguimiento).toLocaleDateString('es-AR')
-        : 'No definida';
-
     return (
-        <Draggable draggableId={negocio.id} index={index}>
-            {(provided, snapshot) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={`bg-white rounded-lg p-4 shadow-md border-l-4 transition-all duration-200 ${snapshot.isDragging ? 'border-blue-500 shadow-xl' : 'border-gray-300'}`}
-                >
-                    <div className="flex justify-between items-start">
-                        <div className="flex-grow mr-2">
-                            {isEditingTitle ? (
-                                <div className="flex items-center">
-                                    <input 
-                                        type="text"
-                                        value={newTitle}
-                                        onChange={(e) => setNewTitle(e.target.value)}
-                                        className="text-base font-semibold text-gray-800 border-b-2 border-blue-500 focus:outline-none w-full"
-                                        autoFocus
-                                        onKeyDown={(e) => e.key === 'Enter' && handleSaveTitle()}
-                                    />
-                                    <button onClick={handleSaveTitle} className="p-1 text-green-600 hover:bg-green-100 rounded-full"><Check size={18} /></button>
-                                    <button onClick={handleCancelEdit} className="p-1 text-red-600 hover:bg-red-100 rounded-full"><CancelIcon size={18} /></button>
-                                </div>
-                            ) : (
-                                <div className="flex items-center">
-                                    <h3 className="font-semibold text-gray-800">{negocio.nombre}</h3>
-                                    <button onClick={() => setIsEditingTitle(true)} className="ml-2 p-1 text-gray-400 hover:text-blue-600">
-                                        <Edit size={14} />
-                                    </button>
-                                </div>
-                            )}
-                            <p className="text-sm text-gray-500 flex items-center mt-1">
-                                <User size={14} className="mr-2" /> {negocio.cliente.nombre}
-                            </p>
-                        </div>
-                        <button onClick={() => setIsExpanded(!isExpanded)} className="p-1 text-gray-500 hover:text-gray-800 flex-shrink-0">
-                            {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                        </button>
+        <div
+            onClick={() => onCardClick(negocio)}
+            className="bg-white rounded-lg p-4 shadow-md border-l-4 border-gray-300 cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-blue-500"
+        >
+            <h3 className="font-semibold text-gray-800 truncate">{negocio.nombre}</h3>
+            <p className="text-sm text-gray-500 flex items-center mt-1">
+                <User size={14} className="mr-2" /> {negocio.cliente.nombre}
+            </p>
+            <div className="flex justify-between items-end mt-2">
+                <p className="text-lg font-semibold text-gray-900">
+                    {montoFormateado}
+                </p>
+                {diasEnEstado !== null && (
+                    <div className={`flex items-center text-xs px-2 py-1 rounded-full font-semibold ${indicatorStyle}`}>
+                        <Clock size={12} className="mr-1" />
+                        {diasEnEstado}d
                     </div>
-
-                    {isExpanded && (
-                        <div className="mt-4 pt-4 border-t border-gray-200 space-y-3 text-sm animate-fade-in">
-                            {negocio.proximosPasos && (
-                                <div className="flex items-start text-green-800 bg-green-50 p-2 rounded-md">
-                                    <Flag size={16} className="mr-2 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <span className="font-semibold block">Próximos Pasos:</span>
-                                        <p>{negocio.proximosPasos}</p>
-                                    </div>
-                                </div>
-                            )}
-                            {negocio.documentacionFaltante && (
-                                <div className="flex items-start text-yellow-800 bg-yellow-50 p-2 rounded-md">
-                                    <AlertTriangle size={16} className="mr-2 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <span className="font-semibold block">Faltante:</span>
-                                        <p>{negocio.documentacionFaltante}</p>
-                                    </div>
-                                </div>
-                            )}
-                            {negocio.motivoUltimoCambio && (
-                                <div className="flex items-start text-gray-700 bg-gray-100 p-2 rounded-md">
-                                    <Info size={16} className="mr-2 mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <span className="font-semibold block">Último Motivo:</span>
-                                        <p>{negocio.motivoUltimoCambio}</p>
-                                    </div>
-                                </div>
-                            )}
-                            <div className="flex items-center text-gray-600 pt-2">
-                                <DollarSign size={14} className="mr-2" />
-                                <span>Monto Solicitado: {montoFormateado}</span>
-                            </div>
-                            <div className="flex items-center text-gray-600">
-                                <Briefcase size={14} className="mr-2" />
-                                <span>CUIT: {negocio.cliente.cuit}</span>
-                            </div>
-                            <div className="flex items-center text-gray-600">
-                                <Calendar size={14} className="mr-2" />
-                                <span>Próx. seguimiento: {fechaSeguimiento}</span>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-        </Draggable>
+                )}
+            </div>
+        </div>
     );
 }
