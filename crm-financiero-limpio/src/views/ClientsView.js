@@ -109,7 +109,7 @@ export default function ClientsView({
                         onDelete={onDeleteClient}
                         onAddDocument={onAddDocument}
                         onAddNewBusiness={onAddNewBusiness}
-                        onSaveActivity={onSaveActivity}
+                        onSaveActivity={(activityData) => onSaveActivity(activityData, selectedClient.id)}
                         onToggleActivity={onToggleActivity}
                         onSaveFinancing={onSaveFinancing}
                         onSaveQualification={onSaveQualification}

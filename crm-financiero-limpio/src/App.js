@@ -283,12 +283,21 @@ export default function App() {
                 if (client.id === clientId) {
                     const existingActivities = client.activities || [];
                     let updatedActivities;
+
+                    // Si la actividad ya tiene un ID, es una actualización
                     if (activityData.id) {
-                        updatedActivities = existingActivities.map(act => act.id === activityData.id ? activityData : act);
-                    } else {
-                        const newActivity = { ...activityData, id: `act-${Date.now()}` };
+                        updatedActivities = existingActivities.map(act => 
+                            act.id === activityData.id ? { ...act, ...activityData } : act
+                        );
+                    } else { // Si no, es una actividad nueva
+                        const newActivity = { 
+                            ...activityData, 
+                            id: `act-${Date.now()}`,
+                            completed: false // Aseguramos que inicie como no completada
+                        };
                         updatedActivities = [...existingActivities, newActivity];
                     }
+                    console.log("Guardando actividades para cliente:", client.nombre, updatedActivities);
                     return { ...client, activities: updatedActivities };
                 }
                 return client;
