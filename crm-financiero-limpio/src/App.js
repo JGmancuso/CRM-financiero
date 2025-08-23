@@ -332,14 +332,15 @@ export default function App() {
                 <main className="flex-1 overflow-y-auto">
                     <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
                     
-                    {view === 'dashboard' && <DashboardView 
+                   {view === 'dashboard' && <DashboardView 
                         clients={clients} 
                         negocios={negocios} 
-                        tasks={tasks} // <-- ¡Esta línea es la más importante!
+                        tasks={tasks}
+                        onAddTask={handleAddTask} // <-- Asegúrate de que esta línea exista
                         onUpdateTask={handleUpdateTask}
                         onDeleteTask={handleDeleteTask}
-                        onNewClient={handleAddClientAndBusiness} // Asumo que este es el nombre correcto
-                        onNavigateToClient={() => { /* Lógica para navegar */ }}
+                        onNewClient={handleAddClientAndBusiness}
+                        onNavigateToClient={() => setView('clients')}
                     />}
                     
                     {view === 'funnel' && <FunnelView 

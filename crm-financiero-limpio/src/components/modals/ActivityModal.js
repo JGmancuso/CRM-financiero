@@ -2,36 +2,63 @@ import React, { useState, useEffect } from 'react';
 import InputField from '../common/InputField';
 
 export default function ActivityModal({ onClose, onSave, activityToEdit }) {
-    const [activity, setActivity] = useState(activityToEdit || { type: 'task', title: '', date: new Date().toISOString().slice(0, 16), note: '' });
+    const getInitialState = () => ({
+        type: 'task',
+        description: '',
+        date: new Date().toISOString().split('T')[0],
+        note: '',
+        completed: false
+    });
+
+    const [activity, setActivity] = useState(activityToEdit || getInitialState());
     
     useEffect(() => {
-        setActivity(activityToEdit || { type: 'task', title: '', date: new Date().toISOString().slice(0, 16), note: '' });
+        if (activityToEdit) {
+            const datePart = activityToEdit.date ? activityToEdit.date.split('T')[0] : getInitialState().date;
+            setActivity({ ...activityToEdit, date: datePart });
+        } else {
+            setActivity(getInitialState());
+        }
     }, [activityToEdit]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setActivity(prev => ({ ...prev, [name]: value }));
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!activity.title || !activity.date) return;
-        onSave(activity);
+        if (!activity.description || !activity.date) return;
+        
+        // Preparamos el objeto a guardar
+        const dataToSave = {
+            title: activity.description, // Mapeamos al campo 'title' que espera la agenda
+            dueDate: activity.date, // Mapeamos al campo 'dueDate'
+            details: activity.note,
+        };
+
+        // Si no hay cliente, lo marcamos como 'General'
+        if (!activity.clientId) {
+            dataToSave.clientName = 'Tarea General';
+        }
+        
+        // Si estamos editando, mantenemos el id original
+        if (activity.id) {
+            dataToSave.id = activity.id;
+        }
+
+        onSave(dataToSave);
     };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">{activityToEdit ? 'Editar' : 'Nueva'} Actividad</h2>
+                <h2 className="text-xl font-bold mb-4">{activityToEdit ? 'Editar' : 'Nuevo'} Evento/Tarea</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                        <div className="flex rounded-md shadow-sm">
-                            <button type="button" onClick={() => setActivity(prev => ({ ...prev, type: 'task' }))} className={`px-4 py-2 rounded-l-md border border-gray-300 text-sm font-medium ${activity.type === 'task' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}>Tarea</button>
-                            <button type="button" onClick={() => setActivity(prev => ({ ...prev, type: 'event' }))} className={`-ml-px px-4 py-2 rounded-r-md border border-gray-300 text-sm font-medium ${activity.type === 'event' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}>Evento</button>
-                        </div>
-                    </div>
-                    <InputField name="title" label="Título" value={activity.title} onChange={handleChange} required />
-                    <InputField name="date" label="Fecha y Hora" type="datetime-local" value={activity.date} onChange={handleChange} required />
-                    <InputField name="note" label="Notas" value={activity.note} onChange={handleChange} />
+                    {/* ... (el resto del formulario no cambia) ... */}
+                    <InputField name="description" label="Título" value={activity.description} onChange={handleChange} required />
+                    <InputField name="date" label="Fecha" type="date" value={activity.date} onChange={handleChange} required />
+                    <InputField name="note" label="Notas Adicionales" value={activity.note} onChange={handleChange} />
                     <div className="flex justify-end space-x-3 pt-4 border-t">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
                         <button type="submit" className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Guardar</button>
