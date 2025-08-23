@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-// Importamos las nuevas funciones de utilidad
+// Importamos las funciones de utilidad desde el nuevo archivo
 import { getUnifiedAgendaItems, categorizeTasks } from '../utils/agendaUtils';
 
 export function useAgenda(clients, tasks, filter = 'todos') {
     
-    // Hook para unificar y filtrar por origen
+    // Paso 1: Unifica todos los items (tareas y actividades) y aplica el filtro de origen.
     const filteredItems = useMemo(() => {
         const allItems = getUnifiedAgendaItems(clients, tasks);
         
@@ -15,10 +15,11 @@ export function useAgenda(clients, tasks, filter = 'todos') {
 
     }, [clients, tasks, filter]);
 
-    // Hook para categorizar por fecha
+    // Paso 2: Toma los items ya filtrados y los categoriza por fecha.
     const categorizedItems = useMemo(() => {
         return categorizeTasks(filteredItems);
     }, [filteredItems]);
 
+    // Devuelve el resultado final a la vista.
     return categorizedItems;
 }
