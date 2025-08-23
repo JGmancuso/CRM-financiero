@@ -627,6 +627,15 @@
     "products": [],
     "tasks": [
       {
+        "id": "task-1755983250099",
+        "title": "Contactar porcinos",
+        "details": "Credito BICE",
+        "dueDate": "2025-08-23",
+        "isCompleted": true,
+        "clientName": "Tarea General",
+        "type": "task"
+      },
+      {
         "title": "Hacer seguimiento de etapa 'PROSPECTO' para Tecno Fundaciones SRL",
         "dueDate": "2025-08-25",
         "clientId": "client-1755264538180",
@@ -801,6 +810,15 @@
         "details": "En calificacion ",
         "id": "task-1755881385585",
         "createdAt": "2025-08-22T16:49:45.585Z",
+        "isCompleted": false
+      },
+      {
+        "title": "concatar",
+        "dueDate": "2025-08-25",
+        "details": "",
+        "clientName": "Tarea General",
+        "id": "task-1755983697115",
+        "createdAt": "2025-08-23T21:14:57.115Z",
         "isCompleted": false
       }
     ]
