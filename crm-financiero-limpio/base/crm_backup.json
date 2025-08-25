@@ -715,7 +715,8 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1755875286923",
         "createdAt": "2025-08-22T15:08:06.923Z",
-        "isCompleted": false
+        "isCompleted": true,
+        "source": "embudo"
       },
       {
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",

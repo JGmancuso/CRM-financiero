@@ -138,6 +138,30 @@ export default function App() {
         setTasks(prevTasks => [...prevTasks, newTask].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)));
         return newTask;
     };
+    const handleToggleTaskCompletion = (taskToToggle) => {
+        // Primero, busca en la lista principal de tareas (del embudo y generales)
+        const taskExistsInTasks = tasks.some(t => t.id === taskToToggle.id);
+
+        if (taskExistsInTasks) {
+            setTasks(prevTasks => 
+                prevTasks.map(t => t.id === taskToToggle.id ? { ...t, isCompleted: !t.isCompleted } : t)
+            );
+        } else {
+            // Si no está ahí, busca en las actividades de los clientes
+            setClients(prevClients => 
+                prevClients.map(client => {
+                    const activityExists = client.activities?.some(a => a.id === taskToToggle.id);
+                    if (activityExists) {
+                        const updatedActivities = client.activities.map(a => 
+                            a.id === taskToToggle.id ? { ...a, completed: !a.completed } : a
+                        );
+                        return { ...client, activities: updatedActivities };
+                    }
+                    return client;
+                })
+            );
+        }
+    };
 
     const handleUpdateTask = (updatedTask) => {
         setTasks(prevTasks => prevTasks.map(t => t.id === updatedTask.id ? updatedTask : t));
@@ -284,19 +308,17 @@ export default function App() {
                     const existingActivities = client.activities || [];
                     let updatedActivities;
 
-                    // Si la actividad ya tiene un ID, es una actualización
-                    if (activityData.id) {
+                    if (activityData.id) { // Actualizar actividad existente
                         updatedActivities = existingActivities.map(act => 
                             act.id === activityData.id ? activityData : act
                         );
-                    } else { // Si no, es una actividad nueva
+                    } else { // Añadir nueva actividad
                         const newActivity = { 
                             ...activityData, 
                             id: `act-${Date.now()}`,
                         };
                         updatedActivities = [...existingActivities, newActivity];
                     }
-                    console.log(`Guardando ${updatedActivities.length} actividades para el cliente ${client.nombre}`);
                     return { ...client, activities: updatedActivities };
                 }
                 return client;
