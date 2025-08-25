@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-// 👇 Rutas de importación corregidas para apuntar a la carpeta 'form'
+import { Trash2 } from 'lucide-react';
+import { industries } from '../../data'; // Asumo que tienes industries en data.js
+import InputField from '../common/InputField';
+// Importa los sub-componentes del formulario
 import ClientFormPrincipal from './form/ClientFormPrincipal';
 import ClientFormContact from './form/ClientFormContact';
-import ClientFormSocios from './form/ClientFormSocios';
 import ClientFormDetails from './form/ClientFormDetails';
-// He eliminado ClientFormNewBusiness porque su lógica ahora está en App.js
-// y el formulario principal ya no maneja la creación de negocios.
+import ClientFormSocios from './form/ClientFormSocios';
 
 const defaultClient = {
     type: 'juridica', nombre: '', cuit: '', email: '', phone: '',
@@ -37,7 +38,7 @@ export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit
     };
 
     const handlePartnersChange = (index, event) => {
-        const { name, value } = event.target;
+        const { name, value } = name.target;
         const list = [...(client.partners || [])];
         list[index][name] = name === 'share' ? parseFloat(value) || 0 : value;
         setClient(prev => ({ ...prev, partners: list }));

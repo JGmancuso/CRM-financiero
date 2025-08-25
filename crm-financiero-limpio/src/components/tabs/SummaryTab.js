@@ -61,6 +61,7 @@ export default function SummaryTab({ client, allClients }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             <div>
                 <h3 className="text-lg font-semibold text-gray-700 mb-4">Información Principal</h3>
+                <InfoItem icon={<User size={20} />} label="Nombre / Razón Social" value={client.nombre} />
                 <InfoItem icon={<Mail size={20} />} label="Email" value={client.email} />
                 <InfoItem icon={<Phone size={20} />} label="Teléfono" value={client.phone} />
                 <InfoItem icon={<MapPin size={20} />} label="Ubicación" value={client.location} />
@@ -71,7 +72,7 @@ export default function SummaryTab({ client, allClients }) {
                     label="CUIT / CUIL" 
                     value={client.cuit || client.cuil} 
                 />
-
+                
                 <InfoItem icon={<Fingerprint size={20} />} label="ID Interno" value={client.id || 'sin numero'} />
                 {client.type === 'fisica' && (
                     <>
