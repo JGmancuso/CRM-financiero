@@ -138,6 +138,7 @@ export default function App() {
         setTasks(prevTasks => [...prevTasks, newTask].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)));
         return newTask;
     };
+
     const handleToggleTaskCompletion = (taskToToggle) => {
         // Primero, busca en la lista principal de tareas (del embudo y generales)
         const taskExistsInTasks = tasks.some(t => t.id === taskToToggle.id);
@@ -153,7 +154,7 @@ export default function App() {
                     const activityExists = client.activities?.some(a => a.id === taskToToggle.id);
                     if (activityExists) {
                         const updatedActivities = client.activities.map(a => 
-                            a.id === taskToToggle.id ? { ...a, completed: !a.completed } : a
+                            a.id === taskToToggle.id ? { ...a, completed: !a.completed, isCompleted: !a.completed } : a
                         );
                         return { ...client, activities: updatedActivities };
                     }
@@ -380,7 +381,14 @@ export default function App() {
                         onUpdateNegocio={handleNegocioStageChange} 
                         onUpdateSgrQualification={() => {}} 
                     />}
-                    {view === 'agenda' && <AgendaView clients={clients} tasks={tasks} onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} onDeleteTask={handleDeleteTask} />}
+                    {view === 'agenda' && <AgendaView 
+                        clients={clients} 
+                        tasks={tasks} 
+                        onAddTask={handleAddTask} 
+                        onUpdateTask={handleUpdateTask} 
+                        onDeleteTask={handleDeleteTask} 
+                        onToggleTaskCompletion={handleToggleTaskCompletion}
+                    />}
                     {view === 'clients' && <ClientsView 
                         clients={clients}
                         negocios={negocios}

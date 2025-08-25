@@ -1,6 +1,7 @@
 import React from 'react';
-import TaskItem from '../common/TaskItem'; // Importamos el nuevo TaskItem
+import TaskItem from '../common/TaskItem';
 
+// 1. Asegúrate de que reciba 'onToggleComplete'
 export default function AgendaColumn({ title, tasks, onToggleComplete, onEdit, onView }) {
     return (
         <div className="bg-gray-100 rounded-lg p-4 w-80 flex-shrink-0">
@@ -11,7 +12,7 @@ export default function AgendaColumn({ title, tasks, onToggleComplete, onEdit, o
                         <TaskItem 
                             key={task.id} 
                             task={task} 
-                            onToggleComplete={onToggleComplete}
+                            onToggleComplete={onToggleComplete} // <-- 2. Pasa la función al TaskItem
                             onEdit={onEdit}
                             onView={onView}
                         />)
