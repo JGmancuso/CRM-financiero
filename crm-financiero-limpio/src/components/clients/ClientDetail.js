@@ -79,7 +79,8 @@ export default function ClientDetail({
     onSaveQualification, 
     onUpdateDebtorStatus, 
     documentRequirements, 
-    onAddDocument 
+    onAddDocument,
+    onUpdateClient
 }) {
     const [activeTab, setActiveTab] = useState('resumen');
     const [showActivityModal, setShowActivityModal] = useState(false);
@@ -128,8 +129,22 @@ export default function ClientDetail({
         { id: 'documentos', label: 'Documentos', icon: Paperclip },
         { id: 'financiacion', label: 'Financiación', icon: DollarSign },
         { id: 'actividades', label: 'Actividades', icon: CheckSquare },
+        { id: 'inversiones', label: 'Inversiones', icon: BarChart2 },
         { id: 'historial', label: 'Historial', icon: Clock },
     ];
+    const renderActiveTab = () => {
+        switch (activeTab) {
+            case 'resumen': return <SummaryTab client={client} allClients={clients} />;
+            case 'deudores': return <DebtorStatusTab client={client} onUpdateDebtorStatus={onUpdateDebtorStatus} />;
+            case 'calificaciones': return <QualificationsTab client={client} onAddQualification={()=>{}} />;
+            case 'documentos': return <DocumentsTab client={client} onViewDocument={()=>{}} documentRequirements={documentRequirements} onAddDocument={onAddDocument} />;
+            // 3. Añadimos la lógica para renderizarla
+            case 'inversiones': return <InvestmentTab client={client} onUpdateClient={onUpdateClient} />;
+            case 'actividades': return <ActivitiesTab client={client} onSaveActivity={onSaveActivity} onToggleActivity={onToggleActivity} />;
+            case 'historial': return <HistoryTab history={negocio?.history || client.history || []} />;
+            default: return null;
+        }
+    };
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg animate-fade-in">

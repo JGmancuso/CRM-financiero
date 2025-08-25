@@ -22,7 +22,8 @@
             "title": "ON",
             "date": "2025-08-25T12:43",
             "note": "* Hipoteca",
-            "id": "act-1755866646609"
+            "id": "act-1755866646609",
+            "completed": true
           },
           {
             "0": "c",
@@ -46,7 +47,7 @@
             "18": "2",
             "19": "3",
             "id": "act-1755987146600",
-            "completed": false
+            "completed": true
           },
           {
             "0": "c",
@@ -93,9 +94,282 @@
             "17": "9",
             "18": "2",
             "19": "3",
-            "id": "act-1755987355188"
+            "id": "act-1755987355188",
+            "completed": true
+          },
+          {
+            "0": "c",
+            "1": "l",
+            "2": "i",
+            "3": "e",
+            "4": "n",
+            "5": "t",
+            "6": "-",
+            "7": "1",
+            "8": "7",
+            "9": "5",
+            "10": "5",
+            "11": "1",
+            "12": "7",
+            "13": "7",
+            "14": "2",
+            "15": "4",
+            "16": "1",
+            "17": "9",
+            "18": "2",
+            "19": "3",
+            "id": "act-1756133384420"
           }
-        ]
+        ],
+        "debtorStatus": {
+          "totalDebt": 469099000,
+          "currentSituation": [
+            {
+              "entidad": "BNA",
+              "situacion": 1,
+              "monto": 72231000
+            },
+            {
+              "entidad": "Supervielle",
+              "situacion": 0,
+              "monto": 0
+            },
+            {
+              "entidad": "Galicia",
+              "situacion": 1,
+              "monto": 115029000
+            },
+            {
+              "entidad": "COMAFI",
+              "situacion": 1,
+              "monto": 281839000
+            }
+          ],
+          "history": [
+            {
+              "entidad": "BNA",
+              "periodos": {
+                "202307": 1,
+                "202308": 0,
+                "202309": 1,
+                "202310": 1,
+                "202311": 0,
+                "202312": 1,
+                "202401": 1,
+                "202402": 0,
+                "202403": 0,
+                "202404": 0,
+                "202405": 1,
+                "202406": 1,
+                "202407": 1,
+                "202408": 1,
+                "202409": 1,
+                "202410": 1,
+                "202411": 0,
+                "202412": 0,
+                "202501": 1,
+                "202502": 1,
+                "202503": 1,
+                "202504": 1,
+                "202505": 1,
+                "202506": 1
+              },
+              "montoEvol": {
+                "202307": 3,
+                "202308": 0,
+                "202309": 6,
+                "202310": 14,
+                "202311": 0,
+                "202312": 1,
+                "202401": 10,
+                "202402": 0,
+                "202403": 0,
+                "202404": 0,
+                "202405": 14500,
+                "202406": 14500,
+                "202407": 14500,
+                "202408": 14500,
+                "202409": 14500,
+                "202410": 14500,
+                "202411": 0,
+                "202412": 0,
+                "202501": 40000,
+                "202502": 40000,
+                "202503": 40000,
+                "202504": 70428,
+                "202505": 71331,
+                "202506": 72231
+              }
+            },
+            {
+              "entidad": "Supervielle",
+              "periodos": {
+                "202307": 1,
+                "202308": 1,
+                "202309": 1,
+                "202310": 1,
+                "202311": 1,
+                "202312": 1,
+                "202401": 1,
+                "202402": 1,
+                "202403": 1,
+                "202404": 1,
+                "202405": 0,
+                "202406": 0,
+                "202407": 0,
+                "202408": 0,
+                "202409": 1,
+                "202410": 0,
+                "202411": 0,
+                "202412": 0,
+                "202501": 0,
+                "202502": 1,
+                "202503": 1,
+                "202504": 0,
+                "202505": 0,
+                "202506": 0
+              },
+              "montoEvol": {
+                "202307": 63,
+                "202308": 11,
+                "202309": 26,
+                "202310": 658,
+                "202311": 1678,
+                "202312": 1461,
+                "202401": 94,
+                "202402": 15,
+                "202403": 3232,
+                "202404": 22,
+                "202405": 0,
+                "202406": 0,
+                "202407": 0,
+                "202408": 0,
+                "202409": 109,
+                "202410": 0,
+                "202411": 0,
+                "202412": 0,
+                "202501": 0,
+                "202502": 37,
+                "202503": 126,
+                "202504": 0,
+                "202505": 0,
+                "202506": 0
+              }
+            },
+            {
+              "entidad": "Galicia",
+              "periodos": {
+                "202307": 1,
+                "202308": 1,
+                "202309": 1,
+                "202310": 1,
+                "202311": 1,
+                "202312": 1,
+                "202401": 1,
+                "202402": 1,
+                "202403": 1,
+                "202404": 1,
+                "202405": 1,
+                "202406": 1,
+                "202407": 1,
+                "202408": 1,
+                "202409": 1,
+                "202410": 1,
+                "202411": 1,
+                "202412": 1,
+                "202501": 1,
+                "202502": 1,
+                "202503": 1,
+                "202504": 1,
+                "202505": 1,
+                "202506": 1
+              },
+              "montoEvol": {
+                "202307": 662,
+                "202308": 995,
+                "202309": 416,
+                "202310": 907,
+                "202311": 2288,
+                "202312": 4670,
+                "202401": 395,
+                "202402": 49,
+                "202403": 112,
+                "202404": 2504,
+                "202405": 100,
+                "202406": 100,
+                "202407": 146,
+                "202408": 186,
+                "202409": 5185,
+                "202410": 80,
+                "202411": 695,
+                "202412": 103220,
+                "202501": 111048,
+                "202502": 111342,
+                "202503": 112076,
+                "202504": 113041,
+                "202505": 114034,
+                "202506": 115029
+              }
+            },
+            {
+              "entidad": "COMAFI",
+              "periodos": {
+                "202307": 0,
+                "202308": 0,
+                "202309": 0,
+                "202310": 0,
+                "202311": 0,
+                "202312": 0,
+                "202401": 0,
+                "202402": 0,
+                "202403": 0,
+                "202404": 0,
+                "202405": 0,
+                "202406": 0,
+                "202407": 0,
+                "202408": 0,
+                "202409": 0,
+                "202410": 0,
+                "202411": 0,
+                "202412": 1,
+                "202501": 1,
+                "202502": 1,
+                "202503": 1,
+                "202504": 1,
+                "202505": 1,
+                "202506": 1
+              },
+              "montoEvol": {
+                "202307": 0,
+                "202308": 0,
+                "202309": 0,
+                "202310": 0,
+                "202311": 0,
+                "202312": 0,
+                "202401": 0,
+                "202402": 0,
+                "202403": 0,
+                "202404": 0,
+                "202405": 0,
+                "202406": 0,
+                "202407": 0,
+                "202408": 0,
+                "202409": 0,
+                "202410": 0,
+                "202411": 0,
+                "202412": 229985,
+                "202501": 237039,
+                "202502": 241656,
+                "202503": 246235,
+                "202504": 271293,
+                "202505": 279391,
+                "202506": 281839
+              }
+            }
+          ],
+          "rejectedChecks": []
+        },
+        "lastUpdate": "2025-08-25T14:48:35.838Z"
       },
       {
         "id": "client-1755177831940",
@@ -208,7 +482,7 @@
         "id": "negocio-client-1755177241923",
         "nombre": "Oportunidad para Kennbal SRL",
         "estado": "EN_CALIFICACION",
-        "montoSolicitado": 0,
+        "montoSolicitado": 1000000000,
         "fechaProximoSeguimiento": "2025-08-19T23:01:06.412Z",
         "history": [
           {
@@ -228,12 +502,13 @@
         },
         "reason": "Argenpyme ",
         "nextSteps": "Esperar calificacion",
-        "missingItems": "Nada "
+        "missingItems": "Nada ",
+        "motivoUltimoCambio": "Linea Galicia"
       },
       {
         "id": "negocio-client-1755177831940",
         "nombre": "Oportunidad para M y M SAS",
-        "estado": "EN_CALIFICACION",
+        "estado": "INFO_SOLICITADA",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-19T22:07:47.581Z",
         "history": [
@@ -251,13 +526,14 @@
           "cuit": "30-71734588-2",
           "email": "mariomarucco@gmail.com",
           "phone": "02966561337"
-        }
+        },
+        "motivoUltimoCambio": "Ampliar linea para cheques de terceros"
       },
       {
         "id": "negocio-client-1755178433987",
         "nombre": "Credito valor porducto BICE",
         "estado": "EN_CALIFICACION",
-        "montoSolicitado": 0,
+        "montoSolicitado": 100000000,
         "fechaProximoSeguimiento": "2025-08-19T22:08:02.565Z",
         "history": [
           {
@@ -275,7 +551,18 @@
           "email": "estudioaolocco@yahoo.com",
           "phone": "3585489404"
         },
-        "motivoUltimoCambio": ""
+        "motivoUltimoCambio": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
+        "calificaciones": [
+          {
+            "id": "qual-1756125514822",
+            "entidad": "Argenpymes",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-25",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       },
       {
         "id": "negocio-client-1755180631735",
@@ -295,7 +582,7 @@
       {
         "id": "negocio-client-1755182242838",
         "nombre": "Oportunidad para Mecfres SRL",
-        "estado": "PROSPECTO",
+        "estado": "INFO_SOLICITADA",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-19T22:08:38.209Z",
         "history": [],
@@ -305,7 +592,8 @@
           "cuit": "30709854913",
           "email": "mecfre@hotmail.com",
           "phone": "2664473522"
-        }
+        },
+        "motivoUltimoCambio": "Necesita ampliar la nave para las maquinas"
       },
       {
         "id": "negocio-client-1755184537576",
@@ -361,7 +649,7 @@
       {
         "id": "negocio-client-1755192895477",
         "nombre": "Oportunidad para Mosca Juan Carlos",
-        "estado": "PROSPECTO",
+        "estado": "PERDIDO",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-20T15:43:40.515Z",
         "history": [],
@@ -371,7 +659,8 @@
           "cuit": "",
           "email": "dinardimosca@gilesonline.com.ar",
           "phone": "232515591032"
-        }
+        },
+        "motivoUltimoCambio": "No requiere nada"
       },
       {
         "id": "negocio-client-1755198734612",
@@ -414,7 +703,7 @@
       {
         "id": "negocio-client-1755261416607",
         "nombre": "Apertura cta",
-        "estado": "EN_ARMADO",
+        "estado": "PERDIDO",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-20T00:36:47.159Z",
         "history": [
@@ -433,13 +722,13 @@
           "email": "diegooggero@insumosyacopiosdelsur.com",
           "phone": "3584030570"
         },
-        "motivoUltimoCambio": ""
+        "motivoUltimoCambio": "No quiere mas cuenta"
       },
       {
         "id": "negocio-client-1755264538180",
         "nombre": "Oportunidad para Tecno Fundaciones SRL",
         "estado": "EN_CALIFICACION",
-        "montoSolicitado": 0,
+        "montoSolicitado": 300000000,
         "fechaProximoSeguimiento": "2025-08-20T12:30:46.299Z",
         "history": [
           {
@@ -511,8 +800,8 @@
       {
         "id": "negocio-client-1755540519671",
         "nombre": "Linea credito Capon BICE",
-        "estado": "PROSPECTO",
-        "montoSolicitado": 0,
+        "estado": "EN_CALIFICACION",
+        "montoSolicitado": 300000000,
         "fechaProximoSeguimiento": "2025-08-18T18:08:54.285Z",
         "history": [],
         "cliente": {
@@ -521,7 +810,37 @@
           "cuit": "30-71457431-7 ",
           "email": "enriquevaira@yahoo.com.ar",
           "phone": ""
-        }
+        },
+        "motivoUltimoCambio": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "calificaciones": [
+          {
+            "id": "qual-1756125349455",
+            "entidad": "Argenpymes",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-25",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          },
+          {
+            "id": "qual-1756125391286",
+            "entidad": "AcindarPyme",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-25",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          },
+          {
+            "id": "qual-1756125399030",
+            "entidad": "CFT",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-25",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       },
       {
         "id": "negocio-client-1755613219213",
@@ -692,6 +1011,11 @@
         "name": "ADC",
         "totalQuota": 8.888888888888889e+32,
         "id": "sgr-1755881190986"
+      },
+      {
+        "name": "AcindarPyme",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1756125379492"
       }
     ],
     "campaigns": [],
@@ -727,30 +1051,11 @@
         "details": "En calificacion ",
         "id": "task-1755875317854",
         "createdAt": "2025-08-22T15:08:37.854Z",
-        "isCompleted": false,
-        "date": "2025-09-05T12:09"
-      },
-      {
-        "title": "Esperar Rdo - [Ricalbert SA]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755613219213",
-        "businessId": "negocio-client-1755613219213",
-        "clientName": "Ricalbert SA",
-        "details": "Argenpyme.\nAcindar",
-        "id": "task-1755875411971",
-        "createdAt": "2025-08-22T15:10:11.971Z",
-        "isCompleted": false
-      },
-      {
-        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755613590756",
-        "businessId": "negocio-client-1755613590756",
-        "clientName": "Alberto Dominguez y Hnos SAAGI",
-        "details": "Se envio \nAcindar Argenpymes",
-        "id": "task-1755875441270",
-        "createdAt": "2025-08-22T15:10:41.270Z",
-        "isCompleted": false
+        "isCompleted": true,
+        "date": "2025-09-11",
+        "source": "embudo",
+        "description": "Resultado de TecnoF ",
+        "note": "Esta en ADC, Argenpyme, Innova y Fidem"
       },
       {
         "title": "Hacer seguimiento de etapa 'EN_ARMADO' para Insumos y Acopios del SUR SA",
@@ -761,7 +1066,7 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1755879121863",
         "createdAt": "2025-08-22T16:12:01.863Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Hacer seguimiento de etapa 'EN_ARMADO' para Insumos y Acopios del SUR SA",
@@ -772,28 +1077,13 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1755879125776",
         "createdAt": "2025-08-22T16:12:05.776Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755264538180",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "En calificacion ",
-        "id": "task-1755879133184",
-        "createdAt": "2025-08-22T16:12:13.184Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755178433987",
-        "businessId": "negocio-client-1755178433987",
-        "clientName": "Borgarello Gustavo Claudio",
-        "details": "Sin detalles adicionales.",
         "id": "task-1755879161088",
-        "createdAt": "2025-08-22T16:12:41.088Z",
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
+        "dueDate": "2025-09-02",
+        "details": "definieron 3° y monto",
         "isCompleted": false
       },
       {
@@ -805,39 +1095,27 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1755879609516",
         "createdAt": "2025-08-22T16:20:09.516Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
-        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755613590756",
-        "businessId": "negocio-client-1755613590756",
-        "clientName": "Alberto Dominguez y Hnos SAAGI",
-        "details": "Se envio \nAcindar Argenpymes",
         "id": "task-1755879646811",
-        "createdAt": "2025-08-22T16:20:46.811Z",
+        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
+        "dueDate": "2025-09-05",
+        "details": "Se envio \nAcindar Argenpymes",
         "isCompleted": false
       },
       {
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755264538180",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "En calificacion ",
         "id": "task-1755880163799",
-        "createdAt": "2025-08-22T16:29:23.799Z",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-05",
+        "details": "En calificacion ",
         "isCompleted": false
       },
       {
-        "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755184537576",
-        "businessId": "negocio-client-1755184537576",
-        "clientName": "Maskotas SRL",
-        "details": "Sin detalles adicionales.",
         "id": "task-1755880188467",
-        "createdAt": "2025-08-22T16:29:48.467Z",
+        "title": "corroborar - [Maskotas SRL]",
+        "dueDate": "2025-08-27",
+        "details": "si no contesta correo llamar",
         "isCompleted": false
       },
       {
@@ -849,39 +1127,27 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1755880200177",
         "createdAt": "2025-08-22T16:30:00.177Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
-        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755613590756",
-        "businessId": "negocio-client-1755613590756",
-        "clientName": "Alberto Dominguez y Hnos SAAGI",
-        "details": "Se envio \nAcindar Argenpymes",
         "id": "task-1755880969002",
-        "createdAt": "2025-08-22T16:42:49.002Z",
+        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
+        "dueDate": "2025-09-05",
+        "details": "Se envio \nAcindar Argenpymes",
         "isCompleted": false
       },
       {
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755264538180",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "En calificacion ",
         "id": "task-1755881202713",
-        "createdAt": "2025-08-22T16:46:42.713Z",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-08",
+        "details": "En calificacion ",
         "isCompleted": false
       },
       {
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-08-25",
-        "clientId": "client-1755264538180",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "En calificacion ",
         "id": "task-1755881385585",
-        "createdAt": "2025-08-22T16:49:45.585Z",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-08",
+        "details": "En calificacion ",
         "isCompleted": false
       },
       {
@@ -891,6 +1157,163 @@
         "clientName": "Tarea General",
         "id": "task-1755983697115",
         "createdAt": "2025-08-23T21:14:57.115Z",
+        "isCompleted": true,
+        "source": "gestiones"
+      },
+      {
+        "title": "No quiere mas cuenta - [Insumos y Acopios del SUR SA]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755261416607",
+        "businessId": "negocio-client-1755261416607",
+        "clientName": "Insumos y Acopios del SUR SA",
+        "details": "No quiere mas cuenta",
+        "id": "task-1756125159486",
+        "createdAt": "2025-08-25T12:32:39.486Z",
+        "isCompleted": true
+      },
+      {
+        "id": "task-1756125339117",
+        "title": "Credito para stock, [Galia Norte SA]",
+        "dueDate": "2025-08-28",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "isCompleted": false
+      },
+      {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "id": "task-1756125363703",
+        "createdAt": "2025-08-25T12:36:03.703Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "id": "task-1756125401686",
+        "createdAt": "2025-08-25T12:36:41.686Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Tecno Fundaciones SRL",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755264538180",
+        "businessId": "negocio-client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756125431652",
+        "createdAt": "2025-08-25T12:37:11.652Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador - [Borgarello Gustavo Claudio]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755178433987",
+        "businessId": "negocio-client-1755178433987",
+        "clientName": "Borgarello Gustavo Claudio",
+        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
+        "id": "task-1756125506318",
+        "createdAt": "2025-08-25T12:38:26.318Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador - [Borgarello Gustavo Claudio]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755178433987",
+        "businessId": "negocio-client-1755178433987",
+        "clientName": "Borgarello Gustavo Claudio",
+        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
+        "id": "task-1756125515518",
+        "createdAt": "2025-08-25T12:38:35.518Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755182242838",
+        "businessId": "negocio-client-1755182242838",
+        "clientName": "Mecfres SRL",
+        "details": "Necesita ampliar la nave para las maquinas",
+        "id": "task-1756125558455",
+        "createdAt": "2025-08-25T12:39:18.455Z",
+        "isCompleted": false
+      },
+      {
+        "title": "No requiere nada - [Mosca Juan Carlos]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755192895477",
+        "businessId": "negocio-client-1755192895477",
+        "clientName": "Mosca Juan Carlos",
+        "details": "No requiere nada",
+        "id": "task-1756125581631",
+        "createdAt": "2025-08-25T12:39:41.631Z",
+        "isCompleted": true
+      },
+      {
+        "title": "Linea Galicia - [Kennbal SRL]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "Linea Galicia",
+        "id": "task-1756125620151",
+        "createdAt": "2025-08-25T12:40:20.151Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Linea Galicia - [Kennbal SRL]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "Linea Galicia",
+        "id": "task-1756125627142",
+        "createdAt": "2025-08-25T12:40:27.142Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros",
+        "id": "task-1756125741571",
+        "createdAt": "2025-08-25T12:42:21.571Z",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755875411971",
+        "title": "Esperar Rdo - [Ricalbert SA]",
+        "dueDate": "2025-09-04",
+        "details": "Argenpyme.\nAcindar",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755875441270",
+        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
+        "dueDate": "2025-09-04",
+        "details": "Se envio \nAcindar Argenpymes",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755879133184",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-04",
+        "details": "En calificacion ",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1756123802097",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-04",
+        "details": "En calificacion ",
         "isCompleted": false
       }
     ]
