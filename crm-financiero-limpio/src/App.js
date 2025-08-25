@@ -95,6 +95,16 @@ export default function App() {
         document.body.removeChild(link);
         alert('¡Backup guardado en tu carpeta de Descargas!');
     };
+    const handleAddClient = (clientData) => {
+        const newClient = {
+            ...clientData,
+            id: `client-${Date.now()}`,
+            qualifications: [], activities: [], documents: [], financing: [],
+            history: [{ date: new Date().toISOString(), type: 'Creación de Cliente', reason: 'Alta inicial en el sistema.' }]
+        };
+        setClients(prevClients => [...prevClients, newClient]);
+        return newClient;
+    };
 
     const handleImport = (event) => {
         const file = event.target.files[0];
@@ -404,6 +414,7 @@ export default function App() {
                         onSaveActivity={handleSaveActivity}
                         onToggleActivity={handleToggleActivity}
                         onUpdateDebtorStatus={handleUpdateDebtorStatus}
+                        onAddClient={handleAddClient} 
                     />}
 
                     {view === 'sgr' && <SGRView 

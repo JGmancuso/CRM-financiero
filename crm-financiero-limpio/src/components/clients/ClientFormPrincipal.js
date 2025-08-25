@@ -21,6 +21,8 @@ export default function ClientFormPrincipal({ data, onChange }) {
                 <InputField name="industry" label="Industria" value={data.industry || ''} onChange={onChange} select>
                     {industries.map(i => <option key={i}>{i}</option>)}
                 </InputField>
+                <InputField name="location" label="Localidad" value={data.location || ''} onChange={onChange} />
+                <InputField name="provincia" label="Provincia" value={data.provincia || ''} onChange={onChange} />
             </div>
         </div>
     );
