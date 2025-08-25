@@ -87,7 +87,7 @@ export default function ClientsView({
                 <ClientsHeader 
                     searchTerm={searchTerm}
                     onSearchChange={(e) => setSearchTerm(e.target.value)}
-                    onNewClientClick={() => { setSelectedClient(null); setViewMode('quickCheck'); }}
+                    onNewClientClick={() => { setSelectedClient(null); setInitialCuit(''); setViewMode('form'); }}
                 />
                 <div className="flex-grow overflow-y-auto">
                     <ClientList clients={filteredClients} onSelectClient={handleSelectClient} selectedClient={selectedClient} />

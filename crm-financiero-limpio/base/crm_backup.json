@@ -1687,6 +1687,35 @@
             "vencimiento": ""
           }
         ]
+      },
+      {
+        "id": "negocio-client-1756143399404-1756144134858",
+        "nombre": "DQD-ON",
+        "estado": "EN_CALIFICACION",
+        "montoSolicitado": 1000000,
+        "fechaProximoSeguimiento": "2025-08-25T17:48:54.858Z",
+        "history": [
+          {
+            "date": "2025-08-25T17:48:54.858Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Calificaciones para ON"
+          }
+        ],
+        "cliente": {
+          "id": "client-1756143399404",
+          "cuit": "30715878379"
+        },
+        "calificaciones": [
+          {
+            "id": "qual-1756144158962",
+            "entidad": "CFT",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-25",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       }
     ],
     "sgrs": [
@@ -1783,13 +1812,6 @@
         "isCompleted": true
       },
       {
-        "id": "task-1755879161088",
-        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
-        "dueDate": "2025-09-02",
-        "details": "definieron 3° y monto",
-        "isCompleted": false
-      },
-      {
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para M y M SAS",
         "dueDate": "2025-08-25",
         "clientId": "client-1755177831940",
@@ -1799,27 +1821,6 @@
         "id": "task-1755879609516",
         "createdAt": "2025-08-22T16:20:09.516Z",
         "isCompleted": true
-      },
-      {
-        "id": "task-1755879646811",
-        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
-        "dueDate": "2025-09-05",
-        "details": "Se envio \nAcindar Argenpymes",
-        "isCompleted": false
-      },
-      {
-        "id": "task-1755880163799",
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-09-05",
-        "details": "En calificacion ",
-        "isCompleted": false
-      },
-      {
-        "id": "task-1755880188467",
-        "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-08-27",
-        "details": "si no contesta correo llamar",
-        "isCompleted": false
       },
       {
         "title": "corroborar - [Maskotas SRL]",
@@ -1833,27 +1834,6 @@
         "isCompleted": true
       },
       {
-        "id": "task-1755880969002",
-        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
-        "dueDate": "2025-09-05",
-        "details": "Se envio \nAcindar Argenpymes",
-        "isCompleted": false
-      },
-      {
-        "id": "task-1755881202713",
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-09-08",
-        "details": "En calificacion ",
-        "isCompleted": false
-      },
-      {
-        "id": "task-1755881385585",
-        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
-        "dueDate": "2025-09-08",
-        "details": "En calificacion ",
-        "isCompleted": false
-      },
-      {
         "title": "concatar",
         "dueDate": "2025-08-25",
         "details": "",
@@ -1862,6 +1842,13 @@
         "createdAt": "2025-08-23T21:14:57.115Z",
         "isCompleted": true,
         "source": "gestiones"
+      },
+      {
+        "id": "task-1755880188467",
+        "title": "corroborar - [Maskotas SRL]",
+        "dueDate": "2025-08-27",
+        "details": "si no contesta correo llamar",
+        "isCompleted": false
       },
       {
         "title": "No quiere mas cuenta - [Insumos y Acopios del SUR SA]",
@@ -1992,6 +1979,50 @@
         "isCompleted": false
       },
       {
+        "id": "task-1756144147181",
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
+        "dueDate": "2025-08-28",
+        "details": "Sin detalles adicionales.",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1756143399404",
+        "businessId": "negocio-client-1756143399404-1756144134858",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756144163933",
+        "createdAt": "2025-08-25T17:49:23.933Z",
+        "isCompleted": true
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1756143399404",
+        "businessId": "negocio-client-1756143399404-1756144134858",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756146232418",
+        "createdAt": "2025-08-25T18:23:52.418Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
+        "dueDate": "2025-08-28",
+        "clientId": "client-1756143399404",
+        "businessId": "negocio-client-1756143399404-1756144134858",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756146244651",
+        "createdAt": "2025-08-25T18:24:04.651Z",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755879161088",
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
+        "dueDate": "2025-09-02",
+        "details": "definieron 3° y monto",
+        "isCompleted": false
+      },
+      {
         "id": "task-1755875411971",
         "title": "Esperar Rdo - [Ricalbert SA]",
         "dueDate": "2025-09-04",
@@ -2016,6 +2047,41 @@
         "id": "task-1756123802097",
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-04",
+        "details": "En calificacion ",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755879646811",
+        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
+        "dueDate": "2025-09-05",
+        "details": "Se envio \nAcindar Argenpymes",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755880163799",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-05",
+        "details": "En calificacion ",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755880969002",
+        "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
+        "dueDate": "2025-09-05",
+        "details": "Se envio \nAcindar Argenpymes",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755881202713",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-08",
+        "details": "En calificacion ",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755881385585",
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-09-08",
         "details": "En calificacion ",
         "isCompleted": false
       }

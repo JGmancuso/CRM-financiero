@@ -1,6 +1,6 @@
 // App.js
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Users as FunnelIcon, Briefcase, Shield, Megaphone, Upload, Download, Calendar, Tag } from 'lucide-react';
+import { LayoutDashboard, Users as FunnelIcon, Briefcase, Shield, Megaphone, Upload, Download, Calendar, Tag, UserSearch } from 'lucide-react';
 import FunnelView from './views/FunnelView';
 import ClientsView from './views/ClientsView';
 import DashboardView from './views/DashboardView';
@@ -10,6 +10,7 @@ import AgendaView from './views/AgendaView';
 import ProductsView from './views/ProductsView';
 import { initialData } from './data';
 import { createTaskForStageChange } from './services/TaskAutomationService';
+import AnalisisNoClientesView from './views/AnalisisNoClientesView';
 
 const Header = ({ onImportClick, onExportClick, lastSaved }) => {
     return (
@@ -362,7 +363,7 @@ export default function App() {
                     <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Negocios"><FunnelIcon /></button>
                     <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Agenda"><Calendar /></button>
                     <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
-                    
+                    <button onClick={() => setView('analisisNoClientes')} className={`p-3 rounded-lg ${view === 'analisisNoClientes' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Análisis No Clientes"><UserSearch /></button>
                     <button onClick={() => setView('products')} className={`p-3 rounded-lg ${view === 'products' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Productos"><Tag /></button>
                     <button onClick={() => setView('sgr')} className={`p-3 rounded-lg ${view === 'sgr' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Entidades de Garantía"><Shield /></button>
                     <button onClick={() => setView('campaigns')} className={`p-3 rounded-lg ${view === 'campaigns' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Campañas"><Megaphone /></button>
@@ -416,7 +417,9 @@ export default function App() {
                         onUpdateDebtorStatus={handleUpdateDebtorStatus}
                         onAddClient={handleAddClient} 
                     />}
-
+                    {view === 'analisisNoClientes' && <AnalisisNoClientesView 
+                        onAddClient={handleAddClient}
+                    />}
                     {view === 'sgr' && <SGRView 
                         sgrs={sgrs}
                         onAddSgr={handleAddSgr}
