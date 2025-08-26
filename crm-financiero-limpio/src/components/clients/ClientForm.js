@@ -38,7 +38,8 @@ export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit
     };
 
     const handlePartnersChange = (index, event) => {
-        const { name, value } = name.target;
+        // --- 👇 LÍNEA CORREGIDA AQUÍ 👇 ---
+        const { name, value } = event.target; 
         const list = [...(client.partners || [])];
         list[index][name] = name === 'share' ? parseFloat(value) || 0 : value;
         setClient(prev => ({ ...prev, partners: list }));
@@ -56,7 +57,8 @@ export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave(client);
+        // Esta línea es correcta. Simplemente pasa los datos al padre.
+        onSave(client); 
     };
 
     return (

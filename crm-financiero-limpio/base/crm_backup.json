@@ -456,11 +456,28 @@
         "phone": "3492 64-4392"
       },
       {
-        "id": "client-1755540519671",
+        "type": "juridica",
         "nombre": "Galia Norte SA",
         "cuit": "30-71457431-7 ",
         "email": "enriquevaira@yahoo.com.ar",
-        "phone": ""
+        "phone": "",
+        "industry": "",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Administracion",
+          "role": "Administracion",
+          "email": "galianortesa@gmail.com",
+          "phone": "111111111111"
+        },
+        "relevamiento": "",
+        "review": "",
+        "id": "client-1755540519671",
+        "name": "Galia Norte SA"
       },
       {
         "id": "client-1755613219213",
@@ -1211,7 +1228,7 @@
       {
         "id": "negocio-client-1755177831940",
         "nombre": "Oportunidad para M y M SAS",
-        "estado": "INFO_SOLICITADA",
+        "estado": "EN_ARMADO",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-19T22:07:47.581Z",
         "history": [
@@ -2013,6 +2030,17 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1756146244651",
         "createdAt": "2025-08-25T18:24:04.651Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros",
+        "id": "task-1756215767609",
+        "createdAt": "2025-08-26T13:42:47.609Z",
         "isCompleted": false
       },
       {

@@ -1,6 +1,12 @@
-// App.js
-import React, { useState, useEffect } from 'react';
+// App.js (versión final y refactorizada)
+
+import React, { useState } from 'react';
 import { LayoutDashboard, Users as FunnelIcon, Briefcase, Shield, Megaphone, Upload, Download, Calendar, Tag, UserSearch } from 'lucide-react';
+
+// Importamos el hook que nos da acceso al estado global
+import { useData } from './context/DataContext';
+
+// Importamos todas las vistas que App va a mostrar
 import FunnelView from './views/FunnelView';
 import ClientsView from './views/ClientsView';
 import DashboardView from './views/DashboardView';
@@ -8,10 +14,9 @@ import SGRView from './views/SGRView';
 import CampaignsView from './views/CampaignsView';
 import AgendaView from './views/AgendaView';
 import ProductsView from './views/ProductsView';
-import { initialData } from './data';
-import { createTaskForStageChange } from './services/TaskAutomationService';
 import AnalisisNoClientesView from './views/AnalisisNoClientesView';
 
+// El componente Header podría incluso vivir en su propio archivo si quisieras
 const Header = ({ onImportClick, onExportClick, lastSaved }) => {
     return (
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
@@ -40,49 +45,14 @@ const Header = ({ onImportClick, onExportClick, lastSaved }) => {
 const APP_DATA_VERSION = '3.0';
 
 export default function App() {
-    const [clients, setClients] = useState([]);
-    const [negocios, setNegocios] = useState([]);
-    const [sgrs, setSgrs] = useState([]);
-    const [campaigns, setCampaigns] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [tasks, setTasks] = useState([]);
+    // Obtenemos todo lo necesario del contexto con una sola línea
+    const { state, dispatch, lastSaved } = useData();
+    
+    // El único estado que le pertenece a App.js es el que controla qué vista se muestra
     const [view, setView] = useState('funnel');
-    const [lastSaved, setLastSaved] = useState(null);
-
-    useEffect(() => {
-        let finalData = initialData;
-        try {
-            const savedJSON = localStorage.getItem('crm-data');
-            if (savedJSON) {
-                const savedObject = JSON.parse(savedJSON);
-                if (savedObject.version === APP_DATA_VERSION && savedObject.data) {
-                    finalData = savedObject.data;
-                }
-            }
-        } catch (error) { console.error("Error al cargar datos:", error); }
-
-        setNegocios(finalData.negocios || []);
-        setClients(finalData.clients || []);
-        setSgrs(finalData.sgrs || []);
-        setCampaigns(finalData.campaigns || []);
-        setProducts(finalData.products || []);
-        setTasks(finalData.tasks || []);
-    }, []);
-
-    useEffect(() => {
-        const dataToSave = { 
-            version: APP_DATA_VERSION, 
-            data: { clients, negocios, sgrs, campaigns, products, tasks }
-        };
-        localStorage.setItem('crm-data', JSON.stringify(dataToSave));
-        setLastSaved(new Date());
-    }, [clients, negocios, sgrs, campaigns, products, tasks]);
 
     const handleExport = () => {
-        const dataToExport = { 
-            version: APP_DATA_VERSION, 
-            data: { clients, negocios, sgrs, campaigns, products, tasks }
-        };
+        const dataToExport = { version: APP_DATA_VERSION, data: state };
         const dataStr = JSON.stringify(dataToExport, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -96,17 +66,7 @@ export default function App() {
         document.body.removeChild(link);
         alert('¡Backup guardado en tu carpeta de Descargas!');
     };
-    const handleAddClient = (clientData) => {
-        const newClient = {
-            ...clientData,
-            id: `client-${Date.now()}`,
-            qualifications: [], activities: [], documents: [], financing: [],
-            history: [{ date: new Date().toISOString(), type: 'Creación de Cliente', reason: 'Alta inicial en el sistema.' }]
-        };
-        setClients(prevClients => [...prevClients, newClient]);
-        return newClient;
-    };
-
+    
     const handleImport = (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -114,16 +74,11 @@ export default function App() {
         reader.onload = (e) => {
             try {
                 const importedData = JSON.parse(e.target.result);
-                if (importedData.data && importedData.data.negocios && importedData.data.clients) {
-                    setNegocios(importedData.data.negocios);
-                    setClients(importedData.data.clients);
-                    setSgrs(importedData.data.sgrs || []);
-                    setCampaigns(importedData.data.campaigns || []);
-                    setProducts(importedData.data.products || []);
-                    setTasks(importedData.data.tasks || []);
+                if (importedData.data) {
+                    dispatch({ type: 'IMPORT_DATA', payload: importedData.data });
                     alert('Datos del backup importados correctamente.');
                 } else {
-                    alert('El archivo de backup no tiene el formato correcto (requiere "negocios" y "clients").');
+                    alert('El archivo de backup no tiene el formato correcto.');
                 }
             } catch (error) {
                 alert('Error al leer el archivo. Asegúrate de que sea un backup válido.');
@@ -138,230 +93,13 @@ export default function App() {
         document.getElementById('import-file-input').click();
     };
 
-    // --- MANEJADORES DE TAREAS (AGENDA) ---
-    const handleAddTask = (taskData) => {
-        const newTask = {
-            ...taskData,
-            id: `task-${Date.now()}`,
-            createdAt: new Date().toISOString(),
-            isCompleted: false
-        };
-        setTasks(prevTasks => [...prevTasks, newTask].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)));
-        return newTask;
-    };
-
-    const handleToggleTaskCompletion = (taskToToggle) => {
-        // Primero, busca en la lista principal de tareas (del embudo y generales)
-        const taskExistsInTasks = tasks.some(t => t.id === taskToToggle.id);
-
-        if (taskExistsInTasks) {
-            setTasks(prevTasks => 
-                prevTasks.map(t => t.id === taskToToggle.id ? { ...t, isCompleted: !t.isCompleted } : t)
-            );
-        } else {
-            // Si no está ahí, busca en las actividades de los clientes
-            setClients(prevClients => 
-                prevClients.map(client => {
-                    const activityExists = client.activities?.some(a => a.id === taskToToggle.id);
-                    if (activityExists) {
-                        const updatedActivities = client.activities.map(a => 
-                            a.id === taskToToggle.id ? { ...a, completed: !a.completed, isCompleted: !a.completed } : a
-                        );
-                        return { ...client, activities: updatedActivities };
-                    }
-                    return client;
-                })
-            );
-        }
-    };
-
-    const handleUpdateTask = (updatedTask) => {
-        setTasks(prevTasks => prevTasks.map(t => t.id === updatedTask.id ? updatedTask : t));
-    };
-
-    const handleDeleteTask = (taskId) => {
-        setTasks(prevTasks => prevTasks.filter(t => t.id !== taskId));
-    };
-    
-    // --- MANEJADORES PRINCIPALES DE DATOS ---
-    // MANTENER ESTA VERSIÓN
-    const handleAddClientAndBusiness = (clientFormData) => {
-        const { motivo, montoAproximado, observaciones, ...clientDetails } = clientFormData;
-        const newClient = {
-            ...clientDetails,
-            id: `client-${Date.now()}`,
-            qualifications: [], activities: [], documents: [], financing: []
-        };
-        const newBusiness = {
-            id: `negocio-${newClient.id}`,
-            nombre: `${clientDetails.name} - ${motivo || 'Nueva Oportunidad'}`, // <-- Lógica nueva
-            estado: 'PROSPECTO', // <-- Lógica nueva
-            montoSolicitado: parseFloat(montoAproximado) || 0,
-            fechaProximoSeguimiento: new Date().toISOString(),
-            history: [{
-                date: new Date().toISOString(),
-                type: 'Creación de Negocio',
-                reason: observaciones || 'Creación inicial.'
-            }],
-            cliente: {
-                id: newClient.id,
-                nombre: newClient.name,
-                cuit: newClient.cuit
-            }
-        };
-        setClients(prevClients => [...prevClients, newClient]);
-        setNegocios(prevNegocios => [...prevNegocios, newBusiness]);
-        alert(`Cliente "${newClient.name}" y su primer negocio fueron creados.`);
-        setView('funnel');
-    };
-
-    const handleUpdateNegocio = (updatedNegocio) => {
-        setNegocios(prevNegocios =>
-            prevNegocios.map(n => n.id === updatedNegocio.id ? updatedNegocio : n)
-        );
-    };
-    
-    const handleNegocioStageChange = (updatedNegocio) => {
-        // 1. Actualiza el negocio como siempre
-        handleUpdateNegocio(updatedNegocio);
-
-        // 2. Llama a nuestro nuevo servicio para obtener los datos de la tarea
-        const taskData = createTaskForStageChange(updatedNegocio);
-
-        // 3. Si el servicio devolvió una tarea, la añadimos al estado
-        if (taskData) {
-            handleAddTask(taskData);
-            console.log(`Tarea creada por el servicio: "${taskData.title}"`);
-        }
-    };
-    const handleUpdateClient = (updatedClient) => {
-        setClients(prevClients =>
-            prevClients.map(c => c.id === updatedClient.id ? updatedClient : c)
-        );
-        setNegocios(prevNegocios =>
-            prevNegocios.map(n => {
-                if (n.cliente.id === updatedClient.id) {
-                    return { ...n, cliente: { ...n.cliente, nombre: updatedClient.name, cuit: updatedClient.cuit }};
-                }
-                return n;
-            })
-        );
-    };
-
-    // OTRAS FUNCIONES... (el resto de tus funciones como handleAddNewBusiness, handleAddDocument, etc., van aquí sin cambios)
-    const handleAddNewBusiness = (clientId, businessData) => {
-        const client = clients.find(c => c.id === clientId);
-        if (!client) {
-            alert("Error: No se encontró el cliente.");
-            return;
-        }
-
-        const newBusiness = {
-            id: `negocio-${clientId}-${Date.now()}`,
-            nombre: businessData.motivo,
-            estado: 'PROSPECTO',
-            montoSolicitado: businessData.montoAproximado,
-            fechaProximoSeguimiento: new Date().toISOString(),
-            history: [{
-                date: new Date().toISOString(),
-                type: 'Creación de Nuevo Negocio',
-                reason: businessData.observaciones || 'Creado desde detalle de cliente.'
-            }],
-            cliente: { id: client.id, nombre: client.nombre, cuit: client.cuit }
-        };
-
-        setNegocios(prevNegocios => [...prevNegocios, newBusiness]);
-        alert(`Nuevo negocio "${newBusiness.nombre}" creado para ${client.nombre}.`);
-        setView('funnel');
-    };
-
-    const handleAddDocument = (clientId, newDocument) => {
-        setClients(prevClients => 
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    const updatedDocuments = [...(client.documents || []), { id: `doc-${Date.now()}`, ...newDocument, uploadDate: new Date().toISOString() }];
-                    return { ...client, documents: updatedDocuments };
-                }
-                return client;
-            })
-        );
-    };
-    
-    const handleAddSgr = (newSgrData) => {
-        const newSgr = { ...newSgrData, id: `sgr-${Date.now()}`};
-        setSgrs(prevSgrs => [...prevSgrs, newSgr]);
-    };
-
-    const handleUpdateSgr = (updatedSgr) => {
-        setSgrs(prevSgrs => prevSgrs.map(s => s.id === updatedSgr.id ? updatedSgr : s));
-    };
-
-    const handleDeleteSgr = (sgrId) => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar esta entidad SGR?')) {
-            setSgrs(prevSgrs => prevSgrs.filter(s => s.id !== sgrId));
-        }
-    };
-    
-    const handleUpdateDebtorStatus = (clientId, newDebtorStatusData) => {
-        setClients(prevClients =>
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    return { ...client, debtorStatus: newDebtorStatusData, lastUpdate: new Date().toISOString() };
-                }
-                return client;
-            })
-        );
-    };
-
-    const handleSaveActivity = (clientId, activityData) => {
-        setClients(prevClients => 
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    const existingActivities = client.activities || [];
-                    let updatedActivities;
-
-                    if (activityData.id) { // Actualizar actividad existente
-                        updatedActivities = existingActivities.map(act => 
-                            act.id === activityData.id ? activityData : act
-                        );
-                    } else { // Añadir nueva actividad
-                        const newActivity = { 
-                            ...activityData, 
-                            id: `act-${Date.now()}`,
-                        };
-                        updatedActivities = [...existingActivities, newActivity];
-                    }
-                    return { ...client, activities: updatedActivities };
-                }
-                return client;
-            })
-        );
-    };
-    const handleToggleActivity = (clientId, activityId) => {
-        setClients(prevClients => 
-            prevClients.map(client => {
-                if (client.id === clientId) {
-                    const updatedActivities = (client.activities || []).map(act => {
-                        if (act.id === activityId) {
-                            return { ...act, completed: !act.completed };
-                        }
-                        return act;
-                    });
-                    return { ...client, activities: updatedActivities };
-                }
-                return client;
-            })
-        );
-    };
-
-    // --- RENDERIZADO DE LA APLICACIÓN ---
     return (
         <div className="bg-gray-100 font-sans min-h-screen flex">
             <aside className="w-20 bg-gray-800 text-white flex flex-col items-center py-4">
                  <div className="space-y-6 flex-grow">
                     <button onClick={() => setView('dashboard')} className={`p-3 rounded-lg ${view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Panel de Inicio"><LayoutDashboard /></button>
                     <button onClick={() => setView('funnel')} className={`p-3 rounded-lg ${view === 'funnel' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Embudo de Negocios"><FunnelIcon /></button>
-                    <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Agenda"><Calendar /></button>
+                    <button onClick={() => setView('agenda')} className={`p-3 rounded-lg ${view === 'agenda' ? 'bg-blue-600' : 'hover:bg-ray-700'}`} title="Agenda"><Calendar /></button>
                     <button onClick={() => setView('clients')} className={`p-3 rounded-lg ${view === 'clients' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Clientes"><Briefcase /></button>
                     <button onClick={() => setView('analisisNoClientes')} className={`p-3 rounded-lg ${view === 'analisisNoClientes' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Análisis No Clientes"><UserSearch /></button>
                     <button onClick={() => setView('products')} className={`p-3 rounded-lg ${view === 'products' ? 'bg-blue-600' : 'hover:bg-gray-700'}`} title="Productos"><Tag /></button>
@@ -374,62 +112,21 @@ export default function App() {
                 <main className="flex-1 overflow-y-auto">
                     <input type="file" id="import-file-input" style={{ display: 'none' }} accept=".json" onChange={handleImport} />
                     
-                   {view === 'dashboard' && <DashboardView 
-                        clients={clients} 
-                        negocios={negocios} 
-                        tasks={tasks}
-                        onAddTask={handleAddTask} // <-- Asegúrate de que esta línea exista
-                        onUpdateTask={handleUpdateTask}
-                        onDeleteTask={handleDeleteTask}
-                        onNewClient={handleAddClientAndBusiness}
-                        onNavigateToClient={() => setView('clients')}
-                    />}
+                   {view === 'dashboard' && <DashboardView clients={state.clients} negocios={state.negocios} tasks={state.tasks} onNavigateToClient={() => setView('clients')}/>}
                     
-                    {view === 'funnel' && <FunnelView 
-                        negocios={negocios} 
-                        sgrs={sgrs} 
-                        // 👇 Pasamos la nueva función al embudo
-                        onUpdateNegocio={handleNegocioStageChange} 
-                        onUpdateSgrQualification={() => {}} 
-                    />}
-                    {view === 'agenda' && <AgendaView 
-                        clients={clients} 
-                        tasks={tasks} 
-                        onAddTask={handleAddTask} 
-                        onUpdateTask={handleUpdateTask} 
-                        onDeleteTask={handleDeleteTask} 
-                        onToggleTaskCompletion={handleToggleTaskCompletion}
-                    />}
-                    {view === 'clients' && <ClientsView 
-                        clients={clients}
-                        negocios={negocios}
-                        sgrs={sgrs}
-                        // 👇 La vista de clientes sigue usando la función original sin creación de tareas
-                        onUpdateNegocio={handleUpdateNegocio}
-                        onSaveClient={handleUpdateClient}
-                        onAddClientAndBusiness={handleAddClientAndBusiness}
-                        onAddDocument={handleAddDocument}
-                        onDeleteClient={handleDeleteSgr}
-                        onAddNewBusiness={handleAddNewBusiness}
-                        onAddTask={handleAddTask} 
-                        onSaveActivity={handleSaveActivity}
-                        onToggleActivity={handleToggleActivity}
-                        onUpdateDebtorStatus={handleUpdateDebtorStatus}
-                        onAddClient={handleAddClient} 
-                    />}
-                    {view === 'analisisNoClientes' && <AnalisisNoClientesView 
-                        onAddClient={handleAddClient}
-                    />}
-                    {view === 'sgr' && <SGRView 
-                        sgrs={sgrs}
-                        onAddSgr={handleAddSgr}
-                        onUpdateSgr={handleUpdateSgr}
-                        onDeleteSgr={handleDeleteSgr}
-                    />}
+                    {view === 'funnel' && <FunnelView negocios={state.negocios} sgrs={state.sgrs} />}
                     
+                    {view === 'agenda' && <AgendaView clients={state.clients} tasks={state.tasks} />}
                     
-                    {view === 'products' && <ProductsView products={products} setProducts={setProducts} />}
-                    {view === 'campaigns' && <CampaignsView allClients={clients} sgrs={sgrs} onNavigateToClient={() => {}} />}
+                    {view === 'clients' && <ClientsView clients={state.clients} negocios={state.negocios} sgrs={state.sgrs} />}
+                    
+                    {view === 'analisisNoClientes' && <AnalisisNoClientesView />}
+                    
+                    {view === 'sgr' && <SGRView sgrs={state.sgrs} />}
+                                        
+                    {view === 'products' && <ProductsView products={state.products} setProducts={(newProducts) => dispatch({ type: 'SET_PRODUCTS', payload: newProducts })} />}
+                    
+                    {view === 'campaigns' && <CampaignsView allClients={state.clients} sgrs={state.sgrs} onNavigateToClient={() => {}} />}
                 </main>
             </div>
         </div>
