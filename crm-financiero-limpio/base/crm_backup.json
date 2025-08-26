@@ -1245,10 +1245,10 @@
         "sellsToFinalConsumer": false,
         "partners": [],
         "contactPerson": {
-          "name": "",
-          "role": "",
+          "name": "Jacqueline Bono",
+          "role": "Accionista",
           "email": "",
-          "phone": ""
+          "phone": "3564560523"
         },
         "relevamiento": "",
         "review": "",
@@ -1261,6 +1261,41 @@
         "history": [
           {
             "date": "2025-08-26T18:18:01.301Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30709803855",
+        "email": "",
+        "phone": "3525643895",
+        "industry": "",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2024-06-30",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "",
+          "role": "",
+          "email": "",
+          "phone": ""
+        },
+        "relevamiento": "",
+        "review": "",
+        "name": "ZEA SA",
+        "id": "client-1756234019946",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-26T18:46:59.946Z",
             "type": "Creación de Cliente",
             "reason": "Alta inicial en el sistema."
           }
