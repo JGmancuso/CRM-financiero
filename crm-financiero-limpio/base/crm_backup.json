@@ -1230,6 +1230,41 @@
             "reason": "Alta inicial en el sistema."
           }
         ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30707884300",
+        "email": "",
+        "phone": "",
+        "industry": "Industria Manufacturera",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "",
+          "role": "",
+          "email": "",
+          "phone": ""
+        },
+        "relevamiento": "",
+        "review": "",
+        "name": "FronteraLiving SA",
+        "id": "client-1756232281301",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-26T18:18:01.301Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
       }
     ],
     "negocios": [
@@ -1282,7 +1317,7 @@
           "email": "mariomarucco@gmail.com",
           "phone": "02966561337"
         },
-        "motivoUltimoCambio": "Ampliar linea para cheques de terceros"
+        "motivoUltimoCambio": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA"
       },
       {
         "id": "negocio-client-1755178433987",
@@ -1566,7 +1601,7 @@
           "email": "enriquevaira@yahoo.com.ar",
           "phone": ""
         },
-        "motivoUltimoCambio": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "motivoUltimoCambio": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\nSOLICITO 26-08\n\nIP 1 y 2\n",
         "calificaciones": [
           {
             "id": "qual-1756125349455",
@@ -2073,6 +2108,28 @@
         "details": "Lo que sea por banco o mercado",
         "id": "task-1756229758230",
         "createdAt": "2025-08-26T17:35:58.230Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA - [M y M SAS]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA",
+        "id": "task-1756230009035",
+        "createdAt": "2025-08-26T17:40:09.035Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\nSOLICITO 26-08\n\nIP 1 y 2\n - [Galia Norte SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\nSOLICITO 26-08\n\nIP 1 y 2\n",
+        "id": "task-1756230082566",
+        "createdAt": "2025-08-26T17:41:22.566Z",
         "isCompleted": false
       },
       {

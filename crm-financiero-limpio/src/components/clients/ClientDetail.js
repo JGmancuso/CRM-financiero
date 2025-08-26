@@ -4,13 +4,13 @@ import { FUNNEL_STAGES } from '../../data';
 import { useData } from '../../context/DataContext'; // <-- 1. Importamos el hook useData
 
 // Importamos los componentes de las pestañas
-import SummaryTab from '../tabs/SummaryTab';
-import DebtorStatusTab from '../tabs/DebtorStatusTab';
-import QualificationsTab from '../tabs/QualificationsTab';
-import DocumentsTab from '../tabs/DocumentsTab';
-import InvestmentTab from '../tabs/InvestmentTab';
-import ActivitiesTab from '../tabs/ActivitiesTab';
-import HistoryTab from '../tabs/HistoryTab';
+    import SummaryTab from '../tabs/SummaryTab';
+    import DebtorStatusTab from '../tabs/DebtorStatusTab';
+    import QualificationsTab from '../tabs/QualificationsTab';
+    import DocumentsTab from '../tabs/DocumentsTab';
+    import InvestmentTab from '../tabs/InvestmentTab';
+    import ActivitiesTab from '../tabs/ActivitiesTab';
+    import HistoryTab from '../tabs/HistoryTab';
 import NewBusinessModal from '../modals/NewBusinessModal';
 
 // 👇 2. Simplificamos los props. Ya no necesitamos recibir todas las funciones 'on...'.
@@ -52,6 +52,13 @@ export default function ClientDetail({ client, negocio, onEdit, onDelete }) {
 
     const tabs = [
         { id: 'resumen', label: 'Resumen', icon: FileText },
+
+        { id: 'deudores', label: 'Sit. Deudores', icon: Landmark },
+        { id: 'calificaciones', label: 'Calificaciones', icon: Shield },
+        { id: 'documentos', label: 'Documentos', icon: Paperclip },
+        { id: 'inversiones', label: 'Inversiones', icon: BarChart2 },
+        { id: 'actividades', label: 'Actividades', icon: CheckSquare },
+        { id: 'historial', label: 'Historial', icon: Clock },
         // ... (el array de tabs no cambia)
     ];
 
@@ -96,7 +103,17 @@ export default function ClientDetail({ client, negocio, onEdit, onDelete }) {
             </div>
             
             <div className="border-b border-gray-200 mb-6">
-                 {/* ... (la barra de pestañas no cambia) ... */}
+                <nav className="-mb-px flex space-x-6 overflow-x-auto">
+                    {tabs.map(tab => (
+                        <button 
+                            key={tab.id} 
+                            onClick={() => setActiveTab(tab.id)} 
+                            className={`py-4 px-1 inline-flex items-center gap-2 border-b-2 text-sm whitespace-nowrap ${activeTab === tab.id ? 'font-semibold border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-blue-600'}`}
+                        >
+                        <tab.icon size={16} /> {tab.label}
+                        </button>
+                    ))}
+                </nav>
             </div>
             
             <div>{renderActiveTab()}</div>

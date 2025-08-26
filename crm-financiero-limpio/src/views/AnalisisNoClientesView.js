@@ -1,76 +1,76 @@
-import React from 'react';
-import { useData } from '../context/DataContext';
+import React, { useState } from 'react';
+import DebtorStatusTab from '../components/tabs/DebtorStatusTab';
 import ClientForm from '../components/clients/ClientForm';
-import CuitQuickCheck from '../components/clients/CuitQuickCheck';
+import { ArrowRight } from 'lucide-react';
 
-export default function AnalisisNoClientesView() {
-    // Obtenemos la función dispatch de nuestro contexto para poder agregar clientes
-    const { dispatch } = useData();
-    
-    // Estado para manejar los pasos: 'check' (verificar CUIT) o 'form' (llenar formulario)
-    const [step, setStep] = React.useState('check');
-    
-    // Estado para guardar el CUIT verificado y pasarlo al formulario
-    const [cuitForForm, setCuitForForm] = React.useState('');
+export default function AnalisisNoClientesView({ onAddClient }) {
+    // Estado para saber qué CUIT se consultó exitosamente
+    const [cuitConsultado, setCuitConsultado] = useState(null);
+    // Estado para cambiar a la vista de creación de cliente
+    const [modo, setModo] = useState('analisis'); // 'analisis' o 'crearCliente'
 
-    // Esta función se ejecuta cuando el CUIT es verificado con éxito
-    const handleCuitCheckSuccess = (cuit) => {
-        setCuitForForm(cuit);
-        setStep('form'); // Avanzamos al paso del formulario
+    // Esta función la llamará DebtorStatusTab cuando tenga datos exitosos
+    const handleDataLoaded = (data, cuit) => {
+        // Si la consulta devuelve datos (no es un error), guardamos el CUIT
+        if (data && data.totalDebt !== undefined) {
+            setCuitConsultado(cuit);
+        } else {
+            setCuitConsultado(null);
+        }
     };
 
-    // Esta función se ejecuta cuando se guarda el cliente desde el formulario
-    const handleSaveClient = (clientFormData) => {
-        // Creamos el objeto completo del nuevo cliente
-        const newClient = {
-            ...clientFormData,
-            id: `client-${Date.now()}`,
-            qualifications: [],
-            activities: [],
-            documents: [],
-            financing: [],
-            history: [{ date: new Date().toISOString(), type: 'Creación de Cliente', reason: 'Alta inicial desde Análisis No Cliente.' }]
-        };
-
-        // Usamos dispatch para enviar la acción de agregar el cliente al estado global
-        dispatch({ type: 'ADD_CLIENT', payload: newClient });
-
-        alert(`Cliente "${newClient.nombre}" fue creado con éxito.`);
-        
-        // Volvemos al primer paso para poder analizar otro CUIT
-        handleCancel(); 
-    };
-    
-    // Función para cancelar y volver al paso inicial
-    const handleCancel = () => {
-        setCuitForForm('');
-        setStep('check');
+    // Cambia al modo de creación de formulario
+    const handleCargarComoCliente = () => {
+        if (cuitConsultado) {
+            setModo('crearCliente');
+        }
     };
 
-    return (
-        <div className="p-8 max-w-4xl mx-auto">
-            <div className="bg-white p-8 rounded-xl shadow-lg">
-                <h1 className="text-2xl font-bold text-gray-800 mb-6">Análisis y Alta de No Clientes</h1>
-                
-                {step === 'check' && (
-                    <div>
-                        <h2 className="text-lg font-semibold mb-4 text-gray-700">Paso 1: Consulta Rápida por CUIT</h2>
-                        <CuitQuickCheck onCheckSuccess={handleCuitCheckSuccess} />
-                    </div>
-                )}
-                
-                {step === 'form' && (
-                    <div>
-                        <h2 className="text-lg font-semibold mb-4 text-gray-700">Paso 2: Cargar Datos del Cliente</h2>
-                        <ClientForm 
-                            onSave={handleSaveClient} 
-                            onCancel={handleCancel}
-                            initialCuit={cuitForForm}
-                            clientToEdit={null} // Siempre es un cliente nuevo en esta vista
-                        />
-                    </div>
-                )}
+    // Lógica para guardar y volver a la pantalla de análisis
+    const handleSaveClient = (clientData) => {
+        onAddClient(clientData); // Llama a la función de App.js para guardar el cliente
+        alert(`Cliente ${clientData.nombre} creado con éxito.`);
+        setModo('analisis');
+        setCuitConsultado(null);
+    };
+
+    // Si estamos en modo 'crearCliente', mostramos el formulario
+    if (modo === 'crearCliente') {
+        return (
+            <div className="p-8 animate-fade-in">
+                <h2 className="text-3xl font-bold text-gray-800 mb-6">Cargar Nuevo Cliente</h2>
+                <ClientForm 
+                    initialCuit={cuitConsultado}
+                    onSave={handleSaveClient}
+                    onCancel={() => setModo('analisis')}
+                />
             </div>
+        );
+    }
+
+    // Por defecto, mostramos el panel de análisis
+    return (
+        <div className="p-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Análisis No Clientes</h1>
+            <p className="text-gray-600 mb-4">
+                Ingresa un CUIT para realizar una consulta de situación crediticia. Si el perfil es adecuado, podrás cargarlo como un nuevo cliente.
+            </p>
+            
+            {/* El componente de consulta ahora nos notifica cuando carga datos */}
+            <DebtorStatusTab onDataLoaded={handleDataLoaded} />
+
+            {/* Este botón solo aparece si una consulta fue exitosa */}
+            {cuitConsultado && (
+                <div className="mt-8 pt-6 border-t flex justify-center">
+                    <button 
+                        onClick={handleCargarComoCliente}
+                        className="flex items-center bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-all text-lg"
+                    >
+                        <ArrowRight size={20} className="mr-2" />
+                        Cargar como Nuevo Cliente
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
