@@ -19,10 +19,14 @@ export default function AgendaView() {
 
     // 👇 4. Reescribimos las funciones para que usen dispatch
     const handleSaveTask = (taskData) => {
+        // Añadimos la fecha de modificación antes de guardar
+        const taskWithDate = { ...taskData, modifiedAt: new Date().toISOString() };
+
         if (taskData.id) {
-            dispatch({ type: 'UPDATE_TASK', payload: taskData });
+            dispatch({ type: 'UPDATE_TASK', payload: taskWithDate });
         } else {
-            dispatch({ type: 'ADD_TASK', payload: taskData });
+            const newTaskPayload = { ...taskWithDate, clientName: 'Tarea General' };
+            dispatch({ type: 'ADD_TASK', payload: newTaskPayload });
         }
         setEditingTask(null);
     };
