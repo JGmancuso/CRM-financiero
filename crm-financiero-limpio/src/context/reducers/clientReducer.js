@@ -64,13 +64,15 @@ export const clientReducer = (clientsState, action) => {
         }
 
         case 'TOGGLE_ACTIVITY': {
-            // Lógica de `handleToggleActivity`
             const { clientId, activityId } = action.payload;
             return clientsState.map(client => {
                 if (client.id === clientId) {
-                    const updatedActivities = (client.activities || []).map(act => 
-                        act.id === activityId ? { ...act, completed: !act.completed } : act
-                    );
+                    const updatedActivities = (client.activities || []).map(act => {
+                        if (act.id === activityId) {
+                            return { ...act, completed: !act.completed, isCompleted: !act.completed };
+                        }
+                        return act;
+                    });
                     return { ...client, activities: updatedActivities };
                 }
                 return client;

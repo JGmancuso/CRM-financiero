@@ -4,21 +4,40 @@ import AgendaColumn from '../components/agenda/AgendaColumn';
 import { useAgenda } from '../hooks/useAgenda';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskDetailModal from '../components/modals/TaskDetailModal';
+import { useData } from '../context/DataContext'; // <-- 1. Importamos useData
 
-export default function AgendaView({ clients, tasks, onUpdateTask, onAddTask, onToggleTaskCompletion }) {
+// 👇 2. Eliminamos los props de manejo de datos
+export default function AgendaView() {
+    const { state, dispatch } = useData(); // <-- 3. Obtenemos estado y dispatch
     const [filter, setFilter] = useState('todos');
-    const { overdueTasks, tasksByDayOfWeek, futureTasks } = useAgenda(clients, tasks, filter);
+
+    // Tu hook useAgenda ahora se alimenta del estado global
+    const { overdueTasks, tasksByDayOfWeek, futureTasks } = useAgenda(state.clients, state.tasks, filter);
     
     const [editingTask, setEditingTask] = useState(null);
     const [viewingTask, setViewingTask] = useState(null);
 
+    // 👇 4. Reescribimos las funciones para que usen dispatch
     const handleSaveTask = (taskData) => {
         if (taskData.id) {
-            onUpdateTask(taskData);
+            dispatch({ type: 'UPDATE_TASK', payload: taskData });
         } else {
-            onAddTask(taskData);
+            dispatch({ type: 'ADD_TASK', payload: taskData });
         }
         setEditingTask(null);
+    };
+
+    // 👇 5. Esta es la función clave corregida, adaptada a tu agendaUtils.js
+    const handleToggleComplete = (task) => {
+        // Tu hook `useAgenda` ya nos da el `source` que necesitamos
+        if (task.source === 'clientes') {
+            dispatch({
+                type: 'TOGGLE_ACTIVITY',
+                payload: { clientId: task.clientId, activityId: task.id }
+            });
+        } else { // 'embudo' o 'gestiones'
+            dispatch({ type: 'TOGGLE_TASK_COMPLETION', payload: task });
+        }
     };
 
     const weekDays = [
@@ -50,11 +69,12 @@ export default function AgendaView({ clients, tasks, onUpdateTask, onAddTask, on
             </div>
             
             <div className="flex space-x-4 overflow-x-auto flex-grow pb-4">
-                <AgendaColumn title="Vencidas" tasks={overdueTasks} onToggleComplete={onToggleTaskCompletion} onEdit={setEditingTask} onView={setViewingTask} />
+                {/* 👇 6. Pasamos la nueva función a las columnas */}
+                <AgendaColumn title="Vencidas" tasks={overdueTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
                 {weekDays.map(day => (
-                    <AgendaColumn key={day.id} title={day.name} tasks={tasksByDayOfWeek[day.id] || []} onToggleComplete={onToggleTaskCompletion} onEdit={setEditingTask} onView={setViewingTask} />
+                    <AgendaColumn key={day.id} title={day.name} tasks={tasksByDayOfWeek[day.id] || []} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
                 ))}
-                <AgendaColumn title="Próximas" tasks={futureTasks} onToggleComplete={onToggleTaskCompletion} onEdit={setEditingTask} onView={setViewingTask} />
+                <AgendaColumn title="Próximas" tasks={futureTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
             </div>
 
             {editingTask && (<ActivityModal activityToEdit={editingTask.id ? editingTask : null} onClose={() => setEditingTask(null)} onSave={handleSaveTask} />)}

@@ -23,12 +23,35 @@ export const negocioReducer = (negociosState, action) => {
         }
 
         case 'UPDATE_NEGOCIO': {
-             // Lógica de `handleUpdateNegocio` y `handleNegocioStageChange` (solo la parte que afecta a negocios)
+            // Este caso es para una actualización general sin lógica de historial
             const updatedNegocio = action.payload;
             return negociosState.map(n => n.id === updatedNegocio.id ? updatedNegocio : n);
         }
 
-        // Caso para cuando un cliente se actualiza y necesitamos reflejar el cambio aquí
+        // --- 👇 LÓGICA AÑADIDA AQUÍ 👇 ---
+        case 'UPDATE_NEGOCIO_STAGE': {
+            const updatedNegocio = action.payload;
+            
+            return negociosState.map(negocio => {
+                if (negocio.id === updatedNegocio.id) {
+                    // Prepara una nueva entrada para el historial
+                    const historyEntry = {
+                        date: new Date().toISOString(),
+                        type: `Cambio de estado a: ${updatedNegocio.estado}`,
+                        reason: updatedNegocio.motivoUltimoCambio || 'Actualización de estado desde el embudo.'
+                    };
+
+                    // Devuelve el negocio actualizado con la nueva entrada en el historial
+                    return {
+                        ...updatedNegocio,
+                        history: [...(negocio.history || []), historyEntry]
+                    };
+                }
+                return negocio;
+            });
+        }
+        // --- 👆 FIN DE LA LÓGICA AÑADIDA ---
+
         case 'UPDATE_CLIENT_IN_NEGOCIOS': {
             const updatedClient = action.payload;
             return negociosState.map(n => {
