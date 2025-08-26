@@ -1195,6 +1195,41 @@
           "rejectedChecks": []
         },
         "lastUpdate": "2025-08-25T17:36:43.672Z"
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30-71432754-9\t\t\t\t\t\t\t\t",
+        "email": "",
+        "phone": "3513478318",
+        "industry": "",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2024-12-31",
+        "hasForeignTrade": true,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Leandro Garibotti",
+          "role": "",
+          "email": "",
+          "phone": ""
+        },
+        "relevamiento": "CT lo que sea",
+        "review": "",
+        "name": "Natural FOOD SRL",
+        "id": "client-1756227839590",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-26T17:03:59.590Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
       }
     ],
     "negocios": [
@@ -1735,40 +1770,6 @@
         ]
       }
     ],
-    "sgrs": [
-      {
-        "name": "Argenpymes",
-        "totalQuota": 5.666666666666667e+36,
-        "id": "sgr-1755880946552"
-      },
-      {
-        "name": "Innova",
-        "totalQuota": 8.888888888888889e+35,
-        "id": "sgr-1755881157770"
-      },
-      {
-        "name": "FIDEM",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1755881166954"
-      },
-      {
-        "name": "CFT",
-        "totalQuota": 8.88888888888889e+28,
-        "id": "sgr-1755881181897"
-      },
-      {
-        "name": "ADC",
-        "totalQuota": 8.888888888888889e+32,
-        "id": "sgr-1755881190986"
-      },
-      {
-        "name": "AcindarPyme",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1756125379492"
-      }
-    ],
-    "campaigns": [],
-    "products": [],
     "tasks": [
       {
         "id": "task-1755983250099",
@@ -2121,6 +2122,40 @@
         "id": "task-1756159367763",
         "createdAt": "2025-08-25T22:02:47.763Z"
       }
-    ]
+    ],
+    "sgrs": [
+      {
+        "name": "Argenpymes",
+        "totalQuota": 5.666666666666667e+36,
+        "id": "sgr-1755880946552"
+      },
+      {
+        "name": "Innova",
+        "totalQuota": 8.888888888888889e+35,
+        "id": "sgr-1755881157770"
+      },
+      {
+        "name": "FIDEM",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1755881166954"
+      },
+      {
+        "name": "CFT",
+        "totalQuota": 8.88888888888889e+28,
+        "id": "sgr-1755881181897"
+      },
+      {
+        "name": "ADC",
+        "totalQuota": 8.888888888888889e+32,
+        "id": "sgr-1755881190986"
+      },
+      {
+        "name": "AcindarPyme",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1756125379492"
+      }
+    ],
+    "campaigns": [],
+    "products": []
   }
 }
