@@ -1768,6 +1768,26 @@
             "vencimiento": ""
           }
         ]
+      },
+      {
+        "id": "negocio-client-1756227839590-1756229402293",
+        "nombre": "Capital de trabajo",
+        "estado": "INFO_SOLICITADA",
+        "montoSolicitado": 30000000,
+        "fechaProximoSeguimiento": "2025-08-26T17:30:02.293Z",
+        "history": [
+          {
+            "date": "2025-08-26T17:30:02.293Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          }
+        ],
+        "cliente": {
+          "id": "client-1756227839590",
+          "nombre": "Natural FOOD SRL",
+          "cuit": "30-71432754-9\t\t\t\t\t\t\t\t"
+        },
+        "motivoUltimoCambio": "Lo que sea por banco o mercado"
       }
     ],
     "tasks": [
@@ -2042,6 +2062,17 @@
         "details": "Ampliar linea para cheques de terceros",
         "id": "task-1756215767609",
         "createdAt": "2025-08-26T13:42:47.609Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Lo que sea por banco o mercado - [Natural FOOD SRL]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1756227839590",
+        "businessId": "negocio-client-1756227839590-1756229402293",
+        "clientName": "Natural FOOD SRL",
+        "details": "Lo que sea por banco o mercado",
+        "id": "task-1756229758230",
+        "createdAt": "2025-08-26T17:35:58.230Z",
         "isCompleted": false
       },
       {
