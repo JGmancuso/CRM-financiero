@@ -1335,7 +1335,7 @@
         "id": "negocio-client-1755177831940",
         "nombre": "Oportunidad para M y M SAS",
         "estado": "EN_ARMADO",
-        "montoSolicitado": 0,
+        "montoSolicitado": 100000000,
         "fechaProximoSeguimiento": "2025-08-19T22:07:47.581Z",
         "history": [
           {
@@ -1344,6 +1344,16 @@
             "newStatus": "En Calificación",
             "reason": "Actualizar cheques de 3ª",
             "type": "Funnel Change"
+          },
+          {
+            "date": "2025-08-26T19:31:43.941Z",
+            "type": "Cambio de estado a: EN_ARMADO",
+            "reason": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA"
+          },
+          {
+            "date": "2025-08-26T19:41:10.972Z",
+            "type": "Cambio de estado a: EN_ARMADO",
+            "reason": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB"
           }
         ],
         "cliente": {
@@ -1353,8 +1363,9 @@
           "email": "mariomarucco@gmail.com",
           "phone": "02966561337"
         },
-        "motivoUltimoCambio": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA",
-        "creationDate": "2025-08-14T13:24:26.267Z"
+        "motivoUltimoCambio": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB",
+        "creationDate": "2025-08-14T13:24:26.267Z",
+        "lastUpdate": "2025-08-26T19:41:10.972Z"
       },
       {
         "id": "negocio-client-1755178433987",
@@ -1693,6 +1704,11 @@
             "type": "Cambio a: En Calificación",
             "reason": "Argenpyme.\nAcindar",
             "user": "Usuario Actual"
+          },
+          {
+            "date": "2025-08-26T19:42:31.975Z",
+            "type": "Cambio de estado a: EN_CALIFICACION",
+            "reason": "Argenpyme.\nAcindar"
           }
         ],
         "cliente": {
@@ -1702,11 +1718,22 @@
           "email": "",
           "phone": ""
         },
-        "lastUpdate": "2025-08-22T15:10:11.970Z",
+        "lastUpdate": "2025-08-26T19:42:31.975Z",
         "motivoUltimoCambio": "Argenpyme.\nAcindar",
         "proximosPasos": "Esperar Rdo",
         "documentacionFaltante": "pidieron % de cleintes y proveedore",
-        "creationDate": "2025-08-22T15:10:11.970Z"
+        "creationDate": "2025-08-22T15:10:11.970Z",
+        "calificaciones": [
+          {
+            "id": "qual-1756237348767",
+            "entidad": "Argenpymes",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-26",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       },
       {
         "id": "negocio-client-1755613590756",
@@ -2305,6 +2332,39 @@
         "id": "task-1756234322514",
         "createdAt": "2025-08-26T18:52:02.514Z",
         "isCompleted": true
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA - [M y M SAS]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA",
+        "id": "task-1756236703941",
+        "createdAt": "2025-08-26T19:31:43.941Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB",
+        "id": "task-1756237270972",
+        "createdAt": "2025-08-26T19:41:10.972Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Esperar Rdo - [Ricalbert SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755613219213",
+        "businessId": "negocio-client-1755613219213",
+        "clientName": "Ricalbert SA",
+        "details": "Argenpyme.\nAcindar",
+        "id": "task-1756237351975",
+        "createdAt": "2025-08-26T19:42:31.975Z",
+        "isCompleted": false
       },
       {
         "id": "task-1755879161088",

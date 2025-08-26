@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Edit, Save, User, DollarSign, Flag, AlertTriangle, Info, Clock, RefreshCw } from 'lucide-react';
 import CalificacionPanel from '../funnel/CalificacionPanel';
+import { daysSince, findLastStageChangeDate } from '../../utils/negocioUtils';
 
 // Define funnel stages here to make the component self-contained
 const FUNNEL_STAGES = {
@@ -41,7 +42,7 @@ export default function NegocioDetailModal({ negocio, onClose, onSave, sgrs }) {
         return lastChange ? lastChange.date : negocio.creationDate;
     };
     
-    const diasEnEstado = daysSince(findLastStageChangeDate());
+    const diasEnEstado = daysSince(findLastStageChangeDate(negocio));
     const diasDesdeUltimaModificacion = daysSince(negocio.lastUpdate);
 
     const montoFormateado = new Intl.NumberFormat('es-AR', {

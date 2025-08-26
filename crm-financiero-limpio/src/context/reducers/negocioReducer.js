@@ -4,15 +4,15 @@ export const negocioReducer = (negociosState, action) => {
     const now = new Date().toISOString();
 
     switch (action.type) {
+        
         case 'ADD_NEW_BUSINESS': {
             const { client, businessData } = action.payload;
             const newBusiness = {
                 id: `negocio-${client.id}-${Date.now()}`,
                 nombre: businessData.motivo,
                 estado: 'PROSPECTO',
-                montoSolicitado: businessData.montoAproximado,
+                montoSolicitado: businessData.montoSolicitado,
                 fechaProximoSeguimiento: now,
-                // Añadimos las nuevas fechas al crear
                 creationDate: now,
                 lastUpdate: now,
                 history: [{
@@ -25,36 +25,56 @@ export const negocioReducer = (negociosState, action) => {
             return [...negociosState, newBusiness];
         }
 
-        case 'UPDATE_NEGOCIO': {
-            const updatedNegocio = action.payload;
-            return negociosState.map(n => 
-                n.id === updatedNegocio.id 
-                    ? { ...updatedNegocio, lastUpdate: now } // <-- Actualiza la fecha aquí
-                    : n
-            );
-        }
-
         case 'UPDATE_NEGOCIO_STAGE': {
             const updatedNegocio = action.payload;
+            
             return negociosState.map(negocio => {
                 if (negocio.id === updatedNegocio.id) {
-                    const historyEntry = {
-                        date: now,
-                        type: `Cambio de estado a: ${updatedNegocio.estado}`,
-                        reason: updatedNegocio.motivoUltimoCambio || 'Actualización de estado.'
-                    };
+                    let historyEntry;
+                    
+                    // LÓGICA CLAVE: Comprueba si el estado realmente cambió
+                    if (negocio.estado !== updatedNegocio.estado) {
+                        // Si el estado CAMBIÓ, se registra como "Cambio de estado"
+                        historyEntry = {
+                            date: now,
+                            type: `Cambio de estado a: ${updatedNegocio.estado}`,
+                            reason: updatedNegocio.motivoUltimoCambio || 'Actualización de estado.'
+                        };
+                    } else {
+                        // Si NO cambió, se registra como una simple "Modificación de Detalles"
+                        historyEntry = {
+                            date: now,
+                            type: 'Modificación de Detalles',
+                            reason: updatedNegocio.motivoUltimoCambio || 'Se actualizaron los datos del negocio.'
+                        };
+                    }
                     return {
                         ...updatedNegocio,
-                        lastUpdate: now, // <-- Y también aquí
+                        lastUpdate: now,
                         history: [...(negocio.history || []), historyEntry]
                     };
                 }
                 return negocio;
             });
         }
-
+        
+        case 'UPDATE_NEGOCIO': {
+            const updatedNegocio = action.payload;
+            return negociosState.map(n => 
+                n.id === updatedNegocio.id 
+                    ? { ...updatedNegocio, lastUpdate: now }
+                    : n
+            );
+        }
+        
         case 'UPDATE_CLIENT_IN_NEGOCIOS': {
-            // ... (el resto del reducer no cambia)
+            const updatedClient = action.payload;
+            return negociosState.map(n => {
+                if (n.cliente.id === updatedClient.id) {
+                    return { ...n, cliente: { ...n.cliente, nombre: updatedClient.name, cuit: updatedClient.cuit }};
+                }
+                return n;
+            });
         }
 
         default:
