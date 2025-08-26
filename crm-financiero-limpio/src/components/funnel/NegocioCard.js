@@ -4,7 +4,6 @@ import { User, DollarSign, Clock } from 'lucide-react';
 export default function NegocioCard({ negocio, onCardClick }) {
     if (!negocio) return null;
 
-    // Función auxiliar para calcular días desde una fecha
     const daysSince = (dateString) => {
         if (!dateString) return null;
         const today = new Date();
@@ -12,22 +11,36 @@ export default function NegocioCard({ negocio, onCardClick }) {
         today.setHours(0, 0, 0, 0);
         pastDate.setHours(0, 0, 0, 0);
         const diffTime = Math.abs(today - pastDate);
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        // Se ajusta para que el primer día cuente como 1
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
     };
 
-    // Lógica para encontrar la fecha del último cambio de estado
+    // --- 👇 FUNCIÓN MODIFICADA AQUÍ 👇 ---
     const findLastStageChangeDate = () => {
         if (!negocio.history || negocio.history.length === 0) {
+            // Si no hay historial, intenta usar la fecha de creación
             return negocio.creationDate;
         }
+        
+        // 1. Busca el último cambio de estado explícito
         const reversedHistory = [...negocio.history].reverse();
-        const lastChange = reversedHistory.find(item => item.type && item.type.includes('Cambio a:'));
-        return lastChange ? lastChange.date : negocio.creationDate;
+        const lastChange = reversedHistory.find(item => item.type && item.type.includes('Cambio de estado a:'));
+        if (lastChange && lastChange.date) {
+            return lastChange.date;
+        }
+
+        // 2. Si no lo encuentra, busca la fecha de creación en el objeto
+        if (negocio.creationDate) {
+            return negocio.creationDate;
+        }
+
+        // 3. Como último recurso, usa la fecha del primer evento en el historial
+        return negocio.history[0].date;
     };
+    // --- 👆 FIN DE LA MODIFICACIÓN ---
 
     const diasEnEstado = daysSince(findLastStageChangeDate());
 
-    // Función para obtener el estilo del indicador de tiempo según los días
     const getIndicatorStyle = (days) => {
         if (days === null) return 'bg-gray-100 text-gray-600';
         if (days <= 5) return 'bg-green-100 text-green-800';
@@ -38,7 +51,6 @@ export default function NegocioCard({ negocio, onCardClick }) {
 
     const indicatorStyle = getIndicatorStyle(diasEnEstado);
 
-    // Formatea el monto del negocio usando la moneda especificada
     const montoFormateado = new Intl.NumberFormat('es-AR', {
         style: 'currency',
         currency: negocio.moneda || 'ARS',
@@ -51,7 +63,7 @@ export default function NegocioCard({ negocio, onCardClick }) {
         >
             <h3 className="font-semibold text-gray-800 truncate">{negocio.nombre}</h3>
             <p className="text-sm text-gray-500 flex items-center mt-1">
-                <User size={14} className="mr-2" /> {negocio.cliente.nombre}
+                <User size={14} className="mr-2" /> {negocio.cliente.nombre || negocio.cliente.name}
             </p>
             <div className="flex justify-between items-end mt-2">
                 <p className="text-lg font-semibold text-gray-900">

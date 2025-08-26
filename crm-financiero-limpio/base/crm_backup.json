@@ -1858,6 +1858,46 @@
           "cuit": "30-71432754-9\t\t\t\t\t\t\t\t"
         },
         "motivoUltimoCambio": "Lo que sea por banco o mercado"
+      },
+      {
+        "id": "negocio-client-1756234019946-1756234165111",
+        "nombre": "Calificacion INNOVA y FIDEM",
+        "estado": "PROPUESTA_FIRMADA",
+        "montoSolicitado": 120000000,
+        "fechaProximoSeguimiento": "2025-08-26T18:49:25.111Z",
+        "history": [
+          {
+            "date": "2025-08-26T18:49:25.111Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          }
+        ],
+        "cliente": {
+          "id": "client-1756234019946",
+          "nombre": "ZEA SA",
+          "cuit": "30709803855"
+        },
+        "motivoUltimoCambio": "CT cheques propios 60 millones cada una",
+        "calificaciones": [
+          {
+            "id": "qual-1756234245797",
+            "entidad": "Innova",
+            "estado": "Aprobada",
+            "fechaPresentacion": "2025-08-26",
+            "montoAprobado": "60000000",
+            "destino": "Cheques propios",
+            "vencimiento": "2026-05-30"
+          },
+          {
+            "id": "qual-1756234251357",
+            "entidad": "FIDEM",
+            "estado": "Aprobada",
+            "fechaPresentacion": "2025-08-26",
+            "montoAprobado": "60000000",
+            "destino": "Cheques propios",
+            "vencimiento": "2026-05-30"
+          }
+        ]
       }
     ],
     "tasks": [
@@ -2166,6 +2206,50 @@
         "id": "task-1756230082566",
         "createdAt": "2025-08-26T17:41:22.566Z",
         "isCompleted": false
+      },
+      {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234221201",
+        "createdAt": "2025-08-26T18:50:21.201Z",
+        "isCompleted": false
+      },
+      {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234230974",
+        "createdAt": "2025-08-26T18:50:30.974Z",
+        "isCompleted": false
+      },
+      {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234311528",
+        "createdAt": "2025-08-26T18:51:51.528Z",
+        "isCompleted": true
+      },
+      {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234322514",
+        "createdAt": "2025-08-26T18:52:02.514Z",
+        "isCompleted": true
       },
       {
         "id": "task-1755879161088",
