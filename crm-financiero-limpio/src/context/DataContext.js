@@ -1,49 +1,62 @@
 import React, { createContext, useReducer, useEffect, useContext, useState } from 'react';
 
-// Dependencias de nuestro estado
+// Dependencias
 import { initialData } from '../data';
 import { createTaskForStageChange } from '../services/TaskAutomationService';
-
-// Importamos los reductores especializados
 import { clientReducer } from './reducers/clientReducer';
 import { negocioReducer } from './reducers/negocioReducer';
 import { taskReducer } from './reducers/taskReducer';
 
 const APP_DATA_VERSION = '3.0';
 
-// --- 1. Creación del Contexto ---
+// Función para reparar datos de negocios antiguos
+const sanitizeNegociosData = (negocios = []) => {
+    return negocios.map(negocio => {
+        if (negocio.creationDate) return negocio;
+        if (negocio.history && negocio.history.length > 0 && negocio.history[0].date) {
+            return { ...negocio, creationDate: negocio.history[0].date };
+        }
+        return { ...negocio, creationDate: new Date().toISOString() };
+    });
+};
+
 const DataContext = createContext();
 
-// --- 2. Carga del Estado Inicial desde LocalStorage (o datos por defecto) ---
+// --- ESTA ES LA FUNCIÓN CORREGIDA ---
 const loadInitialState = () => {
+    // 1. Se declara la variable `dataToLoad` al inicio.
+    let dataToLoad = initialData; 
+
     try {
         const savedJSON = localStorage.getItem('crm-data');
         if (savedJSON) {
             const savedObject = JSON.parse(savedJSON);
             if (savedObject.version === APP_DATA_VERSION && savedObject.data) {
-                return savedObject.data;
+                // 2. Se le asignan los datos guardados.
+                dataToLoad = savedObject.data;
             }
         }
     } catch (error) {
         console.error("Error al cargar datos desde localStorage:", error);
     }
-    // Fallback a los datos iniciales si no hay nada guardado
+    
+    // 3. Se reparan los datos de negocios.
+    const saneados = sanitizeNegociosData(dataToLoad.negocios);
+
+    // 4. Se retorna el estado inicial usando la variable `dataToLoad`.
     return {
-        clients: initialData.clients || [],
-        negocios: initialData.negocios || [],
-        sgrs: initialData.sgrs || [],
-        campaigns: initialData.campaigns || [],
-        products: initialData.products || [],
-        tasks: initialData.tasks || [],
+        clients: dataToLoad.clients || [],
+        negocios: saneados,
+        sgrs: dataToLoad.sgrs || [],
+        campaigns: dataToLoad.campaigns || [],
+        products: dataToLoad.products || [],
+        tasks: dataToLoad.tasks || [],
     };
 };
 
 const initialState = loadInitialState();
 
-// --- 3. El Reductor Raíz (El Director de Orquesta) ---
 const rootReducer = (state, action) => {
-    
-    // Primero, manejamos las acciones complejas que afectan a múltiples partes del estado
     switch (action.type) {
         case 'ADD_CLIENT_AND_BUSINESS': {
             const { motivo, montoAproximado, observaciones, ...clientDetails } = action.payload;
@@ -62,44 +75,24 @@ const rootReducer = (state, action) => {
                 history: [{ date: new Date().toISOString(), type: 'Creación de Negocio', reason: observaciones || 'Creación inicial.' }],
                 cliente: { id: newClient.id, nombre: newClient.name, cuit: newClient.cuit }
             };
-            // Retornamos el nuevo estado completo
-            return {
-                ...state,
-                clients: [...state.clients, newClient],
-                negocios: [...state.negocios, newBusiness],
-            };
+            return { ...state, clients: [...state.clients, newClient], negocios: [...state.negocios, newBusiness] };
         }
-
         case 'UPDATE_NEGOCIO_STAGE': {
             const updatedNegocio = action.payload;
             const taskData = createTaskForStageChange(updatedNegocio);
-
-            // Delegamos la actualización del negocio a su reducer
-            const newNegocios = negocioReducer(state.negocios, {type: 'UPDATE_NEGOCIO', payload: updatedNegocio});
-            
-            // Si se generó una tarea, delegamos su creación al reducer de tareas
-            const newTasks = taskData 
-                ? taskReducer(state.tasks, {type: 'ADD_TASK', payload: taskData}) 
-                : state.tasks;
-
-            return {
-                ...state,
-                negocios: newNegocios,
-                tasks: newTasks
-            };
+            const newNegocios = negocioReducer(state.negocios, {type: 'UPDATE_NEGOCIO_STAGE', payload: updatedNegocio});
+            const newTasks = taskData ? taskReducer(state.tasks, {type: 'ADD_TASK', payload: taskData}) : state.tasks;
+            return { ...state, negocios: newNegocios, tasks: newTasks };
         }
-        
         case 'IMPORT_DATA': {
-            return { ...state, ...action.payload };
+            const saneados = sanitizeNegociosData(action.payload.negocios || []);
+            return { ...state, ...action.payload, negocios: saneados };
         }
-
         default:
-            // Si no es una acción compleja, delegamos a cada reducer individual
             return {
                 clients: clientReducer(state.clients, action),
                 negocios: negocioReducer(state.negocios, action),
                 tasks: taskReducer(state.tasks, action),
-                // Los siguientes estados aún no tienen reducer, así que los pasamos tal cual
                 sgrs: state.sgrs, 
                 campaigns: state.campaigns,
                 products: state.products,
@@ -107,12 +100,10 @@ const rootReducer = (state, action) => {
     }
 };
 
-// --- 4. El Componente Proveedor que envuelve la App ---
 export const DataProvider = ({ children }) => {
     const [state, dispatch] = useReducer(rootReducer, initialState);
     const [lastSaved, setLastSaved] = useState(null);
 
-    // Efecto para autoguardar en localStorage cada vez que el estado cambie
     useEffect(() => {
         const dataToSave = { version: APP_DATA_VERSION, data: state };
         localStorage.setItem('crm-data', JSON.stringify(dataToSave));
@@ -126,7 +117,6 @@ export const DataProvider = ({ children }) => {
     );
 };
 
-// --- 5. Hook Personalizado para un fácil acceso al contexto ---
 export const useData = () => {
     const context = useContext(DataContext);
     if (context === undefined) {

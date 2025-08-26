@@ -1328,7 +1328,8 @@
         "reason": "Argenpyme ",
         "nextSteps": "Esperar calificacion",
         "missingItems": "Nada ",
-        "motivoUltimoCambio": "Linea Galicia"
+        "motivoUltimoCambio": "Linea Galicia",
+        "creationDate": "2025-08-14T13:14:21.299Z"
       },
       {
         "id": "negocio-client-1755177831940",
@@ -1352,7 +1353,8 @@
           "email": "mariomarucco@gmail.com",
           "phone": "02966561337"
         },
-        "motivoUltimoCambio": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA"
+        "motivoUltimoCambio": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA",
+        "creationDate": "2025-08-14T13:24:26.267Z"
       },
       {
         "id": "negocio-client-1755178433987",
@@ -1387,7 +1389,8 @@
             "destino": "",
             "vencimiento": ""
           }
-        ]
+        ],
+        "creationDate": "2025-08-14T13:41:05.652Z"
       },
       {
         "id": "negocio-client-1755180631735",
@@ -1402,7 +1405,8 @@
           "cuit": "30715375334",
           "email": "franco@grupombc.com.ar",
           "phone": "3534817608"
-        }
+        },
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755182242838",
@@ -1418,7 +1422,8 @@
           "email": "mecfre@hotmail.com",
           "phone": "2664473522"
         },
-        "motivoUltimoCambio": "Necesita ampliar la nave para las maquinas"
+        "motivoUltimoCambio": "Necesita ampliar la nave para las maquinas",
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755184537576",
@@ -1454,7 +1459,8 @@
         },
         "lastUpdate": "2025-08-22T16:30:00.177Z",
         "proximosPasos": "corroborar",
-        "documentacionFaltante": "a"
+        "documentacionFaltante": "a",
+        "creationDate": "2025-08-14T15:59:15.216Z"
       },
       {
         "id": "negocio-client-1755191641483",
@@ -1469,7 +1475,8 @@
           "cuit": "",
           "email": "serviciosdelrosario@gmail.com",
           "phone": "2664859983"
-        }
+        },
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755192895477",
@@ -1485,7 +1492,8 @@
           "email": "dinardimosca@gilesonline.com.ar",
           "phone": "232515591032"
         },
-        "motivoUltimoCambio": "No requiere nada"
+        "motivoUltimoCambio": "No requiere nada",
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755198734612",
@@ -1500,7 +1508,8 @@
           "cuit": "33688848089",
           "email": "jorge_bessone@hotmail.com.ar",
           "phone": "03563-15494989"
-        }
+        },
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755201637349",
@@ -1523,7 +1532,8 @@
           "cuit": "",
           "email": "nn@nn",
           "phone": "266154544926"
-        }
+        },
+        "creationDate": "2025-08-14T20:10:50.806Z"
       },
       {
         "id": "negocio-client-1755261416607",
@@ -1547,7 +1557,8 @@
           "email": "diegooggero@insumosyacopiosdelsur.com",
           "phone": "3584030570"
         },
-        "motivoUltimoCambio": "No quiere mas cuenta"
+        "motivoUltimoCambio": "No quiere mas cuenta",
+        "creationDate": "2025-08-15T12:38:35.410Z"
       },
       {
         "id": "negocio-client-1755264538180",
@@ -1570,7 +1581,8 @@
           "cuit": "30716089599",
           "email": "lucas@tecnofundaciones.com.ar",
           "phone": "3512 00-9215"
-        }
+        },
+        "creationDate": "2025-08-15T13:30:33.835Z"
       },
       {
         "id": "negocio-client-1755520084158",
@@ -1620,7 +1632,8 @@
         "lastUpdate": "2025-08-22T13:39:06.812Z",
         "motivoUltimoCambio": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, ",
         "proximosPasos": "esperar respuesta",
-        "documentacionFaltante": "Toda"
+        "documentacionFaltante": "Toda",
+        "creationDate": "2025-08-22T12:53:35.028Z"
       },
       {
         "id": "negocio-client-1755540519671",
@@ -1665,7 +1678,8 @@
             "destino": "",
             "vencimiento": ""
           }
-        ]
+        ],
+        "creationDate": "2025-08-26T19:25:40.850Z"
       },
       {
         "id": "negocio-client-1755613219213",
@@ -1691,7 +1705,8 @@
         "lastUpdate": "2025-08-22T15:10:11.970Z",
         "motivoUltimoCambio": "Argenpyme.\nAcindar",
         "proximosPasos": "Esperar Rdo",
-        "documentacionFaltante": "pidieron % de cleintes y proveedore"
+        "documentacionFaltante": "pidieron % de cleintes y proveedore",
+        "creationDate": "2025-08-22T15:10:11.970Z"
       },
       {
         "id": "negocio-client-1755613590756",
@@ -1725,7 +1740,8 @@
           "montoAprobado": "",
           "destino": "",
           "vencimiento": ""
-        }
+        },
+        "creationDate": "2025-08-22T15:10:41.270Z"
       },
       {
         "id": "negocio-client-1755177241923-1755865268468",
@@ -1751,7 +1767,8 @@
           "nombre": "Kennbal SRL",
           "cuit": "30-71527701-4"
         },
-        "lastUpdate": "2025-08-22T12:33:38.484Z"
+        "lastUpdate": "2025-08-22T12:33:38.484Z",
+        "creationDate": "2025-08-22T12:21:08.470Z"
       },
       {
         "id": "negocio-client-1755264538180-1755873928080",
@@ -1808,7 +1825,8 @@
             "destino": "",
             "vencimiento": ""
           }
-        ]
+        ],
+        "creationDate": "2025-08-22T14:45:28.080Z"
       },
       {
         "id": "negocio-client-1756143399404-1756144134858",
@@ -1837,7 +1855,8 @@
             "destino": "",
             "vencimiento": ""
           }
-        ]
+        ],
+        "creationDate": "2025-08-25T17:48:54.858Z"
       },
       {
         "id": "negocio-client-1756227839590-1756229402293",
@@ -1857,7 +1876,8 @@
           "nombre": "Natural FOOD SRL",
           "cuit": "30-71432754-9\t\t\t\t\t\t\t\t"
         },
-        "motivoUltimoCambio": "Lo que sea por banco o mercado"
+        "motivoUltimoCambio": "Lo que sea por banco o mercado",
+        "creationDate": "2025-08-26T17:30:02.293Z"
       },
       {
         "id": "negocio-client-1756234019946-1756234165111",
@@ -1897,9 +1917,44 @@
             "destino": "Cheques propios",
             "vencimiento": "2026-05-30"
           }
-        ]
+        ],
+        "creationDate": "2025-08-26T18:49:25.111Z"
       }
     ],
+    "sgrs": [
+      {
+        "name": "Argenpymes",
+        "totalQuota": 5.666666666666667e+36,
+        "id": "sgr-1755880946552"
+      },
+      {
+        "name": "Innova",
+        "totalQuota": 8.888888888888889e+35,
+        "id": "sgr-1755881157770"
+      },
+      {
+        "name": "FIDEM",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1755881166954"
+      },
+      {
+        "name": "CFT",
+        "totalQuota": 8.88888888888889e+28,
+        "id": "sgr-1755881181897"
+      },
+      {
+        "name": "ADC",
+        "totalQuota": 8.888888888888889e+32,
+        "id": "sgr-1755881190986"
+      },
+      {
+        "name": "AcindarPyme",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1756125379492"
+      }
+    ],
+    "campaigns": [],
+    "products": [],
     "tasks": [
       {
         "id": "task-1755983250099",
@@ -2329,40 +2384,6 @@
         "id": "task-1756159367763",
         "createdAt": "2025-08-25T22:02:47.763Z"
       }
-    ],
-    "sgrs": [
-      {
-        "name": "Argenpymes",
-        "totalQuota": 5.666666666666667e+36,
-        "id": "sgr-1755880946552"
-      },
-      {
-        "name": "Innova",
-        "totalQuota": 8.888888888888889e+35,
-        "id": "sgr-1755881157770"
-      },
-      {
-        "name": "FIDEM",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1755881166954"
-      },
-      {
-        "name": "CFT",
-        "totalQuota": 8.88888888888889e+28,
-        "id": "sgr-1755881181897"
-      },
-      {
-        "name": "ADC",
-        "totalQuota": 8.888888888888889e+32,
-        "id": "sgr-1755881190986"
-      },
-      {
-        "name": "AcindarPyme",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1756125379492"
-      }
-    ],
-    "campaigns": [],
-    "products": []
+    ]
   }
 }
