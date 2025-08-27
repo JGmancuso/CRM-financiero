@@ -6,6 +6,8 @@ import { createTaskForStageChange } from '../services/TaskAutomationService';
 import { clientReducer } from './reducers/clientReducer';
 import { negocioReducer } from './reducers/negocioReducer';
 import { taskReducer } from './reducers/taskReducer';
+import { sgrReducer } from './reducers/sgrReducer'; // <-- 1. Importa el nuevo reducer
+
 
 const APP_DATA_VERSION = '3.0';
 
@@ -93,7 +95,7 @@ const rootReducer = (state, action) => {
                 clients: clientReducer(state.clients, action),
                 negocios: negocioReducer(state.negocios, action),
                 tasks: taskReducer(state.tasks, action),
-                sgrs: state.sgrs, 
+                sgrs: sgrReducer(state.sgrs, action), 
                 campaigns: state.campaigns,
                 products: state.products,
             };

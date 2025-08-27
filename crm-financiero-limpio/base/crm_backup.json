@@ -1300,6 +1300,111 @@
             "reason": "Alta inicial en el sistema."
           }
         ]
+      },
+      {
+        "type": "fisica",
+        "nombre": "",
+        "cuit": "20219991364",
+        "email": "Julietacucchietti1980@gmail.com",
+        "phone": "3585623853",
+        "industry": "",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2024-12-31",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Julieta Cucchietti",
+          "role": "Conyuge- Administracion",
+          "email": "Julietacucchietti1980@gmail.com",
+          "phone": "3585623853"
+        },
+        "relevamiento": "Necesidades constantes de inversion o capital de trabajo.",
+        "review": "",
+        "name": "Furlano Enzo Ramon",
+        "id": "client-1756305754270",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-27T14:42:34.270Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30708212659",
+        "email": "wfrancesconi@silmag.com.ar",
+        "phone": "3516179195",
+        "industry": "Industria Manufacturera",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2024-08-31",
+        "hasForeignTrade": true,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "",
+          "role": "",
+          "email": "",
+          "phone": ""
+        },
+        "relevamiento": "",
+        "review": "",
+        "name": "SILMAG SA",
+        "id": "client-1756314958204",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-27T17:15:58.204Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30641160241",
+        "email": "eduardo.domini@arinco.com.ar",
+        "phone": "3537599867",
+        "industry": "Construcción",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2024-12-31",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Valentina ",
+          "role": "Administracion",
+          "email": "",
+          "phone": "3537603128"
+        },
+        "relevamiento": "",
+        "review": "",
+        "name": "Arinco SA",
+        "id": "client-1756316605648",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-08-27T17:43:25.648Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
       }
     ],
     "negocios": [
@@ -1440,7 +1545,7 @@
         "id": "negocio-client-1755184537576",
         "nombre": "Oportunidad para Maskotas SRL",
         "estado": "INFO_SOLICITADA",
-        "montoSolicitado": 0,
+        "montoSolicitado": 50000000,
         "fechaProximoSeguimiento": "2025-08-20T12:45:57.314Z",
         "history": [
           {
@@ -1459,6 +1564,11 @@
             "date": "2025-08-22T16:30:00.177Z",
             "type": "Cambio a: Info Solicitada",
             "user": "Usuario Actual"
+          },
+          {
+            "date": "2025-08-27T13:06:02.711Z",
+            "type": "Modificación de Detalles",
+            "reason": "Ojo la situacion 3 "
           }
         ],
         "cliente": {
@@ -1468,10 +1578,11 @@
           "email": "msmaskotas@gmail.com",
           "phone": "02664551595"
         },
-        "lastUpdate": "2025-08-22T16:30:00.177Z",
+        "lastUpdate": "2025-08-27T13:06:02.711Z",
         "proximosPasos": "corroborar",
         "documentacionFaltante": "a",
-        "creationDate": "2025-08-14T15:59:15.216Z"
+        "creationDate": "2025-08-14T15:59:15.216Z",
+        "motivoUltimoCambio": "Ojo la situacion 3 "
       },
       {
         "id": "negocio-client-1755191641483",
@@ -1599,7 +1710,7 @@
         "id": "negocio-client-1755520084158",
         "nombre": "Oportunidad para Carlos Imhoff",
         "estado": "PROSPECTO",
-        "montoSolicitado": 0,
+        "montoSolicitado": 100000000,
         "fechaProximoSeguimiento": "2025-08-18T12:28:13.815Z",
         "history": [
           {
@@ -1631,6 +1742,11 @@
             "type": "Cambio a: Prospecto",
             "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, ",
             "user": "Usuario Actual"
+          },
+          {
+            "date": "2025-08-27T13:03:41.929Z",
+            "type": "Modificación de Detalles",
+            "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
           }
         ],
         "cliente": {
@@ -1640,8 +1756,8 @@
           "email": "",
           "phone": "3492 64-4392"
         },
-        "lastUpdate": "2025-08-22T13:39:06.812Z",
-        "motivoUltimoCambio": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, ",
+        "lastUpdate": "2025-08-27T13:03:41.929Z",
+        "motivoUltimoCambio": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
         "proximosPasos": "esperar respuesta",
         "documentacionFaltante": "Toda",
         "creationDate": "2025-08-22T12:53:35.028Z"
@@ -1773,7 +1889,7 @@
       {
         "id": "negocio-client-1755177241923-1755865268468",
         "nombre": "Calificacion Acindar",
-        "estado": "PROPUESTA_FIRMADA",
+        "estado": "GANADO",
         "montoSolicitado": 200000000,
         "fechaProximoSeguimiento": "2025-08-22T12:21:08.468Z",
         "history": [
@@ -1787,6 +1903,11 @@
             "type": "Cambio de Etapa: Propuesta Firmada",
             "reason": "Calicicacion de Acindar",
             "user": "Usuario Actual"
+          },
+          {
+            "date": "2025-08-27T13:04:24.238Z",
+            "type": "Cambio de estado a: GANADO",
+            "reason": "Actualización de estado."
           }
         ],
         "cliente": {
@@ -1794,7 +1915,7 @@
           "nombre": "Kennbal SRL",
           "cuit": "30-71527701-4"
         },
-        "lastUpdate": "2025-08-22T12:33:38.484Z",
+        "lastUpdate": "2025-08-27T13:04:24.238Z",
         "creationDate": "2025-08-22T12:21:08.470Z"
       },
       {
@@ -1946,42 +2067,163 @@
           }
         ],
         "creationDate": "2025-08-26T18:49:25.111Z"
+      },
+      {
+        "id": "negocio-client-1755177241923-1756302307805",
+        "nombre": "ON-Simple",
+        "estado": "INFO_SOLICITADA",
+        "montoSolicitado": 240000,
+        "fechaProximoSeguimiento": "2025-08-27T13:45:07.805Z",
+        "creationDate": "2025-08-27T13:45:07.805Z",
+        "lastUpdate": "2025-08-27T13:46:34.732Z",
+        "history": [
+          {
+            "date": "2025-08-27T13:45:07.805Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-08-27T13:46:26.376Z",
+            "type": "Modificación de Detalles",
+            "reason": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR"
+          },
+          {
+            "date": "2025-08-27T13:46:34.732Z",
+            "type": "Cambio de estado a: INFO_SOLICITADA",
+            "reason": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR"
+          }
+        ],
+        "cliente": {
+          "id": "client-1755177241923",
+          "nombre": "Kennbal SRL",
+          "cuit": "30-71527701-4"
+        },
+        "motivoUltimoCambio": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR"
+      },
+      {
+        "id": "negocio-client-1756305754269-1756305784474",
+        "nombre": "Calificaciones SGR",
+        "estado": "INFO_SOLICITADA",
+        "montoSolicitado": 0,
+        "fechaProximoSeguimiento": "2025-08-27T14:43:04.474Z",
+        "creationDate": "2025-08-27T14:43:04.474Z",
+        "lastUpdate": "2025-08-27T14:43:52.258Z",
+        "history": [
+          {
+            "date": "2025-08-27T14:43:04.474Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-08-27T14:43:52.258Z",
+            "type": "Cambio de estado a: INFO_SOLICITADA",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo"
+          }
+        ],
+        "cliente": {
+          "id": "client-1756305754269",
+          "nombre": "Furlano Enzo Ramon",
+          "cuit": "20219991364"
+        },
+        "motivoUltimoCambio": "Asistencias varias.\nInversion\nCT \nle da lo mismo"
+      },
+      {
+        "id": "negocio-client-1756316605648-1756316617229",
+        "estado": "EN_CALIFICACION",
+        "fechaProximoSeguimiento": "2025-08-27T17:43:37.229Z",
+        "creationDate": "2025-08-27T17:43:37.229Z",
+        "lastUpdate": "2025-08-27T17:55:21.867Z",
+        "history": [
+          {
+            "date": "2025-08-27T17:43:37.229Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-08-27T17:54:46.762Z",
+            "type": "Cambio de estado a: EN_CALIFICACION",
+            "reason": "Actualización de estado."
+          },
+          {
+            "date": "2025-08-27T17:54:56.747Z",
+            "type": "Modificación de Detalles",
+            "reason": "renovacion de linea"
+          },
+          {
+            "date": "2025-08-27T17:55:21.867Z",
+            "type": "Modificación de Detalles",
+            "reason": "renovacion de linea"
+          }
+        ],
+        "cliente": {
+          "id": "client-1756316605648",
+          "nombre": "Arinco SA",
+          "cuit": "30641160241"
+        },
+        "nombre": "ARICON-Industrial",
+        "montoSolicitado": 0,
+        "motivoUltimoCambio": "renovacion de linea",
+        "calificaciones": [
+          {
+            "id": "qual-1756317320763",
+            "entidad": "BIND",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-27",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
+      },
+      {
+        "id": "negocio-client-1756316605648-1756316641468",
+        "nombre": "Calificacion MARIVA",
+        "estado": "EN_CALIFICACION",
+        "montoSolicitado": 0,
+        "fechaProximoSeguimiento": "2025-08-27T17:44:01.468Z",
+        "creationDate": "2025-08-27T17:44:01.468Z",
+        "lastUpdate": "2025-08-27T17:54:20.251Z",
+        "history": [
+          {
+            "date": "2025-08-27T17:44:01.468Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-08-27T17:47:22.496Z",
+            "type": "Modificación de Detalles",
+            "reason": "En analisi"
+          },
+          {
+            "date": "2025-08-27T17:54:10.666Z",
+            "type": "Cambio de estado a: EN_CALIFICACION",
+            "reason": "En analisi"
+          },
+          {
+            "date": "2025-08-27T17:54:20.251Z",
+            "type": "Modificación de Detalles",
+            "reason": "En analisi"
+          }
+        ],
+        "cliente": {
+          "id": "client-1756316605648",
+          "nombre": "Arinco SA",
+          "cuit": "30641160241"
+        },
+        "motivoUltimoCambio": "En analisi",
+        "calificaciones": [
+          {
+            "id": "qual-1756317258282",
+            "entidad": "MARIVA",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-08-27",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       }
     ],
-    "sgrs": [
-      {
-        "name": "Argenpymes",
-        "totalQuota": 5.666666666666667e+36,
-        "id": "sgr-1755880946552"
-      },
-      {
-        "name": "Innova",
-        "totalQuota": 8.888888888888889e+35,
-        "id": "sgr-1755881157770"
-      },
-      {
-        "name": "FIDEM",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1755881166954"
-      },
-      {
-        "name": "CFT",
-        "totalQuota": 8.88888888888889e+28,
-        "id": "sgr-1755881181897"
-      },
-      {
-        "name": "ADC",
-        "totalQuota": 8.888888888888889e+32,
-        "id": "sgr-1755881190986"
-      },
-      {
-        "name": "AcindarPyme",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1756125379492"
-      }
-    ],
-    "campaigns": [],
-    "products": [],
     "tasks": [
       {
         "id": "task-1755983250099",
@@ -2074,11 +2316,14 @@
         "source": "gestiones"
       },
       {
-        "id": "task-1755880188467",
-        "title": "corroborar - [Maskotas SRL]",
+        "title": "MARIVA",
         "dueDate": "2025-08-27",
-        "details": "si no contesta correo llamar",
-        "isCompleted": false
+        "details": "SILMAG",
+        "isCompleted": true,
+        "modifiedAt": "2025-08-27T13:50:01.216Z",
+        "clientName": "Tarea General",
+        "id": "task-1756302601216",
+        "createdAt": "2025-08-27T13:50:01.216Z"
       },
       {
         "title": "No quiere mas cuenta - [Insumos y Acopios del SUR SA]",
@@ -2367,6 +2612,176 @@
         "isCompleted": false
       },
       {
+        "title": "Correo enviado a Norberto Garrone",
+        "dueDate": "2025-08-29",
+        "details": "SItuacion OK, mando correo 1° contacto.",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T16:33:10.448Z",
+        "clientName": "Tarea General",
+        "id": "task-1756312390448",
+        "createdAt": "2025-08-27T16:33:10.448Z"
+      },
+      {
+        "title": "Correo Diego Giampaoli",
+        "dueDate": "2025-08-29",
+        "details": "Situacion OK, se envio correo",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T16:48:14.022Z",
+        "clientName": "Tarea General",
+        "id": "task-1756313294023",
+        "createdAt": "2025-08-27T16:48:14.023Z"
+      },
+      {
+        "title": "esperar respuesta - [Carlos Imhoff]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1755520084158",
+        "businessId": "negocio-client-1755520084158",
+        "clientName": "Carlos Imhoff",
+        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
+        "id": "task-1756299821929",
+        "createdAt": "2025-08-27T13:03:41.929Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'GANADO' para Kennbal SRL",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923-1755865268468",
+        "clientName": "Kennbal SRL",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756299864238",
+        "createdAt": "2025-08-27T13:04:24.238Z",
+        "isCompleted": false
+      },
+      {
+        "title": "corroborar - [Maskotas SRL]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1755184537576",
+        "businessId": "negocio-client-1755184537576",
+        "clientName": "Maskotas SRL",
+        "details": "Ojo la situacion 3 ",
+        "id": "task-1756299962711",
+        "createdAt": "2025-08-27T13:06:02.711Z",
+        "isCompleted": false
+      },
+      {
+        "title": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR - [Kennbal SRL]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923-1756302307805",
+        "clientName": "Kennbal SRL",
+        "details": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR",
+        "id": "task-1756302386376",
+        "createdAt": "2025-08-27T13:46:26.376Z",
+        "isCompleted": false
+      },
+      {
+        "title": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR - [Kennbal SRL]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923-1756302307805",
+        "clientName": "Kennbal SRL",
+        "details": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR",
+        "id": "task-1756302394732",
+        "createdAt": "2025-08-27T13:46:34.732Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Asistencias varias.\nInversion\nCT \nle da lo mismo - [Furlano Enzo Ramon]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756305754269",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo",
+        "id": "task-1756305832258",
+        "createdAt": "2025-08-27T14:43:52.258Z",
+        "isCompleted": false
+      },
+      {
+        "title": "En analisi - [Arinco SA]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316641468",
+        "clientName": "Arinco SA",
+        "details": "En analisi",
+        "id": "task-1756316842496",
+        "createdAt": "2025-08-27T17:47:22.496Z",
+        "isCompleted": false
+      },
+      {
+        "title": "En analisi - [Arinco SA]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316641468",
+        "clientName": "Arinco SA",
+        "details": "En analisi",
+        "id": "task-1756317250666",
+        "createdAt": "2025-08-27T17:54:10.666Z",
+        "isCompleted": false
+      },
+      {
+        "title": "En analisi - [Arinco SA]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316641468",
+        "clientName": "Arinco SA",
+        "details": "En analisi",
+        "id": "task-1756317260251",
+        "createdAt": "2025-08-27T17:54:20.251Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Arinco SA",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316617229",
+        "clientName": "Arinco SA",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756317286762",
+        "createdAt": "2025-08-27T17:54:46.762Z",
+        "isCompleted": false
+      },
+      {
+        "title": "renovacion de linea - [Arinco SA]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316617229",
+        "clientName": "Arinco SA",
+        "details": "renovacion de linea",
+        "id": "task-1756317296747",
+        "createdAt": "2025-08-27T17:54:56.747Z",
+        "isCompleted": false
+      },
+      {
+        "title": "renovacion de linea - [Arinco SA]",
+        "dueDate": "2025-08-30",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316617229",
+        "clientName": "Arinco SA",
+        "details": "renovacion de linea",
+        "id": "task-1756317321867",
+        "createdAt": "2025-08-27T17:55:21.867Z",
+        "isCompleted": false
+      },
+      {
+        "id": "task-1755880188467",
+        "title": "corroborar - [Maskotas SRL]",
+        "dueDate": "2025-09-01",
+        "details": "Mando documentacion",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T13:07:28.901Z"
+      },
+      {
+        "title": "Contactar Dario del Fabro",
+        "dueDate": "2025-09-01",
+        "details": "Construccion de galpon",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T17:38:01.968Z",
+        "clientName": "Tarea General",
+        "id": "task-1756316281968",
+        "createdAt": "2025-08-27T17:38:01.968Z"
+      },
+      {
         "id": "task-1755879161088",
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
         "dueDate": "2025-09-02",
@@ -2443,7 +2858,69 @@
         "isCompleted": false,
         "id": "task-1756159367763",
         "createdAt": "2025-08-25T22:02:47.763Z"
+      },
+      {
+        "id": "task-1756315023402",
+        "title": "Contactar Walter Francesconi",
+        "dueDate": "2025-09-26",
+        "details": "Cerraron Balance, aprobaron financiamiento",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T17:30:59.809Z"
+      },
+      {
+        "title": "Diego Oggero",
+        "dueDate": "2025-10-30",
+        "details": "Contactar si necesita algo. ya le dimo COMEX no quizo, INVERSION tampoco",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T11:51:02.665Z",
+        "clientName": "Tarea General",
+        "id": "task-1756295462666",
+        "createdAt": "2025-08-27T11:51:02.666Z"
       }
-    ]
+    ],
+    "sgrs": [
+      {
+        "name": "Argenpymes",
+        "totalQuota": 5.666666666666667e+36,
+        "id": "sgr-1755880946552"
+      },
+      {
+        "name": "Innova",
+        "totalQuota": 8.888888888888889e+35,
+        "id": "sgr-1755881157770"
+      },
+      {
+        "name": "FIDEM",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1755881166954"
+      },
+      {
+        "name": "CFT",
+        "totalQuota": 8.88888888888889e+28,
+        "id": "sgr-1755881181897"
+      },
+      {
+        "name": "ADC",
+        "totalQuota": 8.888888888888889e+32,
+        "id": "sgr-1755881190986"
+      },
+      {
+        "name": "AcindarPyme",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1756125379492"
+      },
+      {
+        "name": "MARIVA",
+        "totalQuota": 9999999,
+        "id": "sgr-1756317238943"
+      },
+      {
+        "name": "BIND",
+        "totalQuota": 99999999999999,
+        "id": "sgr-1756317308515"
+      }
+    ],
+    "campaigns": [],
+    "products": []
   }
 }

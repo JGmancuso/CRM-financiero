@@ -4,46 +4,46 @@ import AgendaColumn from '../components/agenda/AgendaColumn';
 import { useAgenda } from '../hooks/useAgenda';
 import ActivityModal from '../components/modals/ActivityModal';
 import TaskDetailModal from '../components/modals/TaskDetailModal';
-import { useData } from '../context/DataContext'; // <-- 1. Importamos useData
+import NewTaskModal from '../components/modals/NewTaskModal';
+import { useData } from '../context/DataContext';
 
-// 👇 2. Eliminamos los props de manejo de datos
 export default function AgendaView() {
-    const { state, dispatch } = useData(); // <-- 3. Obtenemos estado y dispatch
+    const { state, dispatch } = useData();
     const [filter, setFilter] = useState('todos');
-
-    // Tu hook useAgenda ahora se alimenta del estado global
+    
+    // La variable correcta es 'tasksByDayOfWeek' (con 'W' mayúscula)
     const { overdueTasks, tasksByDayOfWeek, futureTasks } = useAgenda(state.clients, state.tasks, filter);
     
     const [editingTask, setEditingTask] = useState(null);
     const [viewingTask, setViewingTask] = useState(null);
+    const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
-    // 👇 4. Reescribimos las funciones para que usen dispatch
-    const handleSaveTask = (taskData) => {
-        // Añadimos la fecha de modificación antes de guardar
-        const taskWithDate = { ...taskData, modifiedAt: new Date().toISOString() };
+    const handleUpdateTask = (taskData) => {
+        // 1. Buscamos la tarea original en el estado para no perder datos como 'source'.
+        const originalTask = state.tasks.find(t => t.id === taskData.id);
 
-        if (taskData.id) {
-            dispatch({ type: 'UPDATE_TASK', payload: taskWithDate });
-        } else {
-            const newTaskPayload = { ...taskWithDate, clientName: 'Tarea General' };
-            dispatch({ type: 'ADD_TASK', payload: newTaskPayload });
-        }
+        // 2. Unimos la tarea original con los datos nuevos del formulario.
+        //    Esto asegura que si 'source' no viene del formulario, se mantenga el original.
+        const finalUpdatedTask = { ...originalTask, ...taskData };
+
+        // 3. Despachamos la tarea completa y actualizada.
+        dispatch({ type: 'UPDATE_TASK', payload: finalUpdatedTask });
         setEditingTask(null);
     };
 
-    // 👇 5. Esta es la función clave corregida, adaptada a tu agendaUtils.js
+    const handleAddNewTask = (taskData) => {
+        dispatch({ type: 'ADD_TASK', payload: taskData });
+        setIsNewTaskModalOpen(false);
+    };
+    
     const handleToggleComplete = (task) => {
-        // Tu hook `useAgenda` ya nos da el `source` que necesitamos
         if (task.source === 'clientes') {
-            dispatch({
-                type: 'TOGGLE_ACTIVITY',
-                payload: { clientId: task.clientId, activityId: task.id }
-            });
-        } else { // 'embudo' o 'gestiones'
+            dispatch({ type: 'TOGGLE_ACTIVITY', payload: { clientId: task.clientId, activityId: task.id } });
+        } else {
             dispatch({ type: 'TOGGLE_TASK_COMPLETION', payload: task });
         }
     };
-
+    
     const weekDays = [
         { id: 1, name: 'Lunes' }, { id: 2, name: 'Martes' }, { id: 3, name: 'Miércoles' },
         { id: 4, name: 'Jueves' }, { id: 5, name: 'Viernes' },
@@ -58,7 +58,7 @@ export default function AgendaView() {
         <div className="p-8 h-full flex flex-col">
             <div className="flex justify-between items-center mb-4 flex-shrink-0">
                 <h1 className="text-3xl font-bold text-gray-800">Planificador Semanal</h1>
-                <button onClick={() => setEditingTask({})} className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 flex items-center">
+                <button onClick={() => setIsNewTaskModalOpen(true)} className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 flex items-center">
                     <PlusCircle size={18} className="mr-2"/> Nueva Tarea
                 </button>
             </div>
@@ -73,15 +73,40 @@ export default function AgendaView() {
             </div>
             
             <div className="flex space-x-4 overflow-x-auto flex-grow pb-4">
-                {/* 👇 6. Pasamos la nueva función a las columnas */}
                 <AgendaColumn title="Vencidas" tasks={overdueTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
+                
+                {/* --- SECCIÓN CORREGIDA --- */}
                 {weekDays.map(day => (
-                    <AgendaColumn key={day.id} title={day.name} tasks={tasksByDayOfWeek[day.id] || []} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
+                    <AgendaColumn 
+                        key={day.id} 
+                        title={day.name} 
+                        // Usamos la variable con el nombre correcto: tasksByDayOfWeek
+                        tasks={tasksByDayOfWeek[day.id] || []} 
+                        onToggleComplete={handleToggleComplete} 
+                        onEdit={setEditingTask} 
+                        onView={setViewingTask} 
+                    />
                 ))}
+                {/* --- FIN DE LA SECCIÓN CORREGIDA --- */}
+
                 <AgendaColumn title="Próximas" tasks={futureTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
             </div>
 
-            {editingTask && (<ActivityModal activityToEdit={editingTask.id ? editingTask : null} onClose={() => setEditingTask(null)} onSave={handleSaveTask} />)}
+            {editingTask && (
+                <ActivityModal 
+                    activityToEdit={editingTask} 
+                    onClose={() => setEditingTask(null)} 
+                    onSave={handleUpdateTask} 
+                />
+            )}
+
+            {isNewTaskModalOpen && (
+                <NewTaskModal 
+                    onClose={() => setIsNewTaskModalOpen(false)} 
+                    onSave={handleAddNewTask} 
+                />
+            )}
+
             {viewingTask && (<TaskDetailModal task={viewingTask} onClose={() => setViewingTask(null)} />)}
         </div>
     );

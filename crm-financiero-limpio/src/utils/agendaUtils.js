@@ -1,15 +1,18 @@
-// Este archivo contiene funciones puras para manipular los datos de la agenda.
+// src/utils/agendaUtils.js
 
 function getUnifiedAgendaItems(clients, tasks) {
     // Mapea las tareas del embudo y las tareas generales
-    const funnelTasks = (tasks || [])
+    const generalTasks = (tasks || [])
         .filter(task => task.dueDate)
         .map(task => ({
             ...task,
-            source: task.clientName === 'Tarea General' ? 'gestiones' : 'embudo',
+            // --- 👇 LÓGICA CORREGIDA AQUÍ 👇 ---
+            // Si la tarea ya tiene un origen, lo respetamos.
+            // Si no, aplicamos la lógica antigua.
+            source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo'),
         }));
 
-    // Mapea las actividades de los clientes
+    // Mapea las actividades de los clientes (esta parte no cambia)
     const clientActivities = (clients || [])
         .flatMap(client => 
             (client.activities || [])
@@ -27,7 +30,7 @@ function getUnifiedAgendaItems(clients, tasks) {
                 }))
         );
 
-    return [...funnelTasks, ...clientActivities];
+    return [...generalTasks, ...clientActivities];
 }
 
 function getWeekInfo() {

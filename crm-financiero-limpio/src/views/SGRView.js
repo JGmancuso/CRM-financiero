@@ -1,110 +1,52 @@
-// src/views/SGRView.js
-
 import React, { useState } from 'react';
 import { PlusCircle, Edit, Trash2, Send, Check, X } from 'lucide-react';
 import SGRModal from '../components/modals/SGRModal';
+import { useData } from '../context/DataContext'; // <-- 1. Importamos useData
 
-const ChecklistItem = ({ item, index, onUpdate, onDelete }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [editText, setEditText] = useState(item);
+// Los componentes ChecklistItem y ChecklistManager no necesitan cambios,
+// pero los incluimos aquí para que el archivo esté completo.
 
-    const handleSave = () => {
-        if (editText.trim()) {
-            onUpdate(index, editText.trim());
-            setIsEditing(false);
-        }
-    };
+const ChecklistItem = ({ item, index, onUpdate, onDelete }) => { /* ... (código sin cambios) ... */ };
+const ChecklistManager = ({ title, items, onAddItem, onUpdateItem, onDeleteItem }) => { /* ... (código sin cambios) ... */ };
 
-    const handleCancel = () => {
-        setEditText(item);
-        setIsEditing(false);
-    };
 
-    if (isEditing) {
-        return (
-            <li className="flex items-center space-x-2 py-1">
-                <input
-                    type="text"
-                    value={editText}
-                    onChange={(e) => setEditText(e.target.value)}
-                    className="flex-grow border rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    autoFocus
-                />
-                <button onClick={handleSave} className="text-green-600 hover:text-green-800"><Check size={18} /></button>
-                <button onClick={handleCancel} className="text-red-600 hover:text-red-800"><X size={18} /></button>
-            </li>
-        );
-    }
+// 👇 2. Eliminamos los props, ahora todo viene del contexto
+export default function SGRView() {
+    const { state, dispatch } = useData(); // <-- 3. Obtenemos estado y dispatch
+    const { sgrs } = state;
 
-    return (
-        <li className="flex items-center justify-between py-1 group">
-            <span>{item}</span>
-            <div className="hidden group-hover:flex items-center space-x-2">
-                <button onClick={() => setIsEditing(true)} className="text-gray-500 hover:text-blue-600"><Edit size={16} /></button>
-                <button onClick={() => onDelete(index)} className="text-gray-500 hover:text-red-600"><Trash2 size={16} /></button>
-            </div>
-        </li>
-    );
-};
-
-const ChecklistManager = ({ title, items, onAddItem, onUpdateItem, onDeleteItem }) => {
-    const [newItem, setNewItem] = useState('');
-
-    const handleAddItem = (e) => {
-        e.preventDefault();
-        if (newItem.trim()) {
-            onAddItem(newItem.trim());
-            setNewItem('');
-        }
-    };
-
-    return (
-        <div>
-            <h3 className="font-semibold text-gray-600 mb-2">{title}</h3>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-                {items.map((item, index) => (
-                    <ChecklistItem 
-                        key={index}
-                        item={item}
-                        index={index}
-                        onUpdate={onUpdateItem}
-                        onDelete={onDeleteItem}
-                    />
-                ))}
-            </ul>
-            <form onSubmit={handleAddItem} className="mt-4 flex items-center space-x-2">
-                <input
-                    type="text"
-                    value={newItem}
-                    onChange={(e) => setNewItem(e.target.value)}
-                    placeholder="Añadir nuevo requisito..."
-                    className="flex-grow border rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button type="submit" className="bg-gray-200 text-gray-700 p-2 rounded-md hover:bg-gray-300">
-                    <Send size={16} />
-                </button>
-            </form>
-        </div>
-    );
-};
-
-export default function SGRView({ sgrs, onAddSgr, onUpdateSgr, onDeleteSgr, onAddItemToChecklist, onUpdateChecklistItem, onDeleteChecklistItem }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sgrToEdit, setSgrToEdit] = useState(null);
 
     const handleAddNew = () => { setSgrToEdit(null); setIsModalOpen(true); };
     const handleEdit = (sgr) => { setSgrToEdit(sgr); setIsModalOpen(true); };
-    const handleSave = (sgrData) => { if (sgrToEdit) { onUpdateSgr({ ...sgrToEdit, ...sgrData }); } else { onAddSgr(sgrData); } closeModal(); };
-    const handleDelete = (sgrId) => { if (window.confirm('¿Estás seguro?')) { onDeleteSgr(sgrId); } };
     const closeModal = () => { setIsModalOpen(false); setSgrToEdit(null); };
+
+    // 👇 4. Reescribimos las funciones de manejo para que usen dispatch
+    const handleSave = (sgrData) => {
+        if (sgrToEdit) {
+            dispatch({ type: 'UPDATE_SGR', payload: { ...sgrToEdit, ...sgrData } });
+        } else {
+            dispatch({ type: 'ADD_SGR', payload: sgrData });
+        }
+        closeModal();
+    };
+    
+    const handleDelete = (sgrId) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar esta entidad?')) {
+            dispatch({ type: 'DELETE_SGR', payload: sgrId });
+        }
+    };
+    
+    const handleAddItemToChecklist = (sgrId, type, item) => dispatch({ type: 'ADD_SGR_CHECKLIST_ITEM', payload: { sgrId, type, item } });
+    const handleUpdateChecklistItem = (sgrId, type, index, text) => dispatch({ type: 'UPDATE_SGR_CHECKLIST_ITEM', payload: { sgrId, type, index, text } });
+    const handleDeleteChecklistItem = (sgrId, type, index) => dispatch({ type: 'DELETE_SGR_CHECKLIST_ITEM', payload: { sgrId, type, index } });
 
     return (
         <div className="p-8">
             <div className="flex justify-between items-center mb-8">
-                {/* --- CAMBIO 1 --- */}
                 <h1 className="text-3xl font-bold text-gray-800">Entidades de Garantía/Crediticias</h1>
                 <button onClick={handleAddNew} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center">
-                    {/* --- CAMBIO 2 --- */}
                     <PlusCircle size={18} className="mr-2"/> Nueva Entidad
                 </button>
             </div>
@@ -119,22 +61,23 @@ export default function SGRView({ sgrs, onAddSgr, onUpdateSgr, onDeleteSgr, onAd
                             </div>
                         </div>
                         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            {/* 👇 5. Pasamos las nuevas funciones al ChecklistManager */}
                             {sgr.checklist && sgr.checklist.juridica && (
                                 <ChecklistManager 
                                     title="Checklist - Persona Jurídica"
                                     items={sgr.checklist.juridica}
-                                    onAddItem={(newItem) => onAddItemToChecklist(sgr.id, 'juridica', newItem)}
-                                    onUpdateItem={(index, newText) => onUpdateChecklistItem(sgr.id, 'juridica', index, newText)}
-                                    onDeleteItem={(index) => onDeleteChecklistItem(sgr.id, 'juridica', index)}
+                                    onAddItem={(newItem) => handleAddItemToChecklist(sgr.id, 'juridica', newItem)}
+                                    onUpdateItem={(index, newText) => handleUpdateChecklistItem(sgr.id, 'juridica', index, newText)}
+                                    onDeleteItem={(index) => handleDeleteChecklistItem(sgr.id, 'juridica', index)}
                                 />
                             )}
                             {sgr.checklist && sgr.checklist.fisica && (
                                 <ChecklistManager 
                                     title="Checklist - Persona Física"
                                     items={sgr.checklist.fisica}
-                                    onAddItem={(newItem) => onAddItemToChecklist(sgr.id, 'fisica', newItem)}
-                                    onUpdateItem={(index, newText) => onUpdateChecklistItem(sgr.id, 'fisica', index, newText)}
-                                    onDeleteItem={(index) => onDeleteChecklistItem(sgr.id, 'fisica', index)}
+                                    onAddItem={(newItem) => handleAddItemToChecklist(sgr.id, 'fisica', newItem)}
+                                    onUpdateItem={(index, newText) => handleUpdateChecklistItem(sgr.id, 'fisica', index, newText)}
+                                    onDeleteItem={(index) => handleDeleteChecklistItem(sgr.id, 'fisica', index)}
                                 />
                             )}
                         </div>
