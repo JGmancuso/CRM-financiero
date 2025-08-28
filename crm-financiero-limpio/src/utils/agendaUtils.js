@@ -1,36 +1,58 @@
 // src/utils/agendaUtils.js
 
-function getUnifiedAgendaItems(clients, tasks) {
-    // Mapea las tareas del embudo y las tareas generales
+function getUnifiedAgendaItems(clients, tasks, negocios) {
+    // Tareas del embudo y gestiones
     const generalTasks = (tasks || [])
         .filter(task => task.dueDate)
-        .map(task => ({
-            ...task,
-            // --- 👇 LÓGICA CORREGIDA AQUÍ 👇 ---
-            // Si la tarea ya tiene un origen, lo respetamos.
-            // Si no, aplicamos la lógica antigua.
-            source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo'),
-        }));
+        .map(task => {
+            let enrichedTask = {
+                ...task,
+                source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo'),
+            };
 
-    // Mapea las actividades de los clientes (esta parte no cambia)
+            if (task.businessId) {
+                // --- 👇 LÍNEA CORREGIDA AQUÍ 👇 ---
+                // Nos aseguramos de que 'negocios' sea un array antes de usar .find()
+                const negocioAsociado = (negocios || []).find(n => n.id === task.businessId);
+                if (negocioAsociado) {
+                    enrichedTask.businessInfo = {
+                        observaciones: negocioAsociado.motivoUltimoCambio,
+                        calificacionesSGR: negocioAsociado.calificaciones,
+                    };
+                }
+            }
+            return enrichedTask;
+        });
+
+    // Actividades de clientes (no cambian)
     const clientActivities = (clients || [])
         .flatMap(client => 
-            (client.activities || [])
-                .filter(activity => activity.date)
-                .map(activity => ({
-                    id: activity.id,
-                    title: activity.description || 'Actividad',
-                    details: activity.note,
-                    dueDate: activity.date,
-                    isCompleted: activity.completed || false,
-                    clientName: client.nombre || client.name,
-                    clientId: client.id,
-                    type: 'activity',
-                    source: 'clientes',
-                }))
+            (client.activities || []).map(activity => ({
+                id: activity.id,
+                title: activity.description || 'Actividad',
+                details: activity.note,
+                dueDate: activity.date,
+                isCompleted: activity.completed || false,
+                clientName: client.nombre || client.name,
+                clientId: client.id,
+                source: 'clientes',
+            }))
         );
 
     return [...generalTasks, ...clientActivities];
+}
+export function categorizeTasksForDashboard(allItems) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const overdue = allItems.filter(item => new Date(item.dueDate) < today && !item.isCompleted);
+    const forToday = allItems.filter(item => new Date(item.dueDate).getTime() === today.getTime() && !item.isCompleted);
+    const upcoming = allItems.filter(item => new Date(item.dueDate) >= tomorrow && !item.isCompleted);
+
+    return { overdue, forToday, upcoming };
 }
 
 function getWeekInfo() {

@@ -7,6 +7,7 @@ import { clientReducer } from './reducers/clientReducer';
 import { negocioReducer } from './reducers/negocioReducer';
 import { taskReducer } from './reducers/taskReducer';
 import { sgrReducer } from './reducers/sgrReducer'; // <-- 1. Importa el nuevo reducer
+import { handleStageChangeAutomation } from '../services/TaskAutomationService';
 
 
 const APP_DATA_VERSION = '3.0';
@@ -80,11 +81,35 @@ const rootReducer = (state, action) => {
             return { ...state, clients: [...state.clients, newClient], negocios: [...state.negocios, newBusiness] };
         }
         case 'UPDATE_NEGOCIO_STAGE': {
-            const updatedNegocio = action.payload;
-            const taskData = createTaskForStageChange(updatedNegocio);
-            const newNegocios = negocioReducer(state.negocios, {type: 'UPDATE_NEGOCIO_STAGE', payload: updatedNegocio});
-            const newTasks = taskData ? taskReducer(state.tasks, {type: 'ADD_TASK', payload: taskData}) : state.tasks;
-            return { ...state, negocios: newNegocios, tasks: newTasks };
+            const updatedNegocioData = action.payload;
+            const originalNegocio = state.negocios.find(n => n.id === updatedNegocioData.id);
+
+            if (!originalNegocio) {
+                // Si no se encuentra, actualiza de forma simple para evitar errores
+                return {
+                    ...state,
+                    negocios: negocioReducer(state.negocios, action),
+                };
+            }
+            
+            // --- 👇 LÍNEA CLAVE FALTANTE 👇 ---
+            // Aquí declaramos las variables 'updatedTasks' y 'newNegocio'
+            // al obtenerlas del resultado de la función de automatización.
+            const { updatedTasks, newNegocio } = handleStageChangeAutomation(
+                originalNegocio,
+                updatedNegocioData,
+                state.tasks
+            );
+
+            // Ahora el reducer puede actualizar la lista de negocios usando 'newNegocio'
+            const newNegociosList = negocioReducer(state.negocios, { ...action, payload: newNegocio });
+
+            // Y finalmente, retornamos el estado actualizado usando 'updatedTasks'
+            return {
+                ...state,
+                negocios: newNegociosList,
+                tasks: updatedTasks,
+            };
         }
         case 'IMPORT_DATA': {
             const saneados = sanitizeNegociosData(action.payload.negocios || []);

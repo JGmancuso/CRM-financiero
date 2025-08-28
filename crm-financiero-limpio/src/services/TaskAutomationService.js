@@ -1,36 +1,70 @@
+// src/services/TaskAutomationService.js
+
 /**
- * Este servicio contiene la lógica de negocio para crear tareas automáticamente
- * basadas en los cambios de estado de un negocio en el funnel.
+ * Calcula el siguiente día hábil a partir de hoy, saltando fines de semana.
+ * @returns {Date}
  */
-export const createTaskForStageChange = (negocio) => {
-    // ✨ NUEVA LÓGICA: Ahora usamos los datos detallados del negocio
-    let taskTitle = '';
-    
-    // Si el usuario especificó "próximos pasos", esa es la mejor descripción para la tarea.
-    if (negocio.proximosPasos) {
-        taskTitle = `${negocio.proximosPasos} - [${negocio.cliente.nombre}]`;
-    } 
-    // Si no, usamos el motivo del cambio.
-    else if (negocio.motivoUltimoCambio) {
-        taskTitle = `${negocio.motivoUltimoCambio} - [${negocio.cliente.nombre}]`;
-    }
-    // Si no hay ninguno, volvemos a la lógica genérica.
-    else {
-        taskTitle = `Hacer seguimiento de etapa '${negocio.estado}' para ${negocio.cliente.nombre}`;
+function getNextBusinessDay() {
+    const today = new Date();
+    let tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const dayOfWeek = tomorrow.getDay(); // 0 = Domingo, 6 = Sábado
+
+    if (dayOfWeek === 6) { // Si es Sábado
+        tomorrow.setDate(tomorrow.getDate() + 2); // Salta al Lunes
+    } else if (dayOfWeek === 0) { // Si es Domingo
+        tomorrow.setDate(tomorrow.getDate() + 1); // Salta al Lunes
     }
 
-    const followUpDate = new Date();
-    followUpDate.setHours(10, 0, 0, 0);
-    followUpDate.setDate(followUpDate.getDate() + 3); // Por defecto, 3 días para seguimiento
+    return tomorrow;
+}
 
-    // Devolvemos el objeto con los datos de la tarea a crear
-    return {
+/**
+ * Orquesta la automatización de la agenda cuando un negocio cambia de estado.
+ * @param {object} originalNegocio - El objeto del negocio ANTES del cambio.
+ * @param {object} updatedNegocio - El objeto del negocio DESPUÉS del cambio.
+ * @param {Array} allTasks - La lista completa de tareas actuales.
+ * @returns {{updatedTasks: Array, newNegocio: object}}
+ */
+export function handleStageChangeAutomation(originalNegocio, updatedNegocio, allTasks) {
+    // 1. Marcar TODAS las tareas anteriores de este negocio como completadas.
+    // Usamos .map() para revisar cada tarea en la lista.
+    let tasksAfterUpdate = allTasks.map(task => {
+        // Si la tarea está pendiente y pertenece al negocio que cambió de estado...
+        if (!task.isCompleted && task.businessId === originalNegocio.id) {
+            // ...la devolvemos marcada como completada.
+            return { ...task, isCompleted: true };
+        }
+        // Si no, la devolvemos sin cambios.
+        return task;
+    });
+
+    // --- 2. Generar nueva tarea con título inteligente (TU LÓGICA) ---
+    // --- 👇 LÓGICA DEL TÍTULO CORREGIDA AQUÍ 👇 ---
+    // El título ahora siempre sigue el formato estándar [ESTADO] - NOMBRE CLIENTE
+    const clientName = updatedNegocio.cliente.nombre || updatedNegocio.cliente.name;
+    const taskTitle = `[${updatedNegocio.estado}] - ${clientName}`;
+    // --- 👆 FIN DE LA CORRECCIÓN ---
+
+    const newDueDate = getNextBusinessDay().toISOString().split('T')[0];
+
+    const newTask = {
+        id: `task-auto-${Date.now()}`,
         title: taskTitle,
-        dueDate: followUpDate.toISOString().split('T')[0], // Formato YYYY-MM-DD
-        clientId: negocio.cliente.id,
-        businessId: negocio.id,
-        clientName: negocio.cliente.nombre,
-        // ✨ Añadimos el detalle completo para usarlo en la Agenda
-        details: negocio.motivoUltimoCambio || 'Sin detalles adicionales.', 
+        dueDate: newDueDate,
+        isCompleted: false,
+        source: 'embudo',
+        businessId: updatedNegocio.id, // Vinculamos la tarea al negocio
+        clientId: updatedNegocio.cliente.id,
+        clientName: clientName,
+        details: updatedNegocio.motivoUltimoCambio || 'Sin detalles adicionales.',
     };
-};
+    
+    tasksAfterUpdate.push(newTask);
+    
+    return { 
+        updatedTasks: tasksAfterUpdate,
+        newNegocio: { ...updatedNegocio, activeTaskId: newTask.id }
+    };
+}

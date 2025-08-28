@@ -1768,7 +1768,13 @@
         "estado": "EN_CALIFICACION",
         "montoSolicitado": 300000000,
         "fechaProximoSeguimiento": "2025-08-18T18:08:54.285Z",
-        "history": [],
+        "history": [
+          {
+            "date": "2025-08-28T13:03:26.831Z",
+            "type": "Modificación de Detalles",
+            "reason": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\n"
+          }
+        ],
         "cliente": {
           "id": "client-1755540519671",
           "nombre": "Galia Norte SA",
@@ -1776,7 +1782,7 @@
           "email": "enriquevaira@yahoo.com.ar",
           "phone": ""
         },
-        "motivoUltimoCambio": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\nSOLICITO 26-08\n\nIP 1 y 2\n",
+        "motivoUltimoCambio": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\n",
         "calificaciones": [
           {
             "id": "qual-1756125349455",
@@ -1806,7 +1812,8 @@
             "vencimiento": ""
           }
         ],
-        "creationDate": "2025-08-26T19:25:40.850Z"
+        "creationDate": "2025-08-26T19:25:40.850Z",
+        "lastUpdate": "2025-08-28T13:03:26.831Z"
       },
       {
         "id": "negocio-client-1755613219213",
@@ -1935,6 +1942,11 @@
             "type": "Cambio a: En Calificación",
             "reason": "En calificacion ",
             "user": "Usuario Actual"
+          },
+          {
+            "date": "2025-08-28T20:16:44.592Z",
+            "type": "Modificación de Detalles",
+            "reason": "Acyndar mandar documentacion para analisis completo"
           }
         ],
         "cliente": {
@@ -1942,8 +1954,8 @@
           "nombre": "Tecno Fundaciones SRL",
           "cuit": "30716089599"
         },
-        "lastUpdate": "2025-08-22T15:08:37.854Z",
-        "motivoUltimoCambio": "En calificacion ",
+        "lastUpdate": "2025-08-28T20:16:44.592Z",
+        "motivoUltimoCambio": "Acyndar mandar documentacion para analisis completo",
         "proximosPasos": "corroborar rdo",
         "documentacionFaltante": "Se envio un primer resultado",
         "calificacionData": {
@@ -2009,7 +2021,7 @@
       {
         "id": "negocio-client-1756227839590-1756229402293",
         "nombre": "Capital de trabajo",
-        "estado": "INFO_SOLICITADA",
+        "estado": "EN_ARMADO",
         "montoSolicitado": 30000000,
         "fechaProximoSeguimiento": "2025-08-26T17:30:02.293Z",
         "history": [
@@ -2017,6 +2029,11 @@
             "date": "2025-08-26T17:30:02.293Z",
             "type": "Creación de Nuevo Negocio",
             "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-08-28T20:06:07.143Z",
+            "type": "Cambio de estado a: EN_ARMADO",
+            "reason": "Mando info corroborar.\nPOdria mandar nota por acindarpyem"
           }
         ],
         "cliente": {
@@ -2024,8 +2041,9 @@
           "nombre": "Natural FOOD SRL",
           "cuit": "30-71432754-9\t\t\t\t\t\t\t\t"
         },
-        "motivoUltimoCambio": "Lo que sea por banco o mercado",
-        "creationDate": "2025-08-26T17:30:02.293Z"
+        "motivoUltimoCambio": "Mando info corroborar.\nPOdria mandar nota por acindarpyem",
+        "creationDate": "2025-08-26T17:30:02.293Z",
+        "lastUpdate": "2025-08-28T20:06:07.143Z"
       },
       {
         "id": "negocio-client-1756234019946-1756234165111",
@@ -2103,11 +2121,11 @@
       {
         "id": "negocio-client-1756305754269-1756305784474",
         "nombre": "Calificaciones SGR",
-        "estado": "INFO_SOLICITADA",
+        "estado": "EN_ARMADO",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-27T14:43:04.474Z",
         "creationDate": "2025-08-27T14:43:04.474Z",
-        "lastUpdate": "2025-08-27T14:43:52.258Z",
+        "lastUpdate": "2025-08-28T20:15:01.940Z",
         "history": [
           {
             "date": "2025-08-27T14:43:04.474Z",
@@ -2118,6 +2136,11 @@
             "date": "2025-08-27T14:43:52.258Z",
             "type": "Cambio de estado a: INFO_SOLICITADA",
             "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo"
+          },
+          {
+            "date": "2025-08-28T20:15:01.940Z",
+            "type": "Cambio de estado a: EN_ARMADO",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
           }
         ],
         "cliente": {
@@ -2125,7 +2148,7 @@
           "nombre": "Furlano Enzo Ramon",
           "cuit": "20219991364"
         },
-        "motivoUltimoCambio": "Asistencias varias.\nInversion\nCT \nle da lo mismo"
+        "motivoUltimoCambio": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
       },
       {
         "id": "negocio-client-1756316605648-1756316617229",
@@ -2326,15 +2349,6 @@
         "createdAt": "2025-08-27T13:50:01.216Z"
       },
       {
-        "title": "contactar lista garantizar",
-        "dueDate": "2025-08-27",
-        "isCompleted": false,
-        "clientName": "Gestión Activa",
-        "source": "gestiones",
-        "id": "task-1756322351772",
-        "createdAt": "2025-08-27T19:19:11.772Z"
-      },
-      {
         "title": "ON",
         "dueDate": "2025-08-28",
         "isCompleted": false,
@@ -2357,57 +2371,6 @@
         "isCompleted": true
       },
       {
-        "id": "task-1756125339117",
-        "title": "Credito para stock, [Galia Norte SA]",
-        "dueDate": "2025-08-28",
-        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
-        "isCompleted": false
-      },
-      {
-        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755540519671",
-        "businessId": "negocio-client-1755540519671",
-        "clientName": "Galia Norte SA",
-        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
-        "id": "task-1756125363703",
-        "createdAt": "2025-08-25T12:36:03.703Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755540519671",
-        "businessId": "negocio-client-1755540519671",
-        "clientName": "Galia Norte SA",
-        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
-        "id": "task-1756125401686",
-        "createdAt": "2025-08-25T12:36:41.686Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Tecno Fundaciones SRL",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755264538180",
-        "businessId": "negocio-client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Sin detalles adicionales.",
-        "id": "task-1756125431652",
-        "createdAt": "2025-08-25T12:37:11.652Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador - [Borgarello Gustavo Claudio]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755178433987",
-        "businessId": "negocio-client-1755178433987",
-        "clientName": "Borgarello Gustavo Claudio",
-        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
-        "id": "task-1756125506318",
-        "createdAt": "2025-08-25T12:38:26.318Z",
-        "isCompleted": false
-      },
-      {
         "title": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador - [Borgarello Gustavo Claudio]",
         "dueDate": "2025-08-28",
         "clientId": "client-1755178433987",
@@ -2416,18 +2379,7 @@
         "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
         "id": "task-1756125515518",
         "createdAt": "2025-08-25T12:38:35.518Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755182242838",
-        "businessId": "negocio-client-1755182242838",
-        "clientName": "Mecfres SRL",
-        "details": "Necesita ampliar la nave para las maquinas",
-        "id": "task-1756125558455",
-        "createdAt": "2025-08-25T12:39:18.455Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "No requiere nada - [Mosca Juan Carlos]",
@@ -2447,38 +2399,16 @@
         "businessId": "negocio-client-1755177241923",
         "clientName": "Kennbal SRL",
         "details": "Linea Galicia",
-        "id": "task-1756125620151",
-        "createdAt": "2025-08-25T12:40:20.151Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Linea Galicia - [Kennbal SRL]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755177241923",
-        "businessId": "negocio-client-1755177241923",
-        "clientName": "Kennbal SRL",
-        "details": "Linea Galicia",
         "id": "task-1756125627142",
         "createdAt": "2025-08-25T12:40:27.142Z",
-        "isCompleted": false
-      },
-      {
-        "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
-        "dueDate": "2025-08-28",
-        "clientId": "client-1755177831940",
-        "businessId": "negocio-client-1755177831940",
-        "clientName": "M y M SAS",
-        "details": "Ampliar linea para cheques de terceros",
-        "id": "task-1756125741571",
-        "createdAt": "2025-08-25T12:42:21.571Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "id": "task-1756144147181",
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
         "dueDate": "2025-08-28",
         "details": "Sin detalles adicionales.",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
@@ -2498,7 +2428,7 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1756146232418",
         "createdAt": "2025-08-25T18:23:52.418Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para undefined",
@@ -2508,7 +2438,7 @@
         "details": "Sin detalles adicionales.",
         "id": "task-1756146244651",
         "createdAt": "2025-08-25T18:24:04.651Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "ON",
@@ -2519,6 +2449,27 @@
         "source": "clientes",
         "id": "task-1756321591970",
         "createdAt": "2025-08-27T19:06:31.970Z"
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Tecno Fundaciones SRL",
+        "dueDate": "2025-08-29",
+        "clientId": "client-1755264538180",
+        "businessId": "negocio-client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Se mando el 12/8 a CFT, el 20/08 a Argy",
+        "id": "task-1756125431652",
+        "createdAt": "2025-08-25T12:37:11.652Z",
+        "isCompleted": false
+      },
+      {
+        "title": "contactar lista garantizar",
+        "dueDate": "2025-08-29",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756322351772",
+        "createdAt": "2025-08-27T19:19:11.772Z",
+        "details": ""
       },
       {
         "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
@@ -2537,7 +2488,7 @@
         "clientId": "client-1756227839590",
         "businessId": "negocio-client-1756227839590-1756229402293",
         "clientName": "Natural FOOD SRL",
-        "details": "Lo que sea por banco o mercado",
+        "details": "Cordoborar info",
         "id": "task-1756229758230",
         "createdAt": "2025-08-26T17:35:58.230Z",
         "isCompleted": false
@@ -2617,7 +2568,7 @@
         "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA",
         "id": "task-1756236703941",
         "createdAt": "2025-08-26T19:31:43.941Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
@@ -2660,6 +2611,16 @@
         "clientName": "Tarea General",
         "id": "task-1756313294023",
         "createdAt": "2025-08-27T16:48:14.023Z"
+      },
+      {
+        "title": "TECNO FUNDACIONES armar carpeta acindar",
+        "dueDate": "2025-08-29",
+        "isCompleted": false,
+        "clientName": "Tecno Fundaciones SRL",
+        "clientId": "client-1755264538180",
+        "source": "clientes",
+        "id": "task-1756412548999",
+        "createdAt": "2025-08-28T20:22:28.999Z"
       },
       {
         "title": "esperar respuesta - [Carlos Imhoff]",
@@ -2794,6 +2755,94 @@
         "isCompleted": false
       },
       {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\n - [Galia Norte SA]",
+        "dueDate": "2025-08-31",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\n",
+        "id": "task-1756386206831",
+        "createdAt": "2025-08-28T13:03:26.831Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Mando info corroborar.\nPOdria mandar nota por acindarpyem - [Natural FOOD SRL]",
+        "dueDate": "2025-08-31",
+        "clientId": "client-1756227839590",
+        "businessId": "negocio-client-1756227839590-1756229402293",
+        "clientName": "Natural FOOD SRL",
+        "details": "Mando info corroborar.\nPOdria mandar nota por acindarpyem",
+        "id": "task-1756411567143",
+        "createdAt": "2025-08-28T20:06:07.143Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante - [Furlano Enzo Ramon]",
+        "dueDate": "2025-08-31",
+        "clientId": "client-1756305754269",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante",
+        "id": "task-1756412101940",
+        "createdAt": "2025-08-28T20:15:01.940Z",
+        "isCompleted": false
+      },
+      {
+        "title": "corroborar rdo - [Tecno Fundaciones SRL]",
+        "dueDate": "2025-08-31",
+        "clientId": "client-1755264538180",
+        "businessId": "negocio-client-1755264538180-1755873928080",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Acyndar mandar documentacion para analisis completo",
+        "id": "task-1756412204592",
+        "createdAt": "2025-08-28T20:16:44.592Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador - [Borgarello Gustavo Claudio]",
+        "dueDate": "2025-09-01",
+        "clientId": "client-1755178433987",
+        "businessId": "negocio-client-1755178433987",
+        "clientName": "Borgarello Gustavo Claudio",
+        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador",
+        "id": "task-1756125506318",
+        "createdAt": "2025-08-25T12:38:26.318Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Linea Galicia - [Kennbal SRL]",
+        "dueDate": "2025-09-01",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "Linea Galicia",
+        "id": "task-1756125620151",
+        "createdAt": "2025-08-25T12:40:20.151Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
+        "dueDate": "2025-09-01",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros",
+        "id": "task-1756125741571",
+        "createdAt": "2025-08-25T12:42:21.571Z",
+        "isCompleted": true
+      },
+      {
+        "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
+        "dueDate": "2025-09-01",
+        "clientId": "client-1755182242838",
+        "businessId": "negocio-client-1755182242838",
+        "clientName": "Mecfres SRL",
+        "details": "Necesita ampliar la nave para las maquinas",
+        "id": "task-1756125558455",
+        "createdAt": "2025-08-25T12:39:18.455Z",
+        "isCompleted": false
+      },
+      {
         "id": "task-1755880188467",
         "title": "corroborar - [Maskotas SRL]",
         "dueDate": "2025-09-01",
@@ -2819,6 +2868,35 @@
         "isCompleted": false
       },
       {
+        "id": "task-1756125339117",
+        "title": "Credito para stock, [Galia Norte SA]",
+        "dueDate": "2025-09-04",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "isCompleted": false
+      },
+      {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
+        "dueDate": "2025-09-04",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "id": "task-1756125363703",
+        "createdAt": "2025-08-25T12:36:03.703Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
+        "dueDate": "2025-09-04",
+        "clientId": "client-1755540519671",
+        "businessId": "negocio-client-1755540519671",
+        "clientName": "Galia Norte SA",
+        "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
+        "id": "task-1756125401686",
+        "createdAt": "2025-08-25T12:36:41.686Z",
+        "isCompleted": false
+      },
+      {
         "id": "task-1755875411971",
         "title": "Esperar Rdo - [Ricalbert SA]",
         "dueDate": "2025-09-04",
@@ -2836,15 +2914,15 @@
         "id": "task-1755879133184",
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-04",
-        "details": "En calificacion ",
+        "details": "En calificacion Argenpyme. AFB y ACEN",
         "isCompleted": false
       },
       {
         "id": "task-1756123802097",
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-04",
-        "details": "En calificacion ",
-        "isCompleted": false
+        "details": "En calificacion CFT",
+        "isCompleted": true
       },
       {
         "id": "task-1755879646811",
@@ -2858,7 +2936,7 @@
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-05",
         "details": "En calificacion ",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "id": "task-1755880969002",
@@ -2872,7 +2950,7 @@
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-08",
         "details": "En calificacion ",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "id": "task-1755881385585",
