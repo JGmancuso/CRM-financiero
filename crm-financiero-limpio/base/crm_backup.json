@@ -2326,6 +2326,26 @@
         "createdAt": "2025-08-27T13:50:01.216Z"
       },
       {
+        "title": "contactar lista garantizar",
+        "dueDate": "2025-08-27",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756322351772",
+        "createdAt": "2025-08-27T19:19:11.772Z"
+      },
+      {
+        "title": "ON",
+        "dueDate": "2025-08-28",
+        "isCompleted": false,
+        "clientName": "Kennbal SRL",
+        "clientId": "client-1755177241923",
+        "source": "clientes",
+        "id": "task-1756321972133",
+        "createdAt": "2025-08-27T19:12:52.133Z",
+        "details": ""
+      },
+      {
         "title": "No quiere mas cuenta - [Insumos y Acopios del SUR SA]",
         "dueDate": "2025-08-28",
         "clientId": "client-1755261416607",
@@ -2489,6 +2509,16 @@
         "id": "task-1756146244651",
         "createdAt": "2025-08-25T18:24:04.651Z",
         "isCompleted": false
+      },
+      {
+        "title": "ON",
+        "dueDate": "2025-08-28",
+        "isCompleted": true,
+        "clientName": "Kennbal SRL",
+        "clientId": "client-1755177241923",
+        "source": "clientes",
+        "id": "task-1756321591970",
+        "createdAt": "2025-08-27T19:06:31.970Z"
       },
       {
         "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
@@ -2864,14 +2894,33 @@
         "title": "Contactar Walter Francesconi",
         "dueDate": "2025-09-26",
         "details": "Cerraron Balance, aprobaron financiamiento",
-        "isCompleted": false,
+        "isCompleted": true,
         "modifiedAt": "2025-08-27T17:30:59.809Z"
+      },
+      {
+        "title": "Contactar walter francesconi ",
+        "dueDate": "2025-09-26",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756322629525",
+        "createdAt": "2025-08-27T19:23:49.525Z"
+      },
+      {
+        "title": "Contactar Diego Oggero",
+        "dueDate": "2025-10-09",
+        "isCompleted": false,
+        "clientName": "Insumos y Acopios del SUR SA",
+        "clientId": "client-1755261416607",
+        "source": "clientes",
+        "id": "task-1756322682931",
+        "createdAt": "2025-08-27T19:24:42.931Z"
       },
       {
         "title": "Diego Oggero",
         "dueDate": "2025-10-30",
         "details": "Contactar si necesita algo. ya le dimo COMEX no quizo, INVERSION tampoco",
-        "isCompleted": false,
+        "isCompleted": true,
         "modifiedAt": "2025-08-27T11:51:02.665Z",
         "clientName": "Tarea General",
         "id": "task-1756295462666",
