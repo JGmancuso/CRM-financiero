@@ -53,7 +53,23 @@ export default function DashboardView({ onNavigateToClient }) {
 
 
     const handleAddNewTask = (taskData) => {
-        dispatch({ type: 'ADD_TASK', payload: taskData });
+        // Si la tarea tiene un 'clientId' y origen 'clientes'...
+        if (taskData.clientId && taskData.source === 'clientes') {
+            // ...la convertimos a un formato de "Actividad"
+            const activityData = {
+                description: taskData.title,
+                dueDate: taskData.dueDate,
+                completed: false,
+            };
+            // Y despachamos la acción para GUARDAR una ACTIVIDAD, no una TAREA
+            dispatch({
+                type: 'SAVE_ACTIVITY',
+                payload: { clientId: taskData.clientId, activityData: activityData }
+            });
+        } else {
+            // Si no, es una tarea general y se maneja como siempre
+            dispatch({ type: 'ADD_TASK', payload: taskData });
+        }
         setIsNewTaskModalOpen(false);
     };
 

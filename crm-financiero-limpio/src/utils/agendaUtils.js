@@ -5,14 +5,8 @@ function getUnifiedAgendaItems(clients, tasks, negocios) {
     const generalTasks = (tasks || [])
         .filter(task => task.dueDate)
         .map(task => {
-            let enrichedTask = {
-                ...task,
-                source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo'),
-            };
-
+            let enrichedTask = { ...task, source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo') };
             if (task.businessId) {
-                // --- 👇 LÍNEA CORREGIDA AQUÍ 👇 ---
-                // Nos aseguramos de que 'negocios' sea un array antes de usar .find()
                 const negocioAsociado = (negocios || []).find(n => n.id === task.businessId);
                 if (negocioAsociado) {
                     enrichedTask.businessInfo = {
@@ -24,36 +18,44 @@ function getUnifiedAgendaItems(clients, tasks, negocios) {
             return enrichedTask;
         });
 
-    // Actividades de clientes (no cambian)
+    // Actividades de clientes
     const clientActivities = (clients || [])
         .flatMap(client => 
-            (client.activities || []).map(activity => ({
-                id: activity.id,
-                title: activity.description || 'Actividad',
-                details: activity.note,
-                dueDate: activity.date,
-                isCompleted: activity.completed || false,
-                clientName: client.nombre || client.name,
-                clientId: client.id,
-                source: 'clientes',
-            }))
+            (client.activities || []).map(activity => {
+                // --- DEPURACIÓN ---
+                console.log("Datos ORIGINALES de la actividad:", activity);
+                // --- FIN DEPURACIÓN ---
+
+                const unifiedTask = {
+                    id: activity.id,
+                    title: activity.description || 'Actividad',
+                    dueDate: activity.dueDate || activity.date,
+                    isCompleted: activity.completed || false,
+                    clientName: client.nombre || client.name,
+                    clientId: client.id,
+                    source: 'clientes',
+                };
+                return unifiedTask;
+            })
         );
 
-    return [...generalTasks, ...clientActivities];
+    // Nos aseguramos de que solo pasen tareas con fecha
+    return [...generalTasks, ...clientActivities].filter(item => item.dueDate);
 }
+
 export function categorizeTasksForDashboard(allItems) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    const overdue = allItems.filter(item => new Date(item.dueDate) < today && !item.isCompleted);
-    const forToday = allItems.filter(item => new Date(item.dueDate).getTime() === today.getTime() && !item.isCompleted);
-    const upcoming = allItems.filter(item => new Date(item.dueDate) >= tomorrow && !item.isCompleted);
+    const overdue = allItems.filter(item => new Date(item.dueDate + 'T00:00:00') < today && !item.isCompleted);
+    const forToday = allItems.filter(item => new Date(item.dueDate + 'T00:00:00').getTime() === today.getTime() && !item.isCompleted);
+    const upcoming = allItems.filter(item => new Date(item.dueDate + 'T00:00:00') >= tomorrow && !item.isCompleted);
 
     return { overdue, forToday, upcoming };
 }
+
 
 function getWeekInfo() {
     const today = new Date();
@@ -83,14 +85,18 @@ function getWeekInfo() {
 function categorizeTasks(allItems) {
     const { today, tomorrow, startOfWeek, endOfWeek, twoWeeksFromNow } = getWeekInfo();
 
+    // 1. Tareas Vencidas: Aquellas cuya fecha es ANTERIOR a hoy y no están completas.
     const overdueTasks = allItems.filter(item => new Date(item.dueDate + 'T00:00:00') < today && !item.isCompleted);
     
+    // 2. Tareas por Día de la Semana: Aquellas DENTRO de la semana actual pero A PARTIR DE HOY.
     const tasksByDayOfWeek = allItems.filter(item => {
         const itemDate = new Date(item.dueDate + 'T00:00:00');
-        return itemDate >= startOfWeek && itemDate <= endOfWeek && !item.isCompleted;
+        // --- 👇 LÍNEA CORREGIDA AQUÍ 👇 ---
+        // Nos aseguramos de que la fecha sea igual o posterior a hoy.
+        return itemDate >= today && itemDate <= endOfWeek && !item.isCompleted;
     }).reduce((acc, task) => {
         let day = new Date(task.dueDate + 'T00:00:00').getDay();
-        if (day === 0) day = 7; // Convertimos Domingo (0) a 7
+        if (day === 0) day = 7; // Convertimos Domingo (0) a 7 para el orden
         (acc[day] = acc[day] || []).push(task);
         return acc;
     }, {});

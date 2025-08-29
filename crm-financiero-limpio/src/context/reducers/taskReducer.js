@@ -17,19 +17,17 @@ export const taskReducer = (tasksState, action) => {
             return tasksState.map(t => t.id === updatedTask.id ? updatedTask : t);
         }
 
-        case 'DELETE_TASK': {
-            const taskId = action.payload;
-            return tasksState.filter(t => t.id !== taskId);
-        }
-        
         case 'TOGGLE_TASK_COMPLETION': {
             const taskToToggle = action.payload;
             return tasksState.map(t => 
                 t.id === taskToToggle.id ? { ...t, isCompleted: !t.isCompleted } : t
             );
         }
-        
-        // ¡Importante! Si la acción no le concierne, devuelve el estado sin cambios.
+
+        case 'DELETE_TASK': {
+            return tasksState.filter(task => task.id !== action.payload);
+        }
+
         default:
             return tasksState;
     }

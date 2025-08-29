@@ -1,9 +1,12 @@
 import React from 'react';
-import { CheckSquare, Edit, Square } from 'lucide-react';
+import { CheckSquare, Edit, Square, Trash2 } from 'lucide-react';
 
-export default function TaskItem({ task, onToggleComplete, onEdit, onView }) {
+export default function TaskItem({ task, onToggleComplete, onEdit, onView, onDelete }) {
     const handleToggle = (e) => {
         e.stopPropagation();
+        // --- DEPURACIÓN ---
+        console.log("Intentando completar esta tarea:", task);
+        // --- FIN DEPURACIÓN ---
         onToggleComplete(task);
     };
 
@@ -12,7 +15,13 @@ export default function TaskItem({ task, onToggleComplete, onEdit, onView }) {
         onEdit(task);
     };
 
-    // --- 👇 LÓGICA DE COLOR DE FONDO POR ORIGEN AÑADIDA AQUÍ 👇 ---
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        // --- DEPURACIÓN ---
+        console.log("Intentando eliminar esta tarea:", task);
+        // --- FIN DEPURACIÓN ---
+        onDelete(task);
+    };
     const getBackgroundColor = (source) => {
         switch (source) {
             case 'clientes':
@@ -49,6 +58,9 @@ export default function TaskItem({ task, onToggleComplete, onEdit, onView }) {
                     </button>
                     <button onClick={handleEdit} title="Editar" className="p-1 text-gray-400 hover:text-blue-600">
                         <Edit size={16}/>
+                    </button>
+                    <button onClick={handleDelete} title="Eliminar" className="p-1 text-gray-400 hover:text-red-600">
+                        <Trash2 size={16}/>
                     </button>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { negocioReducer } from './reducers/negocioReducer';
 import { taskReducer } from './reducers/taskReducer';
 import { sgrReducer } from './reducers/sgrReducer'; // <-- 1. Importa el nuevo reducer
 import { handleStageChangeAutomation } from '../services/TaskAutomationService';
+import { clientActivitiesReducer } from './reducers/clientActivitiesReducer';
 
 
 const APP_DATA_VERSION = '3.0';
@@ -115,12 +116,15 @@ const rootReducer = (state, action) => {
             const saneados = sanitizeNegociosData(action.payload.negocios || []);
             return { ...state, ...action.payload, negocios: saneados };
         }
+
         default:
+            const updatedClients = clientActivitiesReducer(state.clients, action);
+            
             return {
-                clients: clientReducer(state.clients, action),
+                clients: clientReducer(updatedClients, action),
                 negocios: negocioReducer(state.negocios, action),
                 tasks: taskReducer(state.tasks, action),
-                sgrs: sgrReducer(state.sgrs, action), 
+                sgrs: sgrReducer(state.sgrs, action),
                 campaigns: state.campaigns,
                 products: state.products,
             };

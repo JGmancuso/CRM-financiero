@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useData } from '../../context/DataContext';
-// 👇 1. Nombre de la función corregido aquí
 import { getUnifiedAgendaItems, categorizeTasksForDashboard } from '../../utils/agendaUtils';
 import DashboardTaskItem from './DashboardTaskItem';
 
@@ -27,15 +26,22 @@ const AgendaColumn = ({ title, tasks, onToggleComplete, onEdit }) => (
 export default function AgendaPanel({ onEditTask }) {
     const { state, dispatch } = useData();
 
+    // Obtenemos la lista unificada de todas las tareas
     const allTasks = useMemo(
-        // 👇 Y aquí también usamos el nombre correcto
         () => getUnifiedAgendaItems(state.clients, state.tasks, state.negocios), 
         [state.clients, state.tasks, state.negocios]
     );
 
+    // Esta función ya filtra correctamente las tareas completadas
     const { overdue, forToday, upcoming } = categorizeTasksForDashboard(allTasks);
 
+    // Esta función despacha la acción para completar la tarea
     const handleToggleComplete = (task) => {
+        // --- INICIO DE DEPURACIÓN ---
+        // --- DEPURACIÓN ---
+        console.log("COMPLETAR - Paso 3: Clic para completar esta tarea unificada", task);
+        // --- FIN DEPURACIÓN ---
+        // --- FIN DE DEPURACIÓN ---
         if (task.source === 'clientes') {
             dispatch({ type: 'TOGGLE_ACTIVITY', payload: { clientId: task.clientId, activityId: task.id } });
         } else {
@@ -48,7 +54,6 @@ export default function AgendaPanel({ onEditTask }) {
             <h2 className="text-xl font-bold text-gray-800 mb-4">Mi Agenda</h2>
             <div className="space-y-6 flex-grow overflow-y-auto pr-2">
                 <AgendaColumn title="Vencidas" tasks={overdue} onToggleComplete={handleToggleComplete} onEdit={onEditTask} />
-                {/* 👇 2. Nombre del componente corregido aquí */}
                 <AgendaColumn title="Para Hoy" tasks={forToday} onToggleComplete={handleToggleComplete} onEdit={onEditTask} />
                 <AgendaColumn title="Próximas" tasks={upcoming} onToggleComplete={handleToggleComplete} onEdit={onEditTask} />
             </div>
