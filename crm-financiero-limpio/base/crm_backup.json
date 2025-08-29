@@ -2356,6 +2356,50 @@
         ]
       }
     ],
+    "sgrs": [
+      {
+        "name": "Argenpymes",
+        "totalQuota": 5.666666666666667e+36,
+        "id": "sgr-1755880946552"
+      },
+      {
+        "name": "Innova",
+        "totalQuota": 8.888888888888889e+35,
+        "id": "sgr-1755881157770"
+      },
+      {
+        "name": "FIDEM",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1755881166954"
+      },
+      {
+        "name": "CFT",
+        "totalQuota": 8.88888888888889e+28,
+        "id": "sgr-1755881181897"
+      },
+      {
+        "name": "ADC",
+        "totalQuota": 8.888888888888889e+32,
+        "id": "sgr-1755881190986"
+      },
+      {
+        "name": "AcindarPyme",
+        "totalQuota": 888888888888888900000,
+        "id": "sgr-1756125379492"
+      },
+      {
+        "name": "MARIVA",
+        "totalQuota": 9999999,
+        "id": "sgr-1756317238943"
+      },
+      {
+        "name": "BIND",
+        "totalQuota": 99999999999999,
+        "id": "sgr-1756317308515"
+      }
+    ],
+    "campaigns": [],
+    "products": [],
     "tasks": [
       {
         "id": "task-1755983250099",
@@ -2458,6 +2502,17 @@
         "createdAt": "2025-08-27T13:50:01.216Z"
       },
       {
+        "title": "ON",
+        "dueDate": "2025-08-28",
+        "isCompleted": false,
+        "clientName": "Kennbal SRL",
+        "clientId": "client-1755177241923",
+        "source": "clientes",
+        "id": "task-1756321972133",
+        "createdAt": "2025-08-27T19:12:52.133Z",
+        "details": ""
+      },
+      {
         "title": "No quiere mas cuenta - [Insumos y Acopios del SUR SA]",
         "dueDate": "2025-08-28",
         "clientId": "client-1755261416607",
@@ -2539,6 +2594,16 @@
         "isCompleted": true
       },
       {
+        "title": "ON",
+        "dueDate": "2025-08-28",
+        "isCompleted": true,
+        "clientName": "Kennbal SRL",
+        "clientId": "client-1755177241923",
+        "source": "clientes",
+        "id": "task-1756321591970",
+        "createdAt": "2025-08-27T19:06:31.970Z"
+      },
+      {
         "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Tecno Fundaciones SRL",
         "dueDate": "2025-08-29",
         "clientId": "client-1755264538180",
@@ -2572,11 +2637,11 @@
       },
       {
         "title": "Lo que sea por banco o mercado - [Natural FOOD SRL]",
-        "dueDate": "2025-09-01",
+        "dueDate": "2025-08-29",
         "clientId": "client-1756227839590",
         "businessId": "negocio-client-1756227839590-1756229402293",
         "clientName": "Natural FOOD SRL",
-        "details": "falta balance oblea cert",
+        "details": "Cordoborar info",
         "id": "task-1756229758230",
         "createdAt": "2025-08-26T17:35:58.230Z",
         "isCompleted": false
@@ -2601,11 +2666,11 @@
         "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\nSOLICITO 26-08\n\nIP 1 y 2\n",
         "id": "task-1756230082566",
         "createdAt": "2025-08-26T17:41:22.566Z",
-        "isCompleted": true
+        "isCompleted": false
       },
       {
         "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-02",
+        "dueDate": "2025-08-29",
         "clientId": "client-1756234019946",
         "businessId": "negocio-client-1756234019946-1756234165111",
         "clientName": "ZEA SA",
@@ -2616,7 +2681,7 @@
       },
       {
         "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-02",
+        "dueDate": "2025-08-29",
         "clientId": "client-1756234019946",
         "businessId": "negocio-client-1756234019946-1756234165111",
         "clientName": "ZEA SA",
@@ -2660,7 +2725,7 @@
       },
       {
         "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
-        "dueDate": "2025-09-01",
+        "dueDate": "2025-08-29",
         "clientId": "client-1755177831940",
         "businessId": "negocio-client-1755177831940",
         "clientName": "M y M SAS",
@@ -2678,12 +2743,12 @@
         "details": "Argenpyme.\nAcindar",
         "id": "task-1756237351975",
         "createdAt": "2025-08-26T19:42:31.975Z",
-        "isCompleted": true
+        "isCompleted": false
       },
       {
         "title": "Correo enviado a Norberto Garrone",
-        "dueDate": "2025-09-02",
-        "details": "SItuacion OK, coordinar llamada/reunion/video llamada",
+        "dueDate": "2025-08-29",
+        "details": "SItuacion OK, mando correo 1° contacto.",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T16:33:10.448Z",
         "clientName": "Tarea General",
@@ -2694,7 +2759,7 @@
         "title": "Correo Diego Giampaoli",
         "dueDate": "2025-08-29",
         "details": "Situacion OK, se envio correo",
-        "isCompleted": true,
+        "isCompleted": false,
         "modifiedAt": "2025-08-27T16:48:14.022Z",
         "clientName": "Tarea General",
         "id": "task-1756313294023",
@@ -2703,7 +2768,7 @@
       {
         "title": "TECNO FUNDACIONES armar carpeta acindar",
         "dueDate": "2025-08-29",
-        "isCompleted": true,
+        "isCompleted": false,
         "clientName": "Tecno Fundaciones SRL",
         "clientId": "client-1755264538180",
         "source": "clientes",
@@ -2960,7 +3025,7 @@
         "title": "Credito para stock, [Galia Norte SA]",
         "dueDate": "2025-09-04",
         "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
-        "isCompleted": true
+        "isCompleted": false
       },
       {
         "title": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil. - [Galia Norte SA]",
@@ -2982,7 +3047,7 @@
         "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.",
         "id": "task-1756125401686",
         "createdAt": "2025-08-25T12:36:41.686Z",
-        "isCompleted": true
+        "isCompleted": false
       },
       {
         "id": "task-1755875411971",
@@ -3031,7 +3096,7 @@
         "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
         "dueDate": "2025-09-05",
         "details": "Se envio \nAcindar Argenpymes",
-        "isCompleted": true
+        "isCompleted": false
       },
       {
         "id": "task-1755881202713",
@@ -3212,50 +3277,6 @@
         "clientName": "Tecno Fundaciones SRL",
         "details": "Se mando todo de nuevo"
       }
-    ],
-    "sgrs": [
-      {
-        "name": "Argenpymes",
-        "totalQuota": 5.666666666666667e+36,
-        "id": "sgr-1755880946552"
-      },
-      {
-        "name": "Innova",
-        "totalQuota": 8.888888888888889e+35,
-        "id": "sgr-1755881157770"
-      },
-      {
-        "name": "FIDEM",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1755881166954"
-      },
-      {
-        "name": "CFT",
-        "totalQuota": 8.88888888888889e+28,
-        "id": "sgr-1755881181897"
-      },
-      {
-        "name": "ADC",
-        "totalQuota": 8.888888888888889e+32,
-        "id": "sgr-1755881190986"
-      },
-      {
-        "name": "AcindarPyme",
-        "totalQuota": 888888888888888900000,
-        "id": "sgr-1756125379492"
-      },
-      {
-        "name": "MARIVA",
-        "totalQuota": 9999999,
-        "id": "sgr-1756317238943"
-      },
-      {
-        "name": "BIND",
-        "totalQuota": 99999999999999,
-        "id": "sgr-1756317308515"
-      }
-    ],
-    "campaigns": [],
-    "products": []
+    ]
   }
 }
