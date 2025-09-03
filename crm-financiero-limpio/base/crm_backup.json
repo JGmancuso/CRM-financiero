@@ -1331,8 +1331,8 @@
           "phone": "3585623853"
         },
         "relevamiento": "Necesidades constantes de inversion o capital de trabajo.",
-        "review": "",
-        "name": "Furlano Enzo Ramon",
+        "review": "Enzo Furlan es una empresa unipersonal que ofrece servicios agrícolas,  administrada íntegramente por su titular, Enzo Furlan, y su esposa. Para el  asesoramiento impositivo y contable, la empresa cuenta con un estudio externo.  Comenzo a trabajar en la agricultura con dos socios en el campo de su familia.  Posteriormente, arrendaron las hectáreas familiares a cambio de herramientas  para empezar a trabajar con la empresa Prodagro Argentina S.A., un grupo con  más de 50 años de trayectoria que gestiona alrededor de 60.000 hectáreas  propias, tanto de ganadería como de agricultura.  Iniciaron con la siembra y fumigación de 500 hectáreas. Debido a la eficiencia de  su trabajo, Prodagro Argentina amplió su área de servicio, otorgándoles la siembra  y cosecha de 1.800 hectáreas. Actualmente, tiene a su cargo la prestación de  servicios de siembra y cosecha de 5.000 hectáreas de una de las estancias de  Prodagro. Recientemente, Prodagro les ofreció ampliar sus servicios a otros  campos propios.  Servicios  Ofrece servicios de siembra y cosecha en cultivos como soja, trigo, maíz, maní,  sorgo y girasol.  Maquinaria  Cuenta con una variedad de maquinaria, incluyendo cisternas para agua y  combustible, acoplados tolva, cabezales y otras herramientas, que les permite  prestar un servicio de calidad.  Mercado y Competencia  El mercado de servicios agrícolas es muy competitivo. Los factores clave para el  éxito son la calidad y el mantenimiento de la maquinaria, el uso de tecnología, la  rapidez en la prestación del servicio y el cumplimiento de los plazos. Los  productores agropecuarios buscan seguridad y seriedad en quienes contratan  para sus labores. ",
+        "name": "Furlan Enzo Ramon",
         "id": "client-1756305754270",
         "qualifications": [],
         "activities": [],
@@ -1431,6 +1431,16 @@
             "newStatus": "En Calificación",
             "reason": "Argenpyme",
             "type": "Funnel Change"
+          },
+          {
+            "date": "2025-09-02T14:24:21.460Z",
+            "type": "Modificación de Detalles",
+            "reason": "Linea Galicia"
+          },
+          {
+            "date": "2025-09-02T14:24:36.540Z",
+            "type": "Modificación de Detalles",
+            "reason": "Linea Galicia\n\n2-9 consulta"
           }
         ],
         "cliente": {
@@ -1443,8 +1453,21 @@
         "reason": "Argenpyme ",
         "nextSteps": "Esperar calificacion",
         "missingItems": "Nada ",
-        "motivoUltimoCambio": "Linea Galicia",
-        "creationDate": "2025-08-14T13:14:21.299Z"
+        "motivoUltimoCambio": "Linea Galicia\n\n2-9 consulta",
+        "creationDate": "2025-08-14T13:14:21.299Z",
+        "calificaciones": [
+          {
+            "id": "qual-1756823060608",
+            "entidad": "Argenpymes",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-09-02",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ],
+        "activeTaskId": "task-auto-1756823076540",
+        "lastUpdate": "2025-09-02T14:24:36.540Z"
       },
       {
         "id": "negocio-client-1755177831940",
@@ -2214,11 +2237,11 @@
       {
         "id": "negocio-client-1756305754269-1756305784474",
         "nombre": "Calificaciones SGR",
-        "estado": "INFO_SOLICITADA",
+        "estado": "EN_CALIFICACION",
         "montoSolicitado": 0,
         "fechaProximoSeguimiento": "2025-08-27T14:43:04.474Z",
         "creationDate": "2025-08-27T14:43:04.474Z",
-        "lastUpdate": "2025-08-28T23:05:01.429Z",
+        "lastUpdate": "2025-09-02T17:24:31.174Z",
         "history": [
           {
             "date": "2025-08-27T14:43:04.474Z",
@@ -2249,6 +2272,26 @@
             "date": "2025-08-28T23:05:01.429Z",
             "type": "Cambio de estado a: INFO_SOLICITADA",
             "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
+          },
+          {
+            "date": "2025-09-01T21:01:13.382Z",
+            "type": "Cambio de estado a: EN_ARMADO",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+          },
+          {
+            "date": "2025-09-02T14:57:30.093Z",
+            "type": "Cambio de estado a: EN_CALIFICACION",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+          },
+          {
+            "date": "2025-09-02T14:57:51.220Z",
+            "type": "Modificación de Detalles",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+          },
+          {
+            "date": "2025-09-02T17:24:31.174Z",
+            "type": "Modificación de Detalles",
+            "reason": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
           }
         ],
         "cliente": {
@@ -2256,8 +2299,46 @@
           "nombre": "Furlano Enzo Ramon",
           "cuit": "20219991364"
         },
-        "motivoUltimoCambio": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante",
-        "activeTaskId": "task-auto-1756422301429"
+        "motivoUltimoCambio": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n",
+        "activeTaskId": "task-auto-1756833871174",
+        "calificaciones": [
+          {
+            "id": "qual-1756825062681",
+            "entidad": "FIDEM",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-09-02",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          },
+          {
+            "id": "qual-1756825067224",
+            "entidad": "Innova",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-09-02",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          },
+          {
+            "id": "qual-1756833862900",
+            "entidad": "Argenpymes",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-09-02",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          },
+          {
+            "id": "qual-1756833869234",
+            "entidad": "AcindarPyme",
+            "estado": "En Análisis",
+            "fechaPresentacion": "2025-09-02",
+            "montoAprobado": "",
+            "destino": "",
+            "vencimiento": ""
+          }
+        ]
       },
       {
         "id": "negocio-client-1756316605648-1756316617229",
@@ -2550,16 +2631,6 @@
         "isCompleted": true
       },
       {
-        "title": "contactar lista garantizar",
-        "dueDate": "2025-08-29",
-        "isCompleted": false,
-        "clientName": "Gestión Activa",
-        "source": "gestiones",
-        "id": "task-1756322351772",
-        "createdAt": "2025-08-27T19:19:11.772Z",
-        "details": ""
-      },
-      {
         "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
         "dueDate": "2025-08-29",
         "clientId": "client-1755177831940",
@@ -2569,17 +2640,6 @@
         "id": "task-1756215767609",
         "createdAt": "2025-08-26T13:42:47.609Z",
         "isCompleted": true
-      },
-      {
-        "title": "Lo que sea por banco o mercado - [Natural FOOD SRL]",
-        "dueDate": "2025-09-01",
-        "clientId": "client-1756227839590",
-        "businessId": "negocio-client-1756227839590-1756229402293",
-        "clientName": "Natural FOOD SRL",
-        "details": "falta balance oblea cert",
-        "id": "task-1756229758230",
-        "createdAt": "2025-08-26T17:35:58.230Z",
-        "isCompleted": false
       },
       {
         "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA - [M y M SAS]",
@@ -2602,28 +2662,6 @@
         "id": "task-1756230082566",
         "createdAt": "2025-08-26T17:41:22.566Z",
         "isCompleted": true
-      },
-      {
-        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-02",
-        "clientId": "client-1756234019946",
-        "businessId": "negocio-client-1756234019946-1756234165111",
-        "clientName": "ZEA SA",
-        "details": "CT cheques propios 60 millones cada una",
-        "id": "task-1756234221201",
-        "createdAt": "2025-08-26T18:50:21.201Z",
-        "isCompleted": false
-      },
-      {
-        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-02",
-        "clientId": "client-1756234019946",
-        "businessId": "negocio-client-1756234019946-1756234165111",
-        "clientName": "ZEA SA",
-        "details": "CT cheques propios 60 millones cada una",
-        "id": "task-1756234230974",
-        "createdAt": "2025-08-26T18:50:30.974Z",
-        "isCompleted": false
       },
       {
         "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
@@ -2659,17 +2697,6 @@
         "isCompleted": true
       },
       {
-        "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
-        "dueDate": "2025-09-01",
-        "clientId": "client-1755177831940",
-        "businessId": "negocio-client-1755177831940",
-        "clientName": "M y M SAS",
-        "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB",
-        "id": "task-1756237270972",
-        "createdAt": "2025-08-26T19:41:10.972Z",
-        "isCompleted": false
-      },
-      {
         "title": "Esperar Rdo - [Ricalbert SA]",
         "dueDate": "2025-08-29",
         "clientId": "client-1755613219213",
@@ -2679,16 +2706,6 @@
         "id": "task-1756237351975",
         "createdAt": "2025-08-26T19:42:31.975Z",
         "isCompleted": true
-      },
-      {
-        "title": "Correo enviado a Norberto Garrone",
-        "dueDate": "2025-09-02",
-        "details": "SItuacion OK, coordinar llamada/reunion/video llamada",
-        "isCompleted": false,
-        "modifiedAt": "2025-08-27T16:33:10.448Z",
-        "clientName": "Tarea General",
-        "id": "task-1756312390448",
-        "createdAt": "2025-08-27T16:33:10.448Z"
       },
       {
         "title": "Correo Diego Giampaoli",
@@ -2711,37 +2728,26 @@
         "createdAt": "2025-08-28T20:22:28.999Z"
       },
       {
-        "title": "esperar respuesta - [Carlos Imhoff]",
-        "dueDate": "2025-08-30",
-        "clientId": "client-1755520084158",
-        "businessId": "negocio-client-1755520084158",
-        "clientName": "Carlos Imhoff",
-        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
-        "id": "task-1756299821929",
-        "createdAt": "2025-08-27T13:03:41.929Z",
-        "isCompleted": false
+        "id": "task-auto-1756421797178",
+        "title": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante - [Furlano Enzo Ramon]",
+        "dueDate": "2025-08-29",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
       },
       {
-        "title": "Hacer seguimiento de etapa 'GANADO' para Kennbal SRL",
-        "dueDate": "2025-08-30",
-        "clientId": "client-1755177241923",
-        "businessId": "negocio-client-1755177241923-1755865268468",
-        "clientName": "Kennbal SRL",
-        "details": "Sin detalles adicionales.",
-        "id": "task-1756299864238",
-        "createdAt": "2025-08-27T13:04:24.238Z",
-        "isCompleted": false
-      },
-      {
-        "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-08-30",
-        "clientId": "client-1755184537576",
-        "businessId": "negocio-client-1755184537576",
-        "clientName": "Maskotas SRL",
-        "details": "Ojo la situacion 3 ",
-        "id": "task-1756299962711",
-        "createdAt": "2025-08-27T13:06:02.711Z",
-        "isCompleted": false
+        "id": "task-auto-1756422145261",
+        "title": "[EN_ARMADO] - Furlano Enzo Ramon",
+        "dueDate": "2025-08-29",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
       },
       {
         "title": "USD\nALta CNV.\nACTAS.\nInstrumentacion SGR - [Kennbal SRL]",
@@ -2810,28 +2816,6 @@
         "isCompleted": true
       },
       {
-        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Arinco SA",
-        "dueDate": "2025-08-30",
-        "clientId": "client-1756316605648",
-        "businessId": "negocio-client-1756316605648-1756316617229",
-        "clientName": "Arinco SA",
-        "details": "Sin detalles adicionales.",
-        "id": "task-1756317286762",
-        "createdAt": "2025-08-27T17:54:46.762Z",
-        "isCompleted": false
-      },
-      {
-        "title": "renovacion de linea - [Arinco SA]",
-        "dueDate": "2025-08-30",
-        "clientId": "client-1756316605648",
-        "businessId": "negocio-client-1756316605648-1756316617229",
-        "clientName": "Arinco SA",
-        "details": "renovacion de linea",
-        "id": "task-1756317296747",
-        "createdAt": "2025-08-27T17:54:56.747Z",
-        "isCompleted": false
-      },
-      {
         "title": "renovacion de linea - [Arinco SA]",
         "dueDate": "2025-08-30",
         "clientId": "client-1756316605648",
@@ -2851,7 +2835,7 @@
         "details": "Credito para stock, adicionalmente necesita para compra de campo de USD 300 mil.\n",
         "id": "task-1756386206831",
         "createdAt": "2025-08-28T13:03:26.831Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Mando info corroborar.\nPOdria mandar nota por acindarpyem - [Natural FOOD SRL]",
@@ -2862,7 +2846,7 @@
         "details": "Mando info corroborar.\nPOdria mandar nota por acindarpyem",
         "id": "task-1756411567143",
         "createdAt": "2025-08-28T20:06:07.143Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante - [Furlano Enzo Ramon]",
@@ -2898,17 +2882,6 @@
         "isCompleted": true
       },
       {
-        "title": "Linea Galicia - [Kennbal SRL]",
-        "dueDate": "2025-09-01",
-        "clientId": "client-1755177241923",
-        "businessId": "negocio-client-1755177241923",
-        "clientName": "Kennbal SRL",
-        "details": "Linea Galicia",
-        "id": "task-1756125620151",
-        "createdAt": "2025-08-25T12:40:20.151Z",
-        "isCompleted": false
-      },
-      {
         "title": "Ampliar linea para cheques de terceros - [M y M SAS]",
         "dueDate": "2025-09-01",
         "clientId": "client-1755177831940",
@@ -2920,27 +2893,153 @@
         "isCompleted": true
       },
       {
-        "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
+        "id": "task-auto-1756473386933",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
         "dueDate": "2025-09-01",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180-1755873928080",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Acyndar mandar documentacion para analisis completo"
+      },
+      {
+        "id": "task-auto-1756473396816",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
+        "dueDate": "2025-09-01",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180-1755873928080",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Acyndar mandar documentacion para analisis completo"
+      },
+      {
+        "id": "task-auto-1756476398723",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
+        "dueDate": "2025-09-01",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180-1755873928080",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Acyndar mandar documentacion para analisis completo"
+      },
+      {
+        "id": "task-1755879161088",
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
+        "dueDate": "2025-09-02",
+        "details": "definieron 3° y monto",
+        "isCompleted": true
+      },
+      {
+        "id": "task-auto-1756760473382",
+        "title": "[EN_ARMADO] - Furlano Enzo Ramon",
+        "dueDate": "2025-09-02",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+      },
+      {
+        "title": "contactar lista garantizar",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756322351772",
+        "createdAt": "2025-08-27T19:19:11.772Z",
+        "details": ""
+      },
+      {
+        "title": "Armar MMBB- [Carlos Imhoff]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1755520084158",
+        "businessId": "negocio-client-1755520084158",
+        "clientName": "Carlos Imhoff",
+        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
+        "id": "task-1756299821929",
+        "createdAt": "2025-08-27T13:03:41.929Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
+        "dueDate": "2025-09-03",
         "clientId": "client-1755182242838",
         "businessId": "negocio-client-1755182242838",
         "clientName": "Mecfres SRL",
-        "details": "Necesita ampliar la nave para las maquinas",
+        "details": "Necesita ampliar la nave para las maquinas- 01-09 mande correo, llamar ",
         "id": "task-1756125558455",
         "createdAt": "2025-08-25T12:39:18.455Z",
         "isCompleted": false
       },
       {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234221201",
+        "createdAt": "2025-08-26T18:50:21.201Z",
+        "isCompleted": false
+      },
+      {
+        "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1756234019946",
+        "businessId": "negocio-client-1756234019946-1756234165111",
+        "clientName": "ZEA SA",
+        "details": "CT cheques propios 60 millones cada una",
+        "id": "task-1756234230974",
+        "createdAt": "2025-08-26T18:50:30.974Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Correo enviado a Norberto Garrone",
+        "dueDate": "2025-09-03",
+        "details": "SItuacion OK, coordinar llamada/reunion/video llamada",
+        "isCompleted": false,
+        "modifiedAt": "2025-08-27T16:33:10.448Z",
+        "clientName": "Tarea General",
+        "id": "task-1756312390448",
+        "createdAt": "2025-08-27T16:33:10.448Z"
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'GANADO' para Kennbal SRL",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923-1755865268468",
+        "clientName": "Kennbal SRL",
+        "details": "Reunion",
+        "id": "task-1756299864238",
+        "createdAt": "2025-08-27T13:04:24.238Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Linea Galicia - [Kennbal SRL]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1755177241923",
+        "businessId": "negocio-client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "10 hs reunion",
+        "id": "task-1756125620151",
+        "createdAt": "2025-08-25T12:40:20.151Z",
+        "isCompleted": true
+      },
+      {
         "id": "task-1755880188467",
         "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-09-01",
+        "dueDate": "2025-09-03",
         "details": "Mando documentacion",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T13:07:28.901Z"
       },
       {
         "title": "Contactar Dario del Fabro",
-        "dueDate": "2025-09-01",
+        "dueDate": "2025-09-03",
         "details": "Construccion de galpon",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T17:38:01.968Z",
@@ -2949,11 +3048,174 @@
         "createdAt": "2025-08-27T17:38:01.968Z"
       },
       {
-        "id": "task-1755879161088",
-        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Borgarello Gustavo Claudio",
-        "dueDate": "2025-09-02",
-        "details": "definieron 3° y monto",
-        "isCompleted": true
+        "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1755177831940",
+        "businessId": "negocio-client-1755177831940",
+        "clientName": "M y M SAS",
+        "details": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB",
+        "id": "task-1756237270972",
+        "createdAt": "2025-08-26T19:41:10.972Z",
+        "isCompleted": false
+      },
+      {
+        "title": "corroborar - [Maskotas SRL]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1755184537576",
+        "businessId": "negocio-client-1755184537576",
+        "clientName": "Maskotas SRL",
+        "details": "Ojo la situacion 3 01-09 se mando MSJ",
+        "id": "task-1756299962711",
+        "createdAt": "2025-08-27T13:06:02.711Z",
+        "isCompleted": false
+      },
+      {
+        "title": "renovacion de linea - [Arinco SA]",
+        "dueDate": "2025-09-03",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316617229",
+        "clientName": "Arinco SA",
+        "details": "renovacion de linea",
+        "id": "task-1756317296747",
+        "createdAt": "2025-08-27T17:54:56.747Z",
+        "isCompleted": false
+      },
+      {
+        "id": "task-auto-1756422301429",
+        "title": "[INFO_SOLICITADA] - Furlano Enzo Ramon",
+        "dueDate": "2025-09-03",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
+      },
+      {
+        "id": "task-auto-1756476477786",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Se mando todo de nuevo"
+      },
+      {
+        "title": "Justificar fondos DFC",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756757183404",
+        "createdAt": "2025-09-01T20:06:23.404Z"
+      },
+      {
+        "id": "task-auto-1756823061460",
+        "title": "[EN_CALIFICACION] - Kennbal SRL",
+        "dueDate": "2025-09-03",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755177241923",
+        "clientId": "client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "Linea Galicia"
+      },
+      {
+        "id": "task-auto-1756823076540",
+        "title": "[EN_CALIFICACION] - Kennbal SRL",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1755177241923",
+        "clientId": "client-1755177241923",
+        "clientName": "Kennbal SRL",
+        "details": "Linea Galicia\n\n2-9 consulta"
+      },
+      {
+        "id": "task-auto-1756825050093",
+        "title": "[EN_CALIFICACION] - Furlano Enzo Ramon",
+        "dueDate": "2025-09-03",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+      },
+      {
+        "id": "task-auto-1756825071220",
+        "title": "[EN_CALIFICACION] - Furlano Enzo Ramon",
+        "dueDate": "2025-09-03",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+      },
+      {
+        "id": "task-auto-1756833871174",
+        "title": "[EN_CALIFICACION] - Furlano Enzo Ramon",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1756305754269-1756305784474",
+        "clientId": "client-1756305754269",
+        "clientName": "Furlano Enzo Ramon",
+        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n"
+      },
+      {
+        "title": "Dani Vagliente.",
+        "dueDate": "2025-09-03",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756843051071",
+        "createdAt": "2025-09-02T19:57:31.071Z"
+      },
+      {
+        "title": "Alta mercado cheque",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756754821357",
+        "createdAt": "2025-09-01T19:27:01.357Z",
+        "details": ""
+      },
+      {
+        "title": "Apertura cuenta socios Facu y Cristian",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756757578026",
+        "createdAt": "2025-09-01T20:12:58.026Z",
+        "details": ""
+      },
+      {
+        "title": "Lo que sea por banco o mercado - [Natural FOOD SRL]",
+        "dueDate": "2025-09-04",
+        "clientId": "client-1756227839590",
+        "businessId": "negocio-client-1756227839590-1756229402293",
+        "clientName": "Natural FOOD SRL",
+        "details": "correo con consultas",
+        "id": "task-1756229758230",
+        "createdAt": "2025-08-26T17:35:58.230Z",
+        "isCompleted": false
+      },
+      {
+        "title": "Hacer seguimiento de etapa 'EN_CALIFICACION' para Arinco SA",
+        "dueDate": "2025-09-04",
+        "clientId": "client-1756316605648",
+        "businessId": "negocio-client-1756316605648-1756316617229",
+        "clientName": "Arinco SA",
+        "details": "Sin detalles adicionales.",
+        "id": "task-1756317286762",
+        "createdAt": "2025-08-27T17:54:46.762Z",
+        "isCompleted": false
       },
       {
         "id": "task-1756125339117",
@@ -3013,6 +3275,36 @@
         "isCompleted": true
       },
       {
+        "id": "task-auto-1756423236235",
+        "title": "[EN_CALIFICACION] - DQD",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1756143399404-1756144134858",
+        "clientId": "client-1756143399404",
+        "details": "Faltante 28-8 balance y paquete accionario rdo 29-8"
+      },
+      {
+        "id": "task-auto-1756464672638",
+        "title": "[EN_CALIFICACION] - Borgarello Gustavo Claudio",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1755178433987",
+        "clientId": "client-1755178433987",
+        "clientName": "Borgarello Gustavo Claudio",
+        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador\n\nDefiniendo monto"
+      },
+      {
+        "title": "Dos Mates-correo",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756842496792",
+        "createdAt": "2025-09-02T19:48:16.792Z"
+      },
+      {
         "id": "task-1755879646811",
         "title": "esperar rdo - [Alberto Dominguez y Hnos SAAGI]",
         "dueDate": "2025-09-05",
@@ -3034,6 +3326,15 @@
         "isCompleted": true
       },
       {
+        "title": "MOVIL SGR",
+        "dueDate": "2025-09-05",
+        "isCompleted": false,
+        "clientName": "Gestión Activa",
+        "source": "gestiones",
+        "id": "task-1756843314879",
+        "createdAt": "2025-09-02T20:01:54.879Z"
+      },
+      {
         "id": "task-1755881202713",
         "title": "corroborar rdo - [Tecno Fundaciones SRL]",
         "dueDate": "2025-09-08",
@@ -3046,6 +3347,28 @@
         "dueDate": "2025-09-08",
         "details": "En calificacion ",
         "isCompleted": true
+      },
+      {
+        "id": "task-auto-1756473515100",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
+        "dueDate": "2025-09-15",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Se mando todo de nuevo- ADC"
+      },
+      {
+        "id": "task-auto-1756473277822",
+        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
+        "dueDate": "2025-09-16",
+        "isCompleted": true,
+        "source": "embudo",
+        "businessId": "negocio-client-1755264538180",
+        "clientId": "client-1755264538180",
+        "clientName": "Tecno Fundaciones SRL",
+        "details": "Se mando todo de nuevo- ADC"
       },
       {
         "title": "Cerealera puntana",
@@ -3091,126 +3414,6 @@
         "clientName": "Tarea General",
         "id": "task-1756295462666",
         "createdAt": "2025-08-27T11:51:02.666Z"
-      },
-      {
-        "id": "task-auto-1756421797178",
-        "title": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante - [Furlano Enzo Ramon]",
-        "dueDate": "2025-08-29",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1756305754269-1756305784474",
-        "clientId": "client-1756305754269",
-        "clientName": "Furlano Enzo Ramon",
-        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
-      },
-      {
-        "id": "task-auto-1756422145261",
-        "title": "[EN_ARMADO] - Furlano Enzo Ramon",
-        "dueDate": "2025-08-29",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1756305754269-1756305784474",
-        "clientId": "client-1756305754269",
-        "clientName": "Furlano Enzo Ramon",
-        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
-      },
-      {
-        "id": "task-auto-1756422301429",
-        "title": "[INFO_SOLICITADA] - Furlano Enzo Ramon",
-        "dueDate": "2025-09-01",
-        "isCompleted": false,
-        "source": "embudo",
-        "businessId": "negocio-client-1756305754269-1756305784474",
-        "clientId": "client-1756305754269",
-        "clientName": "Furlano Enzo Ramon",
-        "details": "Asistencias varias.\nInversion\nCT \nle da lo mismo\n\n28-08 se mandaron observaciones/faltante"
-      },
-      {
-        "id": "task-auto-1756423236235",
-        "title": "[EN_CALIFICACION] - DQD",
-        "dueDate": "2025-09-04",
-        "isCompleted": false,
-        "source": "embudo",
-        "businessId": "negocio-client-1756143399404-1756144134858",
-        "clientId": "client-1756143399404",
-        "details": "Faltante 28-8 balance y paquete accionario rdo 29-8"
-      },
-      {
-        "id": "task-auto-1756464672638",
-        "title": "[EN_CALIFICACION] - Borgarello Gustavo Claudio",
-        "dueDate": "2025-09-01",
-        "isCompleted": false,
-        "source": "embudo",
-        "businessId": "negocio-client-1755178433987",
-        "clientId": "client-1755178433987",
-        "clientName": "Borgarello Gustavo Claudio",
-        "details": "Se le acbo de quemar las cabañas posiblemente necesite mas.\n\nDebe complementar con un 3° fiador\n\nDefiniendo monto"
-      },
-      {
-        "id": "task-auto-1756473277822",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-16",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Se mando todo de nuevo- ADC"
-      },
-      {
-        "id": "task-auto-1756473386933",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-01",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Acyndar mandar documentacion para analisis completo"
-      },
-      {
-        "id": "task-auto-1756473396816",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-01",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Acyndar mandar documentacion para analisis completo"
-      },
-      {
-        "id": "task-auto-1756473515100",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-15",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Se mando todo de nuevo- ADC"
-      },
-      {
-        "id": "task-auto-1756476398723",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-01",
-        "isCompleted": true,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180-1755873928080",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Acyndar mandar documentacion para analisis completo"
-      },
-      {
-        "id": "task-auto-1756476477786",
-        "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-01",
-        "isCompleted": false,
-        "source": "embudo",
-        "businessId": "negocio-client-1755264538180",
-        "clientId": "client-1755264538180",
-        "clientName": "Tecno Fundaciones SRL",
-        "details": "Se mando todo de nuevo"
       }
     ],
     "sgrs": [

@@ -4,12 +4,27 @@ export const clientReducer = (clientsState, action) => {
     switch (action.type) {
         
         case 'ADD_CLIENT': {
-            // ... (código sin cambios)
+            const newClient = {
+                ...action.payload,
+                id: `client-${Date.now()}`,
+                qualifications: [], activities: [], documents: [], financing: [],
+                history: [{ date: new Date().toISOString(), type: 'Creación de Cliente', reason: 'Alta inicial en el sistema.' }]
+            };
+            return [...clientsState, newClient];
         }
 
         case 'UPDATE_CLIENT': {
-            // ... (código sin cambios)
+            const updatedClientData = action.payload;
+            return clientsState.map(client => {
+                if (client.id === updatedClientData.id) {
+                    // Fusionamos los datos existentes con los nuevos
+                    // Esto preserva arrays como 'activities', 'documents', etc.
+                    return { ...client, ...updatedClientData };
+                }
+                return client;
+            });
         }
+        
         
         // --- LÓGICA CLAVE PARA ACTIVIDADES ---
         case 'SAVE_ACTIVITY': {

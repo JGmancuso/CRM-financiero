@@ -13,7 +13,7 @@ const defaultClient = {
     industry: '', location: '', provincia: '', lastFiscalClose: '',
     hasForeignTrade: false, sellsToFinalConsumer: false, partners: [],
     contactPerson: { name: '', role: '', email: '', phone: '' },
-    relevamiento: '', review: ''
+    relevamiento: '', review: '',financialEntities: [],
 };
 
 export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit = '' }) {
@@ -26,6 +26,28 @@ export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit
             setClient({ ...defaultClient, cuit: initialCuit });
         }
     }, [clientToEdit, initialCuit]);
+
+        // --- 👇 LÓGICA FALTANTE AÑADIDA AQUÍ 👇 ---
+    const [newEntityName, setNewEntityName] = useState('');
+    const [newEntityType, setNewEntityType] = useState('ALYC');
+
+    const handleAddEntity = () => {
+        if (newEntityName.trim() === '') return;
+        const newEntity = {
+            id: `fe-${Date.now()}`,
+            type: newEntityType,
+            name: newEntityName.trim(),
+        };
+        const updatedEntities = [...(client.financialEntities || []), newEntity];
+        setClient(prev => ({ ...prev, financialEntities: updatedEntities }));
+        setNewEntityName('');
+    };
+
+    const handleRemoveEntity = (entityId) => {
+        const updatedEntities = (client.financialEntities || []).filter(e => e.id !== entityId);
+        setClient(prev => ({ ...prev, financialEntities: updatedEntities }));
+    };
+    // --- 👆 FIN DE LA LÓGICA FALTANTE 👆 ---
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -78,6 +100,30 @@ export default function ClientForm({ onSave, onCancel, clientToEdit, initialCuit
                         onRemove={removePartner} 
                     />
                 )}
+                {/* --- 👇 NUEVA SECCIÓN PARA ALYCS Y BANCOS 👇 --- */}
+                <div className="p-4 border rounded-lg bg-gray-50/50">
+                    <h3 className="font-semibold text-gray-700 mb-3">Entidades Financieras (ALYCs / Bancos)</h3>
+                    <div className="space-y-2 mb-4">
+                        {(client.financialEntities || []).map(entity => (
+                            <div key={entity.id} className="flex justify-between items-center bg-white p-2 rounded-md border text-sm">
+                                <div>
+                                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${entity.type === 'ALYC' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>{entity.type}</span>
+                                    <span className="ml-3 text-gray-800">{entity.name}</span>
+                                </div>
+                                <button type="button" onClick={() => handleRemoveEntity(entity.id)} className="text-red-500 hover:text-red-700"><Trash2 size={16} /></button>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <select value={newEntityType} onChange={(e) => setNewEntityType(e.target.value)} className="border rounded-md px-2 py-1.5 text-sm bg-white">
+                            <option value="ALYC">ALYC</option>
+                            <option value="Banco">Banco</option>
+                        </select>
+                        <input type="text" value={newEntityName} onChange={(e) => setNewEntityName(e.target.value)} placeholder="Nombre de la entidad..." className="flex-grow border rounded-md px-2 py-1 text-sm"/>
+                        <button type="button" onClick={handleAddEntity} className="bg-blue-500 text-white font-semibold py-1.5 px-3 rounded-md hover:bg-blue-600 text-sm">Añadir</button>
+                    </div>
+                </div>
+                {/* --- 👆 FIN DE LA NUEVA SECCIÓN 👆 --- */}
                 
                 <div className="flex justify-end space-x-3 pt-4 border-t">
                     <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>

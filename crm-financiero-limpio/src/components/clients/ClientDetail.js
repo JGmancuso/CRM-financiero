@@ -67,7 +67,29 @@ export default function ClientDetail({ client, negocio, onEdit, onDelete }) {
         // el hook `useData` en lugar de recibir las funciones por props.
         // Por ahora, los dejamos así para solucionar el error principal.
         switch (activeTab) {
-            case 'resumen': return <SummaryTab client={client} allClients={state.clients} />;
+            case 'resumen': 
+                return (
+                    <div>
+                        <SummaryTab client={client} allClients={state.clients} />
+                        {/* --- 👇 NUEVA SECCIÓN PARA MOSTRAR LAS ENTIDADES 👇 --- */}
+                        {client.financialEntities && client.financialEntities.length > 0 && (
+                            <div className="mt-6 pt-4 border-t">
+                                <h4 className="font-semibold text-gray-700 mb-3">Opera con:</h4>
+                                <div className="flex flex-wrap gap-3">
+                                    {client.financialEntities.map(entity => (
+                                        <div key={entity.id} className="flex items-center bg-gray-100 p-2 rounded-lg border">
+                                            <span className={`text-xs font-bold px-2 py-1 rounded-full ${entity.type === 'ALYC' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
+                                                {entity.type}
+                                            </span>
+                                            <span className="ml-3 text-sm text-gray-900">{entity.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {/* --- 👆 FIN DE LA NUEVA SECCIÓN 👆 --- */}
+                    </div>
+                );
             case 'deudores': return <DebtorStatusTab client={client} />;
             case 'calificaciones': return <QualificationsTab client={client} />;
             case 'documentos': return <DocumentsTab client={client} />;
@@ -118,7 +140,6 @@ export default function ClientDetail({ client, negocio, onEdit, onDelete }) {
             
             <div>{renderActiveTab()}</div>
 
-            {/* 👇 5. El modal ahora llama a nuestra nueva función handleSaveNewBusiness */}
             {showNewBusinessModal && (
                 <NewBusinessModal 
                     client={client} 
