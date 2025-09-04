@@ -48,3 +48,42 @@ export const createFollowUpEvent = async (emailInfo) => {
   console.log("Evento a crear:", event);
   return { success: true, eventSummary: event.summary };
 };
+
+/**
+ * Crea un evento en Google Calendar a partir de una tarea del CRM.
+ * @param {object} task - La tarea de tu agenda.
+ */
+export const createCalendarEventFromTask = async (task) => {
+  console.log(`Creando evento en Calendar para: '${task.title}'...`);
+  
+  if (!window.gapi.client.calendar) {
+    console.error("La API de Google Calendar no está cargada.");
+    return null;
+  }
+
+  // Preparamos el evento para la API de Calendar.
+  const event = {
+    summary: task.title,
+    description: `Tarea del CRM. Cliente: ${task.clientName}\n\nNotas: ${task.details || 'Sin notas.'}`,
+    start: {
+      date: task.dueDate, // Usamos la fecha de la tarea
+      timeZone: 'America/Argentina/Buenos_Aires',
+    },
+    end: {
+      date: task.dueDate,
+      timeZone: 'America/Argentina/Buenos_Aires',
+    },
+  };
+
+  try {
+    const response = await window.gapi.client.calendar.events.insert({
+      calendarId: 'primary', // 'primary' se refiere al calendario principal del usuario
+      resource: event,
+    });
+    console.log("Evento creado:", response.result);
+    return response.result;
+  } catch (error) {
+    console.error("Error al crear el evento en Calendar:", error);
+    return null;
+  }
+};

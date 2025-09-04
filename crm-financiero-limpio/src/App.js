@@ -15,9 +15,13 @@ import CampaignsView from './views/CampaignsView';
 import AgendaView from './views/AgendaView';
 import ProductsView from './views/ProductsView';
 import AnalisisNoClientesView from './views/AnalisisNoClientesView';
+import { useGoogle } from './context/GoogleClientContext'; // <-- AÑADE ESTA LÍNEA
+
 
 // El componente Header podría incluso vivir en su propio archivo si quisieras
 const Header = ({ onImportClick, onExportClick, lastSaved }) => {
+    const { isSignedIn, signIn, signOut } = useGoogle();
+
     return (
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
             <h1 className="text-xl font-bold text-gray-700">CRM Financiero</h1>
@@ -37,6 +41,15 @@ const Header = ({ onImportClick, onExportClick, lastSaved }) => {
                     <Download size={18} className="mr-2" />
                     Guardar Backup
                 </button>
+                 {isSignedIn ? (
+                    <button onClick={signOut} className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600">
+                        Cerrar Sesión Google
+                    </button>
+                ) : (
+                    <button onClick={signIn} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">
+                        Iniciar Sesión con Google
+                    </button>
+                )}
             </div>
         </header>
     );

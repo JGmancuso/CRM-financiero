@@ -37,6 +37,15 @@ export const FUNNEL_STAGES = {
     'PERDIDO': 'Perdido',
 };
 
+export const DOCUMENT_CATEGORIES = {
+    'CREDITO': 'Crédito',
+    'RESPUESTAS': 'Respuestas',
+    'LEGAL': 'Legal',
+    'OTROS': 'Otros',
+    'IMPOSITIVO': 'Impositivo',
+    'SOCIOS': 'Socios',
+};
+
 
 
 // 3. Creamos y exportamos el objeto 'initialData' que toda la aplicación usará.
