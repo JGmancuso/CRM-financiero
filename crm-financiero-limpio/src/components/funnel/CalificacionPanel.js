@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Save, Building2, Activity, Clock, PlusCircle, Trash2, Edit } from 'lucide-react';
+import { Save, Clock, PlusCircle, Trash2, Edit } from 'lucide-react';
+import { useData } from '../../context/DataContext'; // <-- 1. AÑADE ESTA LÍNEA DE IMPORTACIÓN
 
 // Sub-componente para el formulario de Añadir/Editar
 const CalificacionForm = ({ sgrs, initialData, onSave, onCancel }) => {
@@ -54,7 +55,9 @@ const CalificacionForm = ({ sgrs, initialData, onSave, onCancel }) => {
     );
 };
 
-export default function CalificacionPanel({ negocio, onSave, sgrs }) {
+// 👇 2. ELIMINAMOS 'onSave' DE LOS PROPS, YA NO SE NECESITA
+export default function CalificacionPanel({ negocio, sgrs }) {
+    const { dispatch } = useData(); // Ahora 'useData' está definido y se puede usar
     const [calificaciones, setCalificaciones] = useState(negocio.calificaciones || []);
     const [editingItem, setEditingItem] = useState(null);
     
@@ -94,11 +97,10 @@ export default function CalificacionPanel({ negocio, onSave, sgrs }) {
     };
 
     const handleSaveChanges = () => {
-        const updatedNegocio = {
-            ...negocio,
-            calificaciones: calificaciones
-        };
-        onSave(updatedNegocio);
+        const updatedNegocio = { ...negocio, calificaciones: calificaciones };
+        // Despacha una acción específica para guardar solo las calificaciones
+        dispatch({ type: 'UPDATE_NEGOCIO_CALIFICACIONES', payload: updatedNegocio });
+        alert('Calificaciones guardadas con éxito.');
     };
 
     return (

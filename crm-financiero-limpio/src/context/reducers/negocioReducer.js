@@ -76,7 +76,16 @@ export const negocioReducer = (negociosState, action) => {
                 return n;
             });
         }
-
+        // --- 👇 LÓGICA AÑADIDA AQUÍ 👇 ---
+        case 'UPDATE_NEGOCIO_CALIFICACIONES': {
+            const updatedNegocio = action.payload;
+            return negociosState.map(negocio => 
+                negocio.id === updatedNegocio.id 
+                    ? { ...negocio, calificaciones: updatedNegocio.calificaciones, lastUpdate: new Date().toISOString() }
+                    : negocio
+            );
+        }
+        // --- 👆 FIN DE LA LÓGICA AÑADIDA 👆 ---
         default:
             return negociosState;
     }

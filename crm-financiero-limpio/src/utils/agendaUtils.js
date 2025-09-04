@@ -1,15 +1,23 @@
 // src/utils/agendaUtils.js
 
+// La función principal ahora pasa más datos del negocio a la tarea
 function getUnifiedAgendaItems(clients, tasks, negocios) {
-    // Tareas del embudo y gestiones
     const generalTasks = (tasks || [])
         .filter(task => task.dueDate)
         .map(task => {
-            let enrichedTask = { ...task, source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo') };
+            let enrichedTask = {
+                ...task,
+                source: task.source || (task.clientName === 'Gestión Activa' ? 'gestiones' : 'embudo'),
+            };
+
+            // Si la tarea está vinculada a un negocio, enriquecemos la información
             if (task.businessId) {
                 const negocioAsociado = (negocios || []).find(n => n.id === task.businessId);
                 if (negocioAsociado) {
                     enrichedTask.businessInfo = {
+                        estado: negocioAsociado.estado,
+                        monto: negocioAsociado.montoSolicitado,
+                        moneda: negocioAsociado.moneda || 'ARS',
                         observaciones: negocioAsociado.motivoUltimoCambio,
                         calificacionesSGR: negocioAsociado.calificaciones,
                     };
@@ -18,28 +26,20 @@ function getUnifiedAgendaItems(clients, tasks, negocios) {
             return enrichedTask;
         });
 
-    // Actividades de clientes
     const clientActivities = (clients || [])
         .flatMap(client => 
-            (client.activities || []).map(activity => {
-                // --- DEPURACIÓN ---
-                console.log("Datos ORIGINALES de la actividad:", activity);
-                // --- FIN DEPURACIÓN ---
-
-                const unifiedTask = {
-                    id: activity.id,
-                    title: activity.description || 'Actividad',
-                    dueDate: activity.dueDate || activity.date,
-                    isCompleted: activity.completed || false,
-                    clientName: client.nombre || client.name,
-                    clientId: client.id,
-                    source: 'clientes',
-                };
-                return unifiedTask;
-            })
+            (client.activities || []).map(activity => ({
+                id: activity.id,
+                title: activity.description || 'Actividad',
+                details: activity.note,
+                dueDate: activity.dueDate || activity.date,
+                isCompleted: activity.completed || false,
+                clientName: client.nombre || client.name,
+                clientId: client.id,
+                source: 'clientes',
+            }))
         );
 
-    // Nos aseguramos de que solo pasen tareas con fecha
     return [...generalTasks, ...clientActivities].filter(item => item.dueDate);
 }
 

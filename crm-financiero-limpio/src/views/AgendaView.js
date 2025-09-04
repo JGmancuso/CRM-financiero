@@ -7,6 +7,7 @@ import TaskDetailModal from '../components/modals/TaskDetailModal';
 import NewTaskModal from '../components/modals/NewTaskModal';
 import { useData } from '../context/DataContext';
 
+
 export default function AgendaView() {
     const { state, dispatch } = useData();
     const [filter, setFilter] = useState('todos');
@@ -123,19 +124,20 @@ export default function AgendaView() {
             <div className="flex space-x-4 overflow-x-auto flex-grow pb-4">
               
                 <AgendaColumn title="Vencidas" tasks={overdueTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} onDelete={handleDeleteTask} />
-                {/* --- SECCIÓN CORREGIDA --- */}
+         
                 {weekDays.map(day => (
                     <AgendaColumn 
                         key={day.id} 
                         title={day.name} 
-                        // Usamos la variable con el nombre correcto: tasksByDayOfWeek
                         tasks={tasksByDayOfWeek[day.id] || []} 
                         onToggleComplete={handleToggleComplete} 
                         onEdit={setEditingTask} 
-                        onView={setViewingTask} 
+                        onView={setViewingTask}
+                        onDelete={handleDeleteTask} // <-- Esta prop faltaba
                     />
                 ))}
-                {/* --- FIN DE LA SECCIÓN CORREGIDA --- */}
+                
+            
 
                 <AgendaColumn title="Próximas" tasks={futureTasks} onToggleComplete={handleToggleComplete} onEdit={setEditingTask} onView={setViewingTask} />
             </div>
@@ -155,7 +157,16 @@ export default function AgendaView() {
                 />
             )}
 
-            {viewingTask && (<TaskDetailModal task={viewingTask} onClose={() => setViewingTask(null)} />)}
+            {/* 👇 Nos aseguramos de pasarle TODAS las funciones necesarias al modal de detalle 👇 */}
+            {viewingTask && (
+                <TaskDetailModal 
+                    task={viewingTask} 
+                    onClose={() => setViewingTask(null)}
+                    onSave={handleUpdateTask}
+                    onToggleComplete={handleToggleComplete}
+                    onDelete={handleDeleteTask}
+                />
+            )}
         </div>
     );
 }
