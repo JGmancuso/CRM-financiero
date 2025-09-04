@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Edit, Save, User, DollarSign, Flag, AlertTriangle, Info, Clock, RefreshCw } from 'lucide-react';
+import { X, Edit, Save, User, Clock, RefreshCw, Info, Flag, AlertTriangle, History } from 'lucide-react';
 import CalificacionPanel from '../funnel/CalificacionPanel';
 import { daysSince, findLastStageChangeDate } from '../../utils/negocioUtils';
 
@@ -119,6 +119,32 @@ export default function NegocioDetailModal({ negocio, onClose, onSave, sgrs }) {
                             <CalificacionPanel negocio={negocio} onSave={onSave} sgrs={sgrs} />
                         </div>
                     )}
+                                        {/* --- 👇 NUEVA SECCIÓN DE HISTORIAL DE AGENDA 👇 --- */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center">
+                            {/* 👇 2. Usamos el ícono 'History' aquí */}
+                            <History size={20} className="mr-2 text-gray-500" />
+                            Historial de Agenda
+                        </h3>
+                        <div className="space-y-3 max-h-40 overflow-y-auto pr-2">
+                            {negocio.history && negocio.history.filter(item => item.type === 'Nota de Agenda').length > 0 ? (
+                                negocio.history
+                                    .filter(item => item.type === 'Nota de Agenda')
+                                    .reverse() // Para mostrar las más recientes primero
+                                    .map((item, index) => (
+                                        <div key={index} className="text-sm bg-gray-50 p-3 rounded-md border-l-2 border-gray-300">
+                                            <p className="font-semibold text-gray-600">
+                                                {new Date(item.date).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                            </p>
+                                            <p className="text-gray-800 mt-1 whitespace-pre-wrap">{item.reason}</p>
+                                        </div>
+                                    ))
+                            ) : (
+                                <p className="text-sm text-gray-500 italic">No hay notas de agenda registradas.</p>
+                            )}
+                        </div>
+                    </div>
+                    {/* --- 👆 FIN DE LA NUEVA SECCIÓN 👆 --- */}
                 </div>
             </div>
         </div>

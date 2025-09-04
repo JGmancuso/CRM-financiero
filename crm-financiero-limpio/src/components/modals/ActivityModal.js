@@ -49,7 +49,20 @@ export default function ActivityModal({ onClose, onSave, activityToEdit }) {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <InputField name="title" label="Título" value={formData.title} onChange={handleChange} required />
                     <InputField name="dueDate" label="Fecha" type="date" value={formData.dueDate} onChange={handleChange} required />
-                    <InputField name="details" label="Notas / Detalles" value={formData.details} onChange={handleChange} as="textarea" />
+                                        {/* --- 👇 Campo de Notas Mejorado 👇 --- */}
+                    <div>
+                        <label htmlFor="details" className="block text-sm font-medium text-gray-700">Notas (se guardarán en el historial del negocio)</label>
+                        <textarea
+                            name="details"
+                            id="details"
+                            value={formData.details}
+                            onChange={handleChange}
+                            rows="4"
+                            placeholder="Añade aquí los detalles, observaciones o el resultado de la gestión..."
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+                        />
+                    </div>
+                    {/* --- 👆 Fin del Campo de Notas 👆 --- */}
                     <div className="flex justify-end space-x-3 pt-4 border-t">
                         <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
                         <button type="submit" className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Guardar</button>

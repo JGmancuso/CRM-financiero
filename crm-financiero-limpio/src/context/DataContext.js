@@ -112,6 +112,34 @@ const rootReducer = (state, action) => {
                 tasks: updatedTasks,
             };
         }
+        case 'ADD_TASK':
+        case 'UPDATE_TASK': {
+            // 1. Actualizamos la lista de tareas como siempre
+            const updatedTasks = taskReducer(state.tasks, action);
+            const taskPayload = action.payload;
+
+            // 2. Si la tarea no tiene un ID de negocio o no tiene notas, no hacemos nada más
+            if (!taskPayload.businessId || !taskPayload.details) {
+                return { ...state, tasks: updatedTasks };
+            }
+
+            // 3. Si tiene ID y notas, las añadimos al historial del negocio correspondiente
+            const updatedNegocios = state.negocios.map(negocio => {
+                if (negocio.id === taskPayload.businessId) {
+                    const newHistoryEntry = {
+                        date: new Date().toISOString(),
+                        type: 'Nota de Agenda', // Nuevo tipo de historial
+                        reason: taskPayload.details
+                    };
+                    return { ...negocio, history: [...(negocio.history || []), newHistoryEntry] };
+                }
+                return negocio;
+            });
+
+            // 4. Devolvemos el estado con ambas listas (tareas y negocios) actualizadas
+            return { ...state, tasks: updatedTasks, negocios: updatedNegocios };
+        }
+        // --- 👆 FIN DE LA LÓGICA DE HISTORIAL 👆 ---
         case 'IMPORT_DATA': {
             const saneados = sanitizeNegociosData(action.payload.negocios || []);
             return { ...state, ...action.payload, negocios: saneados };
