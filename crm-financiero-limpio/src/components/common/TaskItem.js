@@ -2,52 +2,33 @@ import React from 'react';
 import { CheckSquare, Edit, Square, Trash2 } from 'lucide-react';
 
 export default function TaskItem({ task, onToggleComplete, onEdit, onView, onDelete }) {
-    const handleToggle = (e) => {
-        e.stopPropagation();
-        // --- DEPURACIÓN ---
-        console.log("Intentando completar esta tarea:", task);
-        // --- FIN DEPURACIÓN ---
-        onToggleComplete(task);
-    };
+    const handleToggle = (e) => { e.stopPropagation(); onToggleComplete(task); };
+    const handleEdit = (e) => { e.stopPropagation(); onEdit(task); };
+    const handleDelete = (e) => { e.stopPropagation(); onDelete(task); };
 
-    const handleEdit = (e) => {
-        e.stopPropagation();
-        onEdit(task);
-    };
-
-    const handleDelete = (e) => {
-        e.stopPropagation();
-        // --- DEPURACIÓN ---
-        console.log("Intentando eliminar esta tarea:", task);
-        // --- FIN DEPURACIÓN ---
-        onDelete(task);
-    };
     const getBackgroundColor = (source) => {
         switch (source) {
-            case 'clientes':
-                return 'bg-blue-50'; // Azul muy claro para clientes
-            case 'gestiones':
-                return 'bg-green-50'; // Verde muy claro para gestiones activas
-            case 'embudo':
-                return 'bg-purple-50'; // Púrpura muy claro para tareas de embudo
-            default:
-                return 'bg-gray-50'; // Gris muy claro por defecto
+            case 'clientes': return 'bg-blue-50';
+            case 'gestiones': return 'bg-green-50';
+            case 'embudo': return 'bg-purple-50';
+            default: return 'bg-gray-50';
         }
     };
 
-    const backgroundColorClass = getBackgroundColor(task.source);
-    // --- 👆 FIN DE LA LÓGICA DE COLOR 👆 ---
-
     return (
-        // 👇 Aplicamos la clase de color de fondo al div principal
         <div 
             onClick={() => onView(task)}
-            className={`p-3 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-2 ${backgroundColorClass}`}
+            className={`p-3 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-2 ${getBackgroundColor(task.source)}`}
         >
             <div className="flex items-start">
                 <div className="flex-grow">
-                    <p className={`font-semibold ${task.isCompleted ? 'line-through text-gray-400' : 'text-gray-800'}`}>{task.title}</p>
-                    <p className={`text-sm ${task.isCompleted ? 'text-gray-400' : 'text-gray-500'}`}>{task.clientName || 'General'}</p>
+                    {/* Esta es la única línea que muestra el título */}
+                    <p className={`font-semibold ${task.isCompleted ? 'line-through text-gray-400' : 'text-gray-800'}`}>
+                        {task.title}
+                    </p>
+                    <p className={`text-sm ${task.isCompleted ? 'text-gray-400' : 'text-gray-500'}`}>
+                        Cliente: {task.clientName || 'General'}
+                    </p>
                     <p className={`text-xs mt-1 ${task.isCompleted ? 'text-gray-400' : 'text-gray-500'}`}>
                         Vence: {task.dueDate ? new Date(task.dueDate + 'T00:00:00').toLocaleDateString('es-AR', {timeZone: 'UTC'}) : 'Sin fecha'}
                     </p>
@@ -65,7 +46,7 @@ export default function TaskItem({ task, onToggleComplete, onEdit, onView, onDel
                 </div>
             </div>
             {task.details && !task.isCompleted && (
-                <div className="mt-2 text-xs text-gray-600 bg-gray-100 p-2 rounded"> {/* Un tono un poco más oscuro para el detalle si quieres */}
+                <div className="mt-2 text-xs text-gray-600 bg-gray-100 p-2 rounded">
                     <p className="italic">"{task.details}"</p>
                 </div>
             )}

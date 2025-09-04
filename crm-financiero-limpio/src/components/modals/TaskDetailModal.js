@@ -54,6 +54,37 @@ export default function TaskDetailModal({ task, onClose, onSave, onToggleComplet
                             {task.isCompleted ? 'Completada' : 'Pendiente'}
                         </span>
                     </div>
+                    {isEditing ? (
+                        /* --- MODO EDICIÓN --- */
+                        <div className="space-y-3 animate-fade-in">
+                            <h2 className="text-2xl font-bold text-gray-800">Editando Tarea</h2>
+                            {/* --- 👇 CAMPOS CORREGIDOS AQUÍ 👇 --- */}
+
+                             <div>
+                                <label className="text-sm font-medium text-gray-500">Fecha de Vencimiento</label>
+                                <input type="date" name="dueDate" value={formData.dueDate ? new Date(formData.dueDate).toISOString().split('T')[0] : ''} onChange={handleChange} className="w-full mt-1 p-2 border rounded-md"/>
+                            </div>
+                            <div>
+                                <label className="text-sm font-medium text-gray-500">Notas</label>
+                                <textarea name="details" value={formData.details || ''} onChange={handleChange} rows="3" className="w-full mt-1 p-2 border rounded-md"/>
+                            </div>
+                            {/* --- 👆 FIN DE LA CORRECCIÓN 👆 --- */}
+                        </div>
+                    ) : (
+                        /* --- MODO VISUALIZACIÓN --- */
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800">{task.title}</h2>
+                            <p className="text-gray-500 mt-1">Cliente: {task.clientName}</p>
+                            <div className="flex items-center text-sm mt-2">
+                                <Calendar size={14} className="mr-2 text-gray-500"/>
+                                <span>Vence: {new Date(task.dueDate + 'T00:00:00').toLocaleDateString('es-AR')}</span>
+                                <span className="mx-2">•</span>
+                                <span className={`font-semibold ${task.isCompleted ? 'text-green-600' : 'text-yellow-600'}`}>
+                                    {task.isCompleted ? 'Completada' : 'Pendiente'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Cuerpo del Modal */}
@@ -105,9 +136,7 @@ export default function TaskDetailModal({ task, onClose, onSave, onToggleComplet
                             </h3>
                             <div className="space-y-3 bg-gray-50 p-4 rounded-md">
                                 {task.businessInfo.calificacionesSGR.map(cal => {
-                                    // --- 👇 ESPÍA DE DEPURACIÓN AÑADIDO AQUÍ 👇 ---
-                                    console.log('Datos de la calificación individual:', cal);
-                                    // --- 👆 FIN DEL ESPÍA 👆 ---
+
                                     const diasEnAnalisis = daysSince(cal.fechaPresentacion);
                                     return (
                                         <div key={cal.id} className="border p-3 bg-white rounded-lg shadow-sm">
