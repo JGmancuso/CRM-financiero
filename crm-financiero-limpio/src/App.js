@@ -10,7 +10,7 @@ import { useData } from './context/DataContext';
 import FunnelView from './views/FunnelView';
 import ClientsView from './views/ClientsView';
 import DashboardView from './views/DashboardView';
-import SGRView from './views/SGRView';
+import EntidadesView from './views/EntidadesView'; 
 import CampaignsView from './views/CampaignsView';
 import AgendaView from './views/AgendaView';
 import ProductsView from './views/ProductsView';
@@ -122,7 +122,7 @@ export default function App() {
                     
                     {view === 'analisisNoClientes' && <AnalisisNoClientesView />}
                     
-                    {view === 'sgr' && <SGRView sgrs={state.sgrs} />}
+                    {view === 'sgr' && <EntidadesView />}
                                         
                     {view === 'products' && <ProductsView products={state.products} setProducts={(newProducts) => dispatch({ type: 'SET_PRODUCTS', payload: newProducts })} />}
                     

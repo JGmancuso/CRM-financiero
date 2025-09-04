@@ -1415,6 +1415,78 @@
             "reason": "Alta inicial en el sistema."
           }
         ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": "30717402436",
+        "email": "",
+        "phone": "3562 544154",
+        "industry": "",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Beltramino Fabiana",
+          "role": "Socia",
+          "email": "",
+          "phone": "3562 544154"
+        },
+        "relevamiento": "",
+        "review": "",
+        "financialEntities": [],
+        "name": "Los Salecianos SAS",
+        "id": "client-1756922641156",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-09-03T18:04:01.156Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
+      },
+      {
+        "type": "juridica",
+        "nombre": "",
+        "cuit": " 30618855631",
+        "email": "",
+        "phone": "3533684131",
+        "industry": "Industria Manufacturera",
+        "location": "",
+        "provincia": "",
+        "lastFiscalClose": "2025-01-31",
+        "hasForeignTrade": false,
+        "sellsToFinalConsumer": false,
+        "partners": [],
+        "contactPerson": {
+          "name": "Pablo Braga",
+          "role": "accionista",
+          "email": "",
+          "phone": "3533684131"
+        },
+        "relevamiento": "Calificacion en BST",
+        "review": "",
+        "financialEntities": [],
+        "name": "Pauny SA",
+        "id": "client-1756931039417",
+        "qualifications": [],
+        "activities": [],
+        "documents": [],
+        "financing": [],
+        "history": [
+          {
+            "date": "2025-09-03T20:23:59.417Z",
+            "type": "Creación de Cliente",
+            "reason": "Alta inicial en el sistema."
+          }
+        ]
       }
     ],
     "negocios": [
@@ -1778,7 +1850,7 @@
       {
         "id": "negocio-client-1755520084158",
         "nombre": "Oportunidad para Carlos Imhoff",
-        "estado": "PROSPECTO",
+        "estado": "INFO_SOLICITADA",
         "montoSolicitado": 100000000,
         "fechaProximoSeguimiento": "2025-08-18T12:28:13.815Z",
         "history": [
@@ -1816,6 +1888,11 @@
             "date": "2025-08-27T13:03:41.929Z",
             "type": "Modificación de Detalles",
             "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
+          },
+          {
+            "date": "2025-09-03T16:58:38.020Z",
+            "type": "Cambio de estado a: INFO_SOLICITADA",
+            "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
           }
         ],
         "cliente": {
@@ -1825,11 +1902,12 @@
           "email": "",
           "phone": "3492 64-4392"
         },
-        "lastUpdate": "2025-08-27T13:03:41.929Z",
+        "lastUpdate": "2025-09-03T16:58:38.020Z",
         "motivoUltimoCambio": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
         "proximosPasos": "esperar respuesta",
         "documentacionFaltante": "Toda",
-        "creationDate": "2025-08-22T12:53:35.028Z"
+        "creationDate": "2025-08-22T12:53:35.028Z",
+        "activeTaskId": "task-auto-1756918718020"
       },
       {
         "id": "negocio-client-1755540519671",
@@ -2435,6 +2513,52 @@
             "vencimiento": ""
           }
         ]
+      },
+      {
+        "id": "negocio-client-1756922641156-1756922679405",
+        "estado": "PROSPECTO",
+        "fechaProximoSeguimiento": "2025-09-03T18:04:39.405Z",
+        "creationDate": "2025-09-03T18:04:39.405Z",
+        "lastUpdate": "2025-09-03T18:04:39.405Z",
+        "history": [
+          {
+            "date": "2025-09-03T18:04:39.405Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          }
+        ],
+        "cliente": {
+          "id": "client-1756922641156",
+          "nombre": "Los Salecianos SAS",
+          "cuit": "30717402436"
+        }
+      },
+      {
+        "id": "negocio-client-1756931039417-1756931074342",
+        "nombre": "Calificacion BST",
+        "estado": "INFO_SOLICITADA",
+        "montoSolicitado": 0,
+        "fechaProximoSeguimiento": "2025-09-03T20:24:34.342Z",
+        "creationDate": "2025-09-03T20:24:34.342Z",
+        "lastUpdate": "2025-09-03T20:24:57.553Z",
+        "history": [
+          {
+            "date": "2025-09-03T20:24:34.342Z",
+            "type": "Creación de Nuevo Negocio",
+            "reason": "Creado desde detalle de cliente."
+          },
+          {
+            "date": "2025-09-03T20:24:57.553Z",
+            "type": "Cambio de estado a: INFO_SOLICITADA",
+            "reason": "Actualización de estado."
+          }
+        ],
+        "cliente": {
+          "id": "client-1756931039417",
+          "nombre": "Pauny SA",
+          "cuit": " 30618855631"
+        },
+        "activeTaskId": "task-auto-1756931097553"
       }
     ],
     "tasks": [
@@ -2962,11 +3086,11 @@
         "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
         "id": "task-1756299821929",
         "createdAt": "2025-08-27T13:03:41.929Z",
-        "isCompleted": false
+        "isCompleted": true
       },
       {
         "title": "Necesita ampliar la nave para las maquinas - [Mecfres SRL]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-05",
         "clientId": "client-1755182242838",
         "businessId": "negocio-client-1755182242838",
         "clientName": "Mecfres SRL",
@@ -2977,7 +3101,7 @@
       },
       {
         "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-05",
         "clientId": "client-1756234019946",
         "businessId": "negocio-client-1756234019946-1756234165111",
         "clientName": "ZEA SA",
@@ -2988,7 +3112,7 @@
       },
       {
         "title": "CT cheques propios 60 millones cada una - [ZEA SA]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-05",
         "clientId": "client-1756234019946",
         "businessId": "negocio-client-1756234019946-1756234165111",
         "clientName": "ZEA SA",
@@ -2999,7 +3123,7 @@
       },
       {
         "title": "Correo enviado a Norberto Garrone",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-04",
         "details": "SItuacion OK, coordinar llamada/reunion/video llamada",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T16:33:10.448Z",
@@ -3009,11 +3133,11 @@
       },
       {
         "title": "Hacer seguimiento de etapa 'GANADO' para Kennbal SRL",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-05",
         "clientId": "client-1755177241923",
         "businessId": "negocio-client-1755177241923-1755865268468",
         "clientName": "Kennbal SRL",
-        "details": "Reunion",
+        "details": "instrumentacion ON ",
         "id": "task-1756299864238",
         "createdAt": "2025-08-27T13:04:24.238Z",
         "isCompleted": false
@@ -3032,14 +3156,14 @@
       {
         "id": "task-1755880188467",
         "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-08",
         "details": "Mando documentacion",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T13:07:28.901Z"
       },
       {
         "title": "Contactar Dario del Fabro",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-04",
         "details": "Construccion de galpon",
         "isCompleted": false,
         "modifiedAt": "2025-08-27T17:38:01.968Z",
@@ -3049,7 +3173,7 @@
       },
       {
         "title": "Ampliar linea para cheques de terceros.\nFALTA.\nDEUDA BANCARIA, corroborar MMBB - [M y M SAS]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-05",
         "clientId": "client-1755177831940",
         "businessId": "negocio-client-1755177831940",
         "clientName": "M y M SAS",
@@ -3060,7 +3184,7 @@
       },
       {
         "title": "corroborar - [Maskotas SRL]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-08",
         "clientId": "client-1755184537576",
         "businessId": "negocio-client-1755184537576",
         "clientName": "Maskotas SRL",
@@ -3071,7 +3195,7 @@
       },
       {
         "title": "renovacion de linea - [Arinco SA]",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-04",
         "clientId": "client-1756316605648",
         "businessId": "negocio-client-1756316605648-1756316617229",
         "clientName": "Arinco SA",
@@ -3094,22 +3218,23 @@
       {
         "id": "task-auto-1756476477786",
         "title": "[EN_CALIFICACION] - Tecno Fundaciones SRL",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-12",
         "isCompleted": false,
         "source": "embudo",
         "businessId": "negocio-client-1755264538180",
         "clientId": "client-1755264538180",
         "clientName": "Tecno Fundaciones SRL",
-        "details": "Se mando todo de nuevo"
+        "details": "ADC"
       },
       {
         "title": "Justificar fondos DFC",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-04",
         "isCompleted": false,
         "clientName": "Gestión Activa",
         "source": "gestiones",
         "id": "task-1756757183404",
-        "createdAt": "2025-09-01T20:06:23.404Z"
+        "createdAt": "2025-09-01T20:06:23.404Z",
+        "details": ""
       },
       {
         "id": "task-auto-1756823061460",
@@ -3125,7 +3250,7 @@
       {
         "id": "task-auto-1756823076540",
         "title": "[EN_CALIFICACION] - Kennbal SRL",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-09",
         "isCompleted": false,
         "source": "embudo",
         "businessId": "negocio-client-1755177241923",
@@ -3158,7 +3283,7 @@
       {
         "id": "task-auto-1756833871174",
         "title": "[EN_CALIFICACION] - Furlano Enzo Ramon",
-        "dueDate": "2025-09-03",
+        "dueDate": "2025-09-12",
         "isCompleted": false,
         "source": "embudo",
         "businessId": "negocio-client-1756305754269-1756305784474",
@@ -3414,6 +3539,28 @@
         "clientName": "Tarea General",
         "id": "task-1756295462666",
         "createdAt": "2025-08-27T11:51:02.666Z"
+      },
+      {
+        "id": "task-auto-1756918718020",
+        "title": "[INFO_SOLICITADA] - Carlos Imhoff",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1755520084158",
+        "clientId": "client-1755520084158",
+        "clientName": "Carlos Imhoff",
+        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
+      },
+      {
+        "id": "task-auto-1756931097553",
+        "title": "[INFO_SOLICITADA] - Pauny SA",
+        "dueDate": "2025-09-04",
+        "isCompleted": false,
+        "source": "embudo",
+        "businessId": "negocio-client-1756931039417-1756931074342",
+        "clientId": "client-1756931039417",
+        "clientName": "Pauny SA",
+        "details": "Sin detalles adicionales."
       }
     ],
     "sgrs": [

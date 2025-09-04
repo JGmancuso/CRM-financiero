@@ -18,7 +18,14 @@ export const initialSGRs = [
     { id: 'sgr-3', name: 'Aval Federal SGR', totalQuota: 3000000, checklist: JSON.parse(JSON.stringify(sgrChecklists)) }
 ];
 
-
+export const ENTITY_TYPES = {
+    'SGR': 'SGR',
+    'ALYC': 'ALYC',
+    'Banco': 'Banco',
+    'Avalista': 'Avalista',
+    'Fondo': 'Fondo de Inversión',
+    'Otro': 'Otro',
+};
 
 export const FUNNEL_STAGES = {
     'PROSPECTO': 'Prospecto',

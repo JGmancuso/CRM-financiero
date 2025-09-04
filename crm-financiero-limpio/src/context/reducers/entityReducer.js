@@ -1,20 +1,20 @@
-// src/context/reducers/sgrReducer.js
+// src/context/reducers/entityReducer.js
 
-export const sgrReducer = (sgrsState, action) => {
+export const entityReducer = (entitiesState, action) => {
     switch (action.type) {
-        case 'ADD_SGR': {
-            const newSgr = { ...action.payload, id: `sgr-${Date.now()}` };
-            return [...sgrsState, newSgr];
+        case 'ADD_ENTITY': {
+            const newEntity = { ...action.payload, id: `ent-${Date.now()}` };
+            return [...entitiesState, newEntity];
         }
-        case 'UPDATE_SGR': {
-            return sgrsState.map(sgr => sgr.id === action.payload.id ? action.payload : sgr);
+        case 'UPDATE_ENTITY': {
+            return entitiesState.map(entity => entity.id === action.payload.id ? action.payload : entity);
         }
-        case 'DELETE_SGR': {
-            return sgrsState.filter(sgr => sgr.id !== action.payload);
+        case 'DELETE_ENTITY': {
+            return entitiesState.filter(entity => entity.id !== action.payload);
         }
         case 'ADD_SGR_CHECKLIST_ITEM': {
             const { sgrId, type, item } = action.payload;
-            return sgrsState.map(sgr => {
+            return entitiesState.map(sgr => {
                 if (sgr.id === sgrId) {
                     const updatedChecklist = { ...sgr.checklist };
                     updatedChecklist[type] = [...(updatedChecklist[type] || []), item];
@@ -25,7 +25,7 @@ export const sgrReducer = (sgrsState, action) => {
         }
         case 'UPDATE_SGR_CHECKLIST_ITEM': {
             const { sgrId, type, index, text } = action.payload;
-            return sgrsState.map(sgr => {
+            return entitiesState.map(sgr => {
                 if (sgr.id === sgrId) {
                     const updatedChecklist = { ...sgr.checklist };
                     updatedChecklist[type][index] = text;
@@ -36,7 +36,7 @@ export const sgrReducer = (sgrsState, action) => {
         }
         case 'DELETE_SGR_CHECKLIST_ITEM': {
             const { sgrId, type, index } = action.payload;
-            return sgrsState.map(sgr => {
+            return entitiesState.map(sgr => {
                 if (sgr.id === sgrId) {
                     const updatedChecklist = { ...sgr.checklist };
                     updatedChecklist[type].splice(index, 1);
@@ -46,6 +46,6 @@ export const sgrReducer = (sgrsState, action) => {
             });
         }
         default:
-            return sgrsState;
+            return entitiesState;
     }
 };
