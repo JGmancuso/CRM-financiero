@@ -44,16 +44,7 @@ export default function TaskDetailModal({ task, onClose, onSave, onToggleComplet
 
                 {/* Encabezado de la Tarea */}
                 <div className="pb-4 border-b">
-                    <h2 className="text-2xl font-bold text-gray-800">{task.title}</h2>
-                    <p className="text-gray-500 mt-1">Cliente: {task.clientName}</p>
-                    <div className="flex items-center text-sm mt-2">
-                        <Calendar size={14} className="mr-2 text-gray-500"/>
-                        <span>Vence: {new Date(task.dueDate + 'T00:00:00').toLocaleDateString('es-AR')}</span>
-                        <span className="mx-2">•</span>
-                        <span className={`font-semibold ${task.isCompleted ? 'text-green-600' : 'text-yellow-600'}`}>
-                            {task.isCompleted ? 'Completada' : 'Pendiente'}
-                        </span>
-                    </div>
+                    
                     {isEditing ? (
                         /* --- MODO EDICIÓN --- */
                         <div className="space-y-3 animate-fade-in">

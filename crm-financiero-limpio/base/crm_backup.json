@@ -1893,6 +1893,11 @@
             "date": "2025-09-03T16:58:38.020Z",
             "type": "Cambio de estado a: INFO_SOLICITADA",
             "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
+          },
+          {
+            "date": "2025-09-04T14:31:01.493Z",
+            "type": "Nota de Agenda",
+            "reason": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
           }
         ],
         "cliente": {
@@ -2190,6 +2195,21 @@
             "date": "2025-08-28T23:20:36.235Z",
             "type": "Modificación de Detalles",
             "reason": "Faltante 28-8 balance y paquete accionario"
+          },
+          {
+            "date": "2025-09-04T14:25:24.258Z",
+            "type": "Nota de Agenda",
+            "reason": "Faltante 28-8 balance y paquete accionario rdo 29-8"
+          },
+          {
+            "date": "2025-09-04T14:25:53.194Z",
+            "type": "Nota de Agenda",
+            "reason": "Organizar reunion.\n\nQuieren info de referencias"
+          },
+          {
+            "date": "2025-09-04T14:26:05.261Z",
+            "type": "Nota de Agenda",
+            "reason": "Organizar reunion.\n\nQuieren info de referencias"
           }
         ],
         "cliente": {
@@ -2228,11 +2248,6 @@
             "date": "2025-08-28T20:06:07.143Z",
             "type": "Cambio de estado a: EN_ARMADO",
             "reason": "Mando info corroborar.\nPOdria mandar nota por acindarpyem"
-          },
-          {
-            "date": "2025-09-04T13:07:50.588Z",
-            "type": "Nota de Agenda",
-            "reason": "Se consulta como viene "
           }
         ],
         "cliente": {
@@ -3272,11 +3287,11 @@
       },
       {
         "title": "Lo que sea por banco o mercado - [Natural FOOD SRL]",
-        "dueDate": "2025-09-05",
+        "dueDate": "2025-09-04",
         "clientId": "client-1756227839590",
         "businessId": "negocio-client-1756227839590-1756229402293",
         "clientName": "Natural FOOD SRL",
-        "details": "Se consulta como viene ",
+        "details": "correo con consultas",
         "id": "task-1756229758230",
         "createdAt": "2025-08-26T17:35:58.230Z",
         "isCompleted": false
@@ -3352,12 +3367,29 @@
       {
         "id": "task-auto-1756423236235",
         "title": "[EN_CALIFICACION] - DQD",
-        "dueDate": "2025-09-04",
+        "dueDate": "2025-09-08",
         "isCompleted": false,
         "source": "embudo",
         "businessId": "negocio-client-1756143399404-1756144134858",
         "clientId": "client-1756143399404",
-        "details": "Faltante 28-8 balance y paquete accionario rdo 29-8"
+        "details": "Organizar reunion.\n\nQuieren info de referencias",
+        "businessInfo": {
+          "estado": "EN_CALIFICACION",
+          "monto": 1000000,
+          "moneda": "ARS",
+          "observaciones": "Faltante 28-8 balance y paquete accionario",
+          "calificacionesSGR": [
+            {
+              "id": "qual-1756144158962",
+              "entidad": "CFT",
+              "estado": "En Análisis",
+              "fechaPresentacion": "2025-08-25",
+              "montoAprobado": "",
+              "destino": "",
+              "vencimiento": ""
+            }
+          ]
+        }
       },
       {
         "title": "Dos Mates-correo",
@@ -3377,7 +3409,13 @@
         "businessId": "negocio-client-1755520084158",
         "clientId": "client-1755520084158",
         "clientName": "Carlos Imhoff",
-        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
+        "details": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB",
+        "businessInfo": {
+          "estado": "INFO_SOLICITADA",
+          "monto": 100000000,
+          "moneda": "ARS",
+          "observaciones": "Se esta corroborando susecion, consulta avales del centro.\nNecesitamos mas fiadores, \nTENEMOS UNA NUEVA MMBB"
+        }
       },
       {
         "id": "task-auto-1756931097553",
