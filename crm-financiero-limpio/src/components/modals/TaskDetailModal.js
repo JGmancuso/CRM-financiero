@@ -105,13 +105,15 @@ export default function TaskDetailModal({ task, onClose, onSave, onToggleComplet
                             </h3>
                             <div className="space-y-3 bg-gray-50 p-4 rounded-md">
                                 {task.businessInfo.calificacionesSGR.map(cal => {
-                                    const diasEnAnalisis = daysSince(cal.analysisStartDate); // Asegúrate de tener 'daysSince' disponible
+                                    // --- 👇 ESPÍA DE DEPURACIÓN AÑADIDO AQUÍ 👇 ---
+                                    console.log('Datos de la calificación individual:', cal);
+                                    // --- 👆 FIN DEL ESPÍA 👆 ---
+                                    const diasEnAnalisis = daysSince(cal.fechaPresentacion);
                                     return (
-                                        <div key={cal.sgrId || cal.id} className="border p-3 bg-white rounded-lg shadow-sm">
-                                            <p className="font-bold text-gray-800">{cal.sgrName || cal.name}</p>
-                                            <p className="text-sm text-gray-600">Estado: <span className="font-semibold">{cal.status}</span></p>
-                                            {cal.notes && <p className="text-sm text-gray-600 mt-1">Obs: {cal.notes}</p>}
-                                            {cal.status === 'En Análisis' && diasEnAnalisis > 0 && (
+                                        <div key={cal.id} className="border p-3 bg-white rounded-lg shadow-sm">
+                                            <p className="font-bold text-gray-800">{cal.entidad}</p>
+                                            <p className="text-sm text-gray-600">Estado: <span className="font-semibold">{cal.estado}</span></p>
+                                            {cal.estado === 'En Análisis' && diasEnAnalisis > 0 && (
                                                 <div className="mt-2 text-xs text-yellow-800 bg-yellow-100 p-2 rounded-md font-semibold inline-block">
                                                     En análisis hace {diasEnAnalisis} día(s).
                                                 </div>
