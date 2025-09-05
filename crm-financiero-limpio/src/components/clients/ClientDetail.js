@@ -95,7 +95,8 @@ export default function ClientDetail({ client, negocio, onEdit, onDelete }) {
             case 'documentos': return <DocumentsTab client={client} />;
             case 'inversiones': return <InvestmentTab client={client} />;
             case 'actividades': return <ActivitiesTab client={client} />;
-            case 'historial': return <HistoryTab history={negocio?.history || client.history || []} />;
+            case 'historial': return <HistoryTab client={client} />;
+           
             default: return null;
         }
     };
