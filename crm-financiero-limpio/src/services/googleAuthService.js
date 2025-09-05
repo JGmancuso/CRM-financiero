@@ -1,8 +1,8 @@
 // src/services/googleAuthService.js
 
 // 👇 Pega aquí tus credenciales 👇
-const GOOGLE_CLIENT_ID = "469970379888-udgg7gjbse8cedu32unt0jdpugbgrrhj.apps.googleusercontent.com"; // Este ya está correcto.
-const GOOGLE_API_KEY = "AIzaSyAc8Fj3VUmWPtIExNx9sv6wTw-wYXm1sOI";   // Pega la API Key que creaste en Google Cloud.
+const GOOGLE_CLIENT_ID = "NN"; // Este ya está correcto.
+const GOOGLE_API_KEY = "NN";   // Pega la API Key que creaste en Google Cloud.
 
 
 // Simplificamos los scopes a lo esencial por ahora
