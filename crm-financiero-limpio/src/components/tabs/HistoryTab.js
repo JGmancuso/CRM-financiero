@@ -1,34 +1,48 @@
-import React from 'react';
+// src/components/tabs/HistoryTab.js
+import React, { useMemo } from 'react';
+import { useData } from '../../context/DataContext';
+import { generateUnifiedHistory } from '../../utils/historyUtils'; // Importamos nuestra nueva lógica
 import { Clock } from 'lucide-react';
 
 export default function HistoryTab({ client }) {
-    // 👇 VALIDACIÓN AÑADIDA AQUÍ
-    // Si el cliente aún no se ha cargado, evitamos el error.
-    if (!client) {
-        return <p className="text-gray-500 p-4">Cargando historial...</p>;
-    }
+    const { state } = useData(); // Obtenemos el estado global para acceder a todos los negocios
 
-    const history = client.history || [];
+    // Usamos useMemo para calcular la historia unificada solo cuando los datos cambian
+    const unifiedHistory = useMemo(
+        () => generateUnifiedHistory(client, state.negocios),
+        [client, state.negocios]
+    );
 
     return (
-        <div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Historial de Interacciones</h3>
-            <div className="space-y-4">
-                {history.length > 0 ? history.map((item, index) => (
-                    <div key={index} className="flex items-start">
-                        <div className="flex-shrink-0 mr-4 pt-1">
-                            <Clock className="text-gray-400" size={20} />
+        <div className="animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Línea de Tiempo del Cliente</h3>
+            
+            {unifiedHistory.length > 0 ? (
+                <div className="space-y-4">
+                    {unifiedHistory.map((item, index) => (
+                        <div key={index} className="flex items-start space-x-3">
+                            {/* Icono del evento */}
+                            <div className="flex-shrink-0 mt-1">
+                                {item.icon}
+                            </div>
+                            
+                            {/* Detalles del evento */}
+                            <div className="flex-grow">
+                                <div className="flex justify-between items-center">
+                                    <p className="font-semibold text-gray-700">{item.type}</p>
+                                    <p className="text-xs text-gray-500">
+                                        {new Date(item.date).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                    </p>
+                                </div>
+                                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                <p className="text-xs text-gray-400 mt-1">Origen: {item.source}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-sm text-gray-500">{new Date(item.date).toLocaleString('es-AR')}</p>
-                            <p className="font-semibold text-gray-800">{item.type}</p>
-                            <p className="text-gray-600">{item.reason}</p>
-                        </div>
-                    </div>
-                )) : (
-                    <p className="text-gray-500">No hay historial para este cliente.</p>
-                )}
-            </div>
+                    ))}
+                </div>
+            ) : (
+                <p className="text-gray-500 italic">No hay historial de eventos para este cliente.</p>
+            )}
         </div>
     );
 }
