@@ -1,16 +1,13 @@
 import React from 'react';
-import { User, Clock, RefreshCw } from 'lucide-react';
-// 👇 Importamos las funciones centralizadas
+import { User, Clock, RefreshCw, Shield } from 'lucide-react'; // <-- 'Shield' añadido aquí
 import { daysSince, findLastStageChangeDate } from '../../utils/negocioUtils';
 
 export default function NegocioCard({ negocio, onCardClick }) {
     if (!negocio) return null;
 
-    // 👇 Ahora las funciones se llaman pasándoles el 'negocio'
     const diasEnEstado = daysSince(findLastStageChangeDate(negocio));
     const diasDesdeUpdate = daysSince(negocio.lastUpdate);
 
-    // ... (El resto del componente no cambia)
     const getIndicatorStyle = (days) => {
         if (days === null) return 'bg-gray-100 text-gray-600';
         if (days <= 5) return 'bg-green-100 text-green-800';
@@ -29,6 +26,20 @@ export default function NegocioCard({ negocio, onCardClick }) {
             <p className="text-sm text-gray-500 flex items-center mt-1">
                 <User size={14} className="mr-2" /> {negocio.cliente.nombre || negocio.cliente.name}
             </p>
+
+            {/* --- 👇 NUEVA SECCIÓN PARA MOSTRAR ENTIDADES CALIFICADORAS 👇 --- */}
+            {negocio.calificaciones && negocio.calificaciones.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                    {negocio.calificaciones.map(cal => (
+                        <span key={cal.id || cal.sgrId} className="flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                            <Shield size={12} className="mr-1" />
+                            {cal.entidad || cal.sgrName}
+                        </span>
+                    ))}
+                </div>
+            )}
+            {/* --- 👆 FIN DE LA NUEVA SECCIÓN 👆 --- */}
+
             <div className="flex justify-between items-end mt-2">
                 <p className="text-lg font-semibold text-gray-900">{montoFormateado}</p>
                 <div className="flex items-center space-x-2">

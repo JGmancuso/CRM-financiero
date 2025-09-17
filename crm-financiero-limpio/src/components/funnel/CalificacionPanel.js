@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Save, Clock, PlusCircle, Trash2, Edit } from 'lucide-react';
-import { useData } from '../../context/DataContext'; // <-- 1. AÑADE ESTA LÍNEA DE IMPORTACIÓN
+import { useData } from '../../context/DataContext';
 
 // Sub-componente para el formulario de Añadir/Editar
 const CalificacionForm = ({ sgrs, initialData, onSave, onCancel }) => {
@@ -13,7 +13,7 @@ const CalificacionForm = ({ sgrs, initialData, onSave, onCancel }) => {
 
     return (
         <div className="p-4 bg-gray-100 border border-gray-300 rounded-lg mt-4 space-y-4">
-            <h4 className="font-semibold text-gray-800">{formData.id ? 'Editando Calificación' : 'Añadir Nueva Calificación'}</h4>
+            <h4 className="font-semibold text-gray-800">{initialData.id.toString().startsWith('temp-') ? 'Añadir Nueva Calificación' : 'Editando Calificación'}</h4>
             <div>
                 <label className="text-sm font-medium text-gray-700">Entidad de Garantía (SGR)</label>
                 <select name="entidad" value={formData.entidad} onChange={handleInputChange} className="w-full p-2 border rounded-md bg-white mt-1">
@@ -35,25 +35,26 @@ const CalificacionForm = ({ sgrs, initialData, onSave, onCancel }) => {
                     <h5 className="font-semibold text-green-800">Datos de la Aprobación</h5>
                     <div>
                         <label className="text-sm font-medium text-gray-700">Monto Aprobado</label>
-                        <input type="number" name="montoAprobado" value={formData.montoAprobado} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
+                        <input type="number" name="montoAprobado" value={formData.montoAprobado || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
                     </div>
                      <div>
                         <label className="text-sm font-medium text-gray-700">Destino</label>
-                        <input type="text" name="destino" value={formData.destino} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
+                        <input type="text" name="destino" value={formData.destino || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
                     </div>
                      <div>
                         <label className="text-sm font-medium text-gray-700">Vencimiento</label>
-                        <input type="date" name="vencimiento" value={formData.vencimiento} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
+                        <input type="date" name="vencimiento" value={formData.vencimiento || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md mt-1"/>
                     </div>
                 </div>
             )}
             <div className="flex justify-end space-x-2">
-                <button onClick={onCancel} className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
-                <button onClick={() => onSave(formData)} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Guardar</button>
+                <button type="button" onClick={onCancel} className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
+                <button type="button" onClick={() => onSave(formData)} className="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">Guardar</button>
             </div>
         </div>
     );
 };
+
 
 // 👇 2. ELIMINAMOS 'onSave' DE LOS PROPS, YA NO SE NECESITA
 export default function CalificacionPanel({ negocio, sgrs }) {
@@ -98,6 +99,8 @@ export default function CalificacionPanel({ negocio, sgrs }) {
 
     const handleSaveChanges = () => {
         const updatedNegocio = { ...negocio, calificaciones: calificaciones };
+        console.log("PASO 1 (Guardado): Se está despachando este objeto de negocio actualizado:", updatedNegocio);
+
         // Despacha una acción específica para guardar solo las calificaciones
         dispatch({ type: 'UPDATE_NEGOCIO_CALIFICACIONES', payload: updatedNegocio });
         alert('Calificaciones guardadas con éxito.');

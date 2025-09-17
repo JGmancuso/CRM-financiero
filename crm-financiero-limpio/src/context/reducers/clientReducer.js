@@ -58,6 +58,29 @@ export const clientReducer = (clientsState, action) => {
                 return client;
             });
         }
+                case 'ADD_CLIENT_QUALIFICATION': {
+            const { clientId, qualificationData } = action.payload;
+            return clientsState.map(client => {
+                if (client.id === clientId) {
+                    const newQual = { ...qualificationData, id: `qual-manual-${Date.now()}` };
+                    return { ...client, qualifications: [...(client.qualifications || []), newQual] };
+                }
+                return client;
+            });
+        }
+
+        case 'UPDATE_CLIENT_QUALIFICATION': {
+            const { clientId, qualificationData } = action.payload;
+            return clientsState.map(client => {
+                if (client.id === clientId) {
+                    const updatedQuals = (client.qualifications || []).map(q => 
+                        q.id === qualificationData.id ? qualificationData : q
+                    );
+                    return { ...client, qualifications: updatedQuals };
+                }
+                return client;
+            });
+        }
         // --- FIN DE LA LÓGICA CLAVE ---
 
         default:

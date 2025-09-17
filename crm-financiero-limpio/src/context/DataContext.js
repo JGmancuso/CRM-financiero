@@ -81,36 +81,56 @@ const rootReducer = (state, action) => {
             };
             return { ...state, clients: [...state.clients, newClient], negocios: [...state.negocios, newBusiness] };
         }
-        case 'UPDATE_NEGOCIO_STAGE': {
-            const updatedNegocioData = action.payload;
-            const originalNegocio = state.negocios.find(n => n.id === updatedNegocioData.id);
 
-            if (!originalNegocio) {
-                // Si no se encuentra, actualiza de forma simple para evitar errores
-                return {
-                    ...state,
-                    negocios: negocioReducer(state.negocios, action),
-                };
-            }
+        case 'UPDATE_NEGOCIO_CALIFICACIONES': {
+            const updatedNegocio = action.payload;
+            const originalNegocio = state.negocios.find(n => n.id === updatedNegocio.id);
+
+            console.log("PASO 2 (Procesamiento): El reducer recibió los datos del negocio:", updatedNegocio);
+            console.log("PASO 2.1: Se encontró el negocio original:", originalNegocio);
+
+
             
-            // --- 👇 LÍNEA CLAVE FALTANTE 👇 ---
-            // Aquí declaramos las variables 'updatedTasks' y 'newNegocio'
-            // al obtenerlas del resultado de la función de automatización.
-            const { updatedTasks, newNegocio } = handleStageChangeAutomation(
-                originalNegocio,
-                updatedNegocioData,
-                state.tasks
+            // 1. Actualizamos la lista de negocios como siempre
+            const updatedNegociosState = negocioReducer(state.negocios, action);
+
+            // 2. Buscamos si hay nuevas calificaciones aprobadas
+            const originalApprovedIds = (originalNegocio?.calificaciones || [])
+                .filter(c => c.estado === 'Aprobada')
+                .map(c => c.id);
+
+            const newApprovals = (updatedNegocio.calificaciones || []).filter(c => 
+                c.estado === 'Aprobada' && !originalApprovedIds.includes(c.id)
             );
+            
+            let updatedClientsState = state.clients;
 
-            // Ahora el reducer puede actualizar la lista de negocios usando 'newNegocio'
-            const newNegociosList = negocioReducer(state.negocios, { ...action, payload: newNegocio });
+            // 3. Si hay nuevas aprobaciones, las añadimos al cliente
+            if (newApprovals.length > 0) {
+                updatedClientsState = state.clients.map(client => {
+                    if (client.id === updatedNegocio.cliente.id) {
+                        const newQualifications = newApprovals.map(approval => ({
+                            id: `client-qual-${approval.id}`,
+                            name: approval.entidad, // Nombre de la entidad
+                            lineAmount: parseFloat(approval.montoAprobado) || 0, // Monto
+                            destination: approval.destino, // Destino
+                            lineExpiryDate: approval.vencimiento, // Vencimiento
+                            type: 'SGR', // O el tipo que corresponda
+                        }));
+                        return { 
+                            ...client, 
+                            qualifications: [...(client.qualifications || []), ...newQualifications] 
+                        };
+                    }
+                    return client;
 
-            // Y finalmente, retornamos el estado actualizado usando 'updatedTasks'
-            return {
-                ...state,
-                negocios: newNegociosList,
-                tasks: updatedTasks,
-            };
+                });
+                console.log("PASO 2.3: El estado de los clientes se actualizó. El cliente modificado es:", updatedClientsState.find(c => c.id === updatedNegocio.cliente.id));
+
+            }
+
+            // 4. Devolvemos el estado con ambas listas actualizadas
+            return { ...state, negocios: updatedNegociosState, clients: updatedClientsState };
         }
         case 'ADD_TASK':
         case 'UPDATE_TASK': {
