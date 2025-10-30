@@ -3,7 +3,7 @@
 // La función principal ahora pasa más datos del negocio a la tarea
 function getUnifiedAgendaItems(clients, tasks, negocios) {
     const generalTasks = (tasks || [])
-        .filter(task => task.dueDate)
+        .filter(task => task.dueDate && task.source !== 'clientes')
         .map(task => {
             let enrichedTask = {
                 ...task,

@@ -58,7 +58,36 @@ export const clientReducer = (clientsState, action) => {
                 return client;
             });
         }
-                case 'ADD_CLIENT_QUALIFICATION': {
+
+        case 'UPDATE_ACTIVITY': {
+            const { clientId, activityData } = action.payload;
+            return clientsState.map(client => {
+                if (client.id === clientId) {
+                    const updatedActivities = (client.activities || []).map(act => {
+                        if (act.id === activityData.id) {
+                            return { ...act, ...activityData }; // Fusiona los cambios
+                        }
+                        return act;
+                    });
+                    return { ...client, activities: updatedActivities };
+                }
+                return client;
+            });
+        }
+
+        case 'DELETE_ACTIVITY': {
+            const { clientId, activityId } = action.payload;
+            return clientsState.map(client => {
+                if (client.id === clientId) {
+                    // Filtra la actividad, quedándose con todas menos la eliminada
+                    const updatedActivities = (client.activities || []).filter(act => act.id !== activityId);
+                    return { ...client, activities: updatedActivities };
+                }
+                return client;
+            });
+        }
+        
+        case 'ADD_CLIENT_QUALIFICATION': {
             const { clientId, qualificationData } = action.payload;
             return clientsState.map(client => {
                 if (client.id === clientId) {
