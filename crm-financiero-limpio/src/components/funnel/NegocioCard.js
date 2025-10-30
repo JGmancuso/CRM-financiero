@@ -16,6 +16,21 @@ export default function NegocioCard({ negocio, onCardClick }) {
         return 'bg-red-100 text-red-800';
     };
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Aprobada':
+                return 'bg-green-100 text-green-800';
+            case 'Rechazada':
+                return 'bg-red-100 text-red-800';
+            case 'En Análisis':
+                return 'bg-blue-100 text-blue-800';
+            case 'Pendiente':
+                return 'bg-yellow-100 text-yellow-800';
+            default:
+                return 'bg-blue-100 text-blue-800';
+        }
+    };
+
     const montoFormateado = new Intl.NumberFormat('es-AR', {
         style: 'currency', currency: negocio.moneda || 'ARS',
     }).format(negocio.montoSolicitado || 0);
@@ -27,18 +42,18 @@ export default function NegocioCard({ negocio, onCardClick }) {
                 <User size={14} className="mr-2" /> {negocio.cliente.nombre || negocio.cliente.name}
             </p>
 
-            {/* --- 👇 NUEVA SECCIÓN PARA MOSTRAR ENTIDADES CALIFICADORAS 👇 --- */}
+            
             {negocio.calificaciones && negocio.calificaciones.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                     {negocio.calificaciones.map(cal => (
-                        <span key={cal.id || cal.sgrId} className="flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                        <span key={cal.id || cal.sgrId} className={`flex items-center text-xs font-semibold px-2 py-0.5 rounded-full ${getStatusColor(cal.estado)}`}>
                             <Shield size={12} className="mr-1" />
                             {cal.entidad || cal.sgrName}
                         </span>
                     ))}
                 </div>
             )}
-            {/* --- 👆 FIN DE LA NUEVA SECCIÓN 👆 --- */}
+            
 
             <div className="flex justify-between items-end mt-2">
                 <p className="text-lg font-semibold text-gray-900">{montoFormateado}</p>
