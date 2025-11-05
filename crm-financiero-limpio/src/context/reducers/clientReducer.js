@@ -17,25 +17,17 @@ export const clientReducer = (clientsState, action) => {
             const updatedClientData = action.payload;
             return clientsState.map(client => {
                 if (client.id === updatedClientData.id) {
-                    // Fusionamos los datos existentes con los nuevos
-                    // Esto preserva arrays como 'activities', 'documents', etc.
                     return { ...client, ...updatedClientData };
                 }
                 return client;
             });
         }
         
-        
-        // --- LÓGICA CLAVE PARA ACTIVIDADES ---
         case 'SAVE_ACTIVITY': {
             const { clientId, activityData } = action.payload;
              return clientsState.map(client => {
                 if (client.id === clientId) {
-                    const newActivity = { 
-                        ...activityData, 
-                        // El ID ahora se crea con el prefijo 'act-'
-                        id: `act-${Date.now()}` 
-                    };
+                    const newActivity = { ...activityData, id: `act-${Date.now()}` };
                     const updatedActivities = [...(client.activities || []), newActivity];
                     return { ...client, activities: updatedActivities };
                 }
@@ -43,13 +35,21 @@ export const clientReducer = (clientsState, action) => {
             });
         }
 
+        // --- 👇 LÓGICA BLINDADA PARA COMPLETAR ---
         case 'TOGGLE_ACTIVITY': {
-            const { clientId, activityId } = action.payload;
+            // Recibimos targetStatus si está disponible
+            const { clientId, activityId, targetStatus } = action.payload;
+            const targetId = String(activityId).trim();
+
             return clientsState.map(client => {
-                if (client.id === clientId) {
+                if (String(client.id).trim() === String(clientId).trim()) {
                     const updatedActivities = (client.activities || []).map(act => {
-                        if (act.id === activityId) {
-                            return { ...act, completed: !act.completed, isCompleted: !act.completed };
+                        if (String(act.id).trim() === targetId) {
+                            // Si nos dieron un targetStatus, lo usamos. Si no, invertimos como antes.
+                            // Esto hace que la acción sea "segura" de repetir.
+                            const newStatus = targetStatus !== undefined ? targetStatus : !act.completed;
+                            console.log(`🎉 [Reducer] Estableciendo actividad ${targetId} a: ${newStatus}`);
+                            return { ...act, completed: newStatus, isCompleted: newStatus };
                         }
                         return act;
                     });
@@ -58,14 +58,16 @@ export const clientReducer = (clientsState, action) => {
                 return client;
             });
         }
+        // ----------------------------------------
 
         case 'UPDATE_ACTIVITY': {
             const { clientId, activityData } = action.payload;
+            const targetId = String(activityData.id).trim();
             return clientsState.map(client => {
                 if (client.id === clientId) {
                     const updatedActivities = (client.activities || []).map(act => {
-                        if (act.id === activityData.id) {
-                            return { ...act, ...activityData }; // Fusiona los cambios
+                        if (String(act.id).trim() === targetId) {
+                            return { ...act, ...activityData };
                         }
                         return act;
                     });
@@ -75,17 +77,20 @@ export const clientReducer = (clientsState, action) => {
             });
         }
 
+        // --- 👇 LÓGICA BLINDADA PARA ELIMINAR ---
         case 'DELETE_ACTIVITY': {
             const { clientId, activityId } = action.payload;
+            const targetId = String(activityId).trim();
             return clientsState.map(client => {
                 if (client.id === clientId) {
-                    // Filtra la actividad, quedándose con todas menos la eliminada
-                    const updatedActivities = (client.activities || []).filter(act => act.id !== activityId);
+                    // Filtramos usando la comparación blindada
+                    const updatedActivities = (client.activities || []).filter(act => String(act.id).trim() !== targetId);
                     return { ...client, activities: updatedActivities };
                 }
                 return client;
             });
         }
+        // ----------------------------------------
         
         case 'ADD_CLIENT_QUALIFICATION': {
             const { clientId, qualificationData } = action.payload;
@@ -110,7 +115,6 @@ export const clientReducer = (clientsState, action) => {
                 return client;
             });
         }
-        // --- FIN DE LA LÓGICA CLAVE ---
 
         default:
             return clientsState;
