@@ -9,6 +9,7 @@ import { taskReducer } from './reducers/taskReducer';
 import { entityReducer } from './reducers/entityReducer'; 
 import { handleStageChangeAutomation } from '../services/TaskAutomationService';
 import { clientActivitiesReducer } from './reducers/clientActivitiesReducer';
+import { campaignReducer } from './reducers/campaignReducer';
 
 
 const APP_DATA_VERSION = '3.0';

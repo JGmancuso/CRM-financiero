@@ -21,7 +21,7 @@ export default function CampaignLogModal({ client, campaign, onClose, onSave }) 
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg">
                 <h2 className="text-xl font-bold mb-2">Registrar Contacto de Campaña</h2>
-                <p className="text-gray-600 mb-6">Cliente: <span className="font-semibold">{client.name}</span> | Campaña: <span className="font-semibold">{campaign.name}</span></p>
+                <p className="text-gray-600 mb-6">Cliente: <span className="font-semibold">{client.name || client.nombre}</span> | Campaña: <span className="font-semibold">{campaign.name}</span></p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <InputField label="¿Fue contactado?" name="contacted" value={logData.contacted} onChange={handleChange} select>
                         <option>Sí</option>

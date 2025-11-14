@@ -2,8 +2,13 @@ import React, { useState, useMemo } from 'react';
 import InputField from '../components/common/InputField';
 import { PlusCircle, Trash2, Archive } from 'lucide-react';
 import CampaignLogModal from '../components/modals/CampaignLogModal';
+import { useData } from '../context/DataContext';
 
-export default function CampaignsView({ allClients, onUpdateClient, campaigns = [], setCampaigns, onNavigateToClient, sgrs }) {
+export default function CampaignsView({ onNavigateToClient, sgrs }) {
+    
+    const { state, dispatch } = useData();
+    const { campaigns, clients: allClients } = state;
+
     const [selectedCampaign, setSelectedCampaign] = useState(() => {
         const activeCampaign = campaigns.find(c => !c.isArchived);
         return activeCampaign || campaigns[0] || null;
@@ -15,7 +20,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
         const { name, value } = e.target;
         const updatedCampaign = { ...selectedCampaign, filters: { ...selectedCampaign.filters, [name]: value } };
         setSelectedCampaign(updatedCampaign);
-        setCampaigns(campaigns.map(c => c.id === updatedCampaign.id ? updatedCampaign : c));
+        dispatch({ type: 'UPDATE_CAMPAIGN', payload: updatedCampaign });
     };
 
     const addCampaign = () => {
@@ -25,14 +30,15 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
             isArchived: false,
             filters: { location: '', activity: '', hasForeignTrade: 'any', sellsToFinalConsumer: 'any', minAvailableCredit: '', sgrName: 'any', instrument: 'any', investmentProfile: 'any' }
         };
-        setCampaigns([...campaigns, newCampaign]);
+        dispatch({ type: 'ADD_CAMPAIGN', payload: newCampaign });
         setSelectedCampaign(newCampaign);
     };
 
     const deleteCampaign = (campaignId) => {
         if (window.confirm("¿Seguro que quieres eliminar esta campaña?")) {
+            dispatch({ type: 'DELETE_CAMPAIGN', payload: campaignId });
+            
             const updatedCampaigns = campaigns.filter(c => c.id !== campaignId);
-            setCampaigns(updatedCampaigns);
             if (selectedCampaign && selectedCampaign.id === campaignId) {
                 setSelectedCampaign(updatedCampaigns.find(c => c.isArchived === showArchived) || updatedCampaigns[0] || null);
             }
@@ -40,9 +46,13 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
     };
     
     const archiveCampaign = (campaignId) => {
-        const updatedCampaigns = campaigns.map(c => c.id === campaignId ? {...c, isArchived: true} : c);
-        setCampaigns(updatedCampaigns);
+        const campaignToArchive = campaigns.find(c => c.id === campaignId);
+        const updatedCampaign = { ...campaignToArchive, isArchived: true };
+        
+        dispatch({ type: 'UPDATE_CAMPAIGN', payload: updatedCampaign });
+
         if (selectedCampaign && selectedCampaign.id === campaignId) {
+            const updatedCampaigns = campaigns.map(c => c.id === campaignId ? updatedCampaign : c);
             setSelectedCampaign(updatedCampaigns.find(c => !c.isArchived) || updatedCampaigns[0] || null);
         }
     };
@@ -69,7 +79,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
             lastUpdate: new Date().toISOString()
         };
         
-        onUpdateClient(updatedClient);
+        dispatch({ type: 'UPDATE_CLIENT', payload: updatedClient });
         setLoggingClient(null);
     };
 
@@ -151,6 +161,7 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
                                 {(sgrs || []).map(sgr => <option key={sgr.id} value={sgr.name}>{sgr.name}</option>)}
                             </InputField>
                             <InputField label="Instrumento" name="instrument" value={selectedCampaign.filters.instrument} onChange={handleFilterChange} select>
+                                {/* --- 👇 AQUÍ ESTABA EL ERROR (Doption) --- */}
                                 <option value="any">Cualquiera</option><option>Cheque</option><option>Pagaré</option><option>FCE</option><option>ON</option>
                             </InputField>
                              <InputField label="Perfil de Inversión" name="investmentProfile" value={selectedCampaign.filters.investmentProfile} onChange={handleFilterChange} select>
@@ -175,7 +186,13 @@ export default function CampaignsView({ allClients, onUpdateClient, campaigns = 
                                         const interaction = client.campaignInteractions?.[selectedCampaign.id];
                                         return (
                                             <tr key={client.id} className="hover:bg-gray-50">
-                                                <td className="py-2 px-4 border-b"><button onClick={() => onNavigateToClient(client)} className="text-blue-600 hover:underline">{client.name}</button></td>
+                                                {/* --- 👇 CORRECCIÓN AQUÍ 👇 --- */}
+                                                <td className="py-2 px-4 border-b">
+                                                    <button onClick={() => onNavigateToClient(client)} className="text-blue-600 hover:underline">
+                                                        {client.name || client.nombre || '(Cliente Sin Nombre)'}
+                                                    </button>
+                                                </td>
+                                                {/* --- 👆 FIN DE LA CORRECCIÓN 👆 --- */}
                                                 <td className="py-2 px-4 border-b">{client.email}</td>
                                                 <td className="py-2 px-4 border-b">{interaction ? `Contactado: ${interaction.contacted}. Respuesta: ${interaction.response}` : 'Pendiente'}</td>
                                                 <td className="py-2 px-4 border-b text-center">

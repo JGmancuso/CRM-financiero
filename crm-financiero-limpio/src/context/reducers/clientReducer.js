@@ -23,21 +23,25 @@ export const clientReducer = (clientsState, action) => {
             });
         }
         
+        // --- LÓGICA DE ACTIVIDADES CORREGIDA Y UNIFICADA ---
         case 'SAVE_ACTIVITY': {
             const { clientId, activityData } = action.payload;
              return clientsState.map(client => {
                 if (client.id === clientId) {
-                    const newActivity = { ...activityData, id: `act-${Date.now()}` };
-                    const updatedActivities = [...(client.activities || []), newActivity];
-                    return { ...client, activities: updatedActivities };
+                    const newActivity = { 
+                        ...activityData, 
+                        id: `act-${Date.now()}`,
+                        completed: false,
+                        isCompleted: false
+                    };
+                    return { ...client, activities: [...(client.activities || []), newActivity] };
                 }
                 return client;
             });
         }
 
-        // --- 👇 LÓGICA BLINDADA PARA COMPLETAR ---
         case 'TOGGLE_ACTIVITY': {
-            // Recibimos targetStatus si está disponible
+            // Recibe el estado objetivo (targetStatus) para ser a prueba de "doble clic"
             const { clientId, activityId, targetStatus } = action.payload;
             const targetId = String(activityId).trim();
 
@@ -45,10 +49,8 @@ export const clientReducer = (clientsState, action) => {
                 if (String(client.id).trim() === String(clientId).trim()) {
                     const updatedActivities = (client.activities || []).map(act => {
                         if (String(act.id).trim() === targetId) {
-                            // Si nos dieron un targetStatus, lo usamos. Si no, invertimos como antes.
-                            // Esto hace que la acción sea "segura" de repetir.
+                            // Establece el estado exacto que se le pide
                             const newStatus = targetStatus !== undefined ? targetStatus : !act.completed;
-                            console.log(`🎉 [Reducer] Estableciendo actividad ${targetId} a: ${newStatus}`);
                             return { ...act, completed: newStatus, isCompleted: newStatus };
                         }
                         return act;
@@ -58,16 +60,18 @@ export const clientReducer = (clientsState, action) => {
                 return client;
             });
         }
-        // ----------------------------------------
 
         case 'UPDATE_ACTIVITY': {
             const { clientId, activityData } = action.payload;
             const targetId = String(activityData.id).trim();
+            
             return clientsState.map(client => {
                 if (client.id === clientId) {
                     const updatedActivities = (client.activities || []).map(act => {
                         if (String(act.id).trim() === targetId) {
-                            return { ...act, ...activityData };
+                            // 👇 ESTA ES LA CORRECCIÓN CLAVE 👇
+                            // Fusionamos la actividad existente con los nuevos datos
+                            return { ...act, ...activityData }; 
                         }
                         return act;
                     });
@@ -77,20 +81,17 @@ export const clientReducer = (clientsState, action) => {
             });
         }
 
-        // --- 👇 LÓGICA BLINDADA PARA ELIMINAR ---
         case 'DELETE_ACTIVITY': {
             const { clientId, activityId } = action.payload;
             const targetId = String(activityId).trim();
             return clientsState.map(client => {
                 if (client.id === clientId) {
-                    // Filtramos usando la comparación blindada
                     const updatedActivities = (client.activities || []).filter(act => String(act.id).trim() !== targetId);
                     return { ...client, activities: updatedActivities };
                 }
                 return client;
             });
         }
-        // ----------------------------------------
         
         case 'ADD_CLIENT_QUALIFICATION': {
             const { clientId, qualificationData } = action.payload;

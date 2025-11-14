@@ -31,7 +31,8 @@ function getUnifiedAgendaItems(clients, tasks, negocios) {
             (client.activities || []).map(activity => ({
                 id: activity.id,
                 title: activity.description || 'Actividad',
-                details: activity.note,
+                details: activity.details || '', 
+                // ---------------------------------
                 dueDate: activity.dueDate || activity.date,
                 isCompleted: activity.completed || false,
                 clientName: client.nombre || client.name,
